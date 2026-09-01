@@ -660,6 +660,41 @@ footer{
 .policy-close{width:52px;height:52px;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:rgba(255,255,255,.1);color:#fff;font-size:24px;cursor:pointer}
 .policy-panel iframe{flex:1;width:100%;min-height:0;border:0;background:#fff}
 
+
+/* IMS Policy — align icon and title like the performance tiles */
+.ims-policy-tile{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
+}
+.ims-policy-head{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  margin-bottom:10px;
+}
+.ims-policy-tile .ims-policy-head .icon{
+  margin:0;
+  flex:0 0 auto;
+}
+.ims-policy-tile .ims-policy-head h3{
+  margin:0;
+  text-align:left;
+}
+.ims-policy-tile p{
+  margin:0;
+}
+@media (min-width:1051px) and (max-height:900px){
+  .ims-policy-head{gap:8px;margin-bottom:7px}
+  .ims-policy-tile .ims-policy-head .icon{
+    width:38px;height:38px;min-height:38px;font-size:19px;border-radius:12px
+  }
+  .ims-policy-tile .ims-policy-head h3{font-size:18px}
+}
+
 </style>
 </head>
 <body>
@@ -695,7 +730,13 @@ footer{
 </div>
 <button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button>
 <button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button>
-<button class="tile accent-purple ims-policy-tile" type="button"><div class="icon">📘</div><h3>IMS Policy</h3><p>Read the current Integrated Management System Policy.</p></button>
+<button class="tile accent-purple ims-policy-tile" type="button">
+  <div class="ims-policy-head">
+    <div class="icon">📘</div>
+    <h3>IMS Policy</h3>
+  </div>
+  <p>Read the current Integrated Management System Policy.</p>
+</button>
 <button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button>
 <button class="tile tifr-tile" data-content="tifr">
   <div class="tifr-head">

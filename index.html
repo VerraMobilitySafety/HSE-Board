@@ -1041,6 +1041,45 @@ header .header-copy{
   }
 }
 
+
+/* Final header alignment:
+   - IMS Policy sits at the right edge of the left welcome panel
+   - HSE Noticeboard begins exactly above the first tile column */
+header{
+  display:grid !important;
+  grid-template-columns:610px minmax(0,1fr) !important;
+  align-items:center !important;
+  column-gap:22px !important;
+}
+
+header > img{
+  position:absolute !important;
+  left:22px !important;
+  top:28px !important;
+}
+
+.header-policy-button{
+  grid-column:1 !important;
+  justify-self:end !important;
+  margin:0 !important;
+  transform:translateX(-8px);
+}
+
+header .header-copy{
+  grid-column:2 !important;
+  justify-self:stretch !important;
+  margin:0 !important;
+  width:auto !important;
+  padding:0 !important;
+}
+
+/* Match the tile grid's exact left edge */
+@media (min-width:1051px){
+  header{
+    grid-template-columns:610px minmax(0,1fr) !important;
+  }
+}
+
 </style>
 </head>
 <body>

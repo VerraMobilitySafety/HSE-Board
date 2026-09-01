@@ -1173,18 +1173,6 @@ header .brand-copy{
   transform:none !important;
 }
 
-
-/* IMS Policy button ONLY.
-   Do not alter the HSE Noticeboard title block. */
-.header-policy-button{
-  position:fixed !important;
-  right:auto !important;
-  bottom:auto !important;
-  margin:0 !important;
-  transform:none !important;
-  z-index:30 !important;
-}
-
 </style>
 </head>
 <body>
@@ -1686,9 +1674,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     // IMS Policy:
     // KEEP EXACTLY AS IT IS NOW — it was confirmed correct.
     policy.style.left =
-      (heroRect.right - headerRect.left - policyRect.width) + "px";
+      (heroRect.right - brandRect.left - policyRect.width) + "px";
     policy.style.top =
-      ((logoRect.top + logoRect.height / 2) - headerRect.top - policyRect.height / 2) + "px";
+      ((logoRect.top + logoRect.height / 2) - brandRect.top - policyRect.height / 2) + "px";
 
     // HSE Noticeboard block:
     // Its containing block is .brand, not header.
@@ -1705,39 +1693,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   requestAnimationFrame(alignHeaderExactly);
-})();
-</script>
-
-
-<script>
-(function () {
-  function alignPolicyOnly() {
-    const policy = document.querySelector(".header-policy-button");
-    const logo = document.querySelector("header img");
-    const hero = document.querySelector(".hero");
-    if (!policy || !logo || !hero) return;
-
-    const heroRect = hero.getBoundingClientRect();
-    const logoRect = logo.getBoundingClientRect();
-    const policyRect = policy.getBoundingClientRect();
-
-    // RIGHT edge of button = RIGHT edge of the large left panel.
-    policy.style.left = (heroRect.right - policyRect.width) + "px";
-
-    // Vertical centre of button = vertical centre of Verra Mobility logo.
-    policy.style.top =
-      (logoRect.top + (logoRect.height / 2) - (policyRect.height / 2)) + "px";
-  }
-
-  window.addEventListener("load", alignPolicyOnly);
-  window.addEventListener("resize", alignPolicyOnly);
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(alignPolicyOnly);
-  }
-
-  requestAnimationFrame(alignPolicyOnly);
-  setTimeout(alignPolicyOnly, 100);
 })();
 </script>
 

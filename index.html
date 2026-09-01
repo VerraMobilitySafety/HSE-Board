@@ -1173,18 +1173,6 @@ header .brand-copy{
   transform:none !important;
 }
 
-
-/* HSE Noticeboard alignment ONLY.
-   IMS Policy positioning is left completely untouched. */
-header .brand-copy{
-  position:relative !important;
-  left:auto !important;
-  top:auto !important;
-  transform:translateX(var(--brand-shift, 0px)) !important;
-  margin:0 !important;
-  padding:0 !important;
-}
-
 </style>
 </head>
 <body>
@@ -1677,24 +1665,24 @@ document.addEventListener("DOMContentLoaded",()=>{
     if (!header || !policy || !logo || !hero || !firstTile || !brandCopy) return;
 
     const headerRect = header.getBoundingClientRect();
+    const brandRect = brandCopy.parentElement.getBoundingClientRect();
     const heroRect = hero.getBoundingClientRect();
     const logoRect = logo.getBoundingClientRect();
     const tileRect = firstTile.getBoundingClientRect();
     const policyRect = policy.getBoundingClientRect();
 
     // IMS Policy:
-    // right edge = right edge of large left panel
-    // vertical centre = vertical centre of Verra Mobility logo
+    // KEEP EXACTLY AS IT IS NOW — it was confirmed correct.
     policy.style.left =
       (heroRect.right - headerRect.left - policyRect.width) + "px";
     policy.style.top =
       ((logoRect.top + logoRect.height / 2) - headerRect.top - policyRect.height / 2) + "px";
 
     // HSE Noticeboard block:
-    // LEFT edge = LEFT edge of the first tile.
-    // Keep its existing vertical position.
+    // Its containing block is .brand, not header.
+    // Align its LEFT edge exactly with the LEFT edge of the first tile.
     brandCopy.style.left =
-      (tileRect.left - headerRect.left) + "px";
+      (tileRect.left - brandRect.left) + "px";
   }
 
   window.addEventListener("load", alignHeaderExactly);
@@ -1705,37 +1693,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   requestAnimationFrame(alignHeaderExactly);
-})();
-</script>
-
-
-<script>
-(function () {
-  function alignNoticeboardTitle() {
-    const titleBlock = document.querySelector("header .brand-copy");
-    const firstTile = document.querySelector(".tiles > *");
-    if (!titleBlock || !firstTile) return;
-
-    /* Reset shift first so we measure its natural position */
-    titleBlock.style.setProperty("--brand-shift", "0px");
-
-    requestAnimationFrame(() => {
-      const titleRect = titleBlock.getBoundingClientRect();
-      const tileRect = firstTile.getBoundingClientRect();
-      const shift = tileRect.left - titleRect.left;
-
-      titleBlock.style.setProperty("--brand-shift", shift + "px");
-    });
-  }
-
-  window.addEventListener("load", alignNoticeboardTitle);
-  window.addEventListener("resize", alignNoticeboardTitle);
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(alignNoticeboardTitle);
-  }
-
-  setTimeout(alignNoticeboardTitle, 100);
 })();
 </script>
 

@@ -964,6 +964,42 @@ footer{
   border-radius:0 !important;
 }
 
+
+/* Header utility IMS Policy button */
+.header-policy-button{
+  margin-left:16px;
+  padding:11px 16px;
+  border:1px solid rgba(29,130,150,.7);
+  border-radius:14px;
+  background:linear-gradient(145deg,rgba(29,130,150,.78),rgba(29,130,150,.42));
+  color:#fff;
+  font:inherit;
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+/* Shift noticeboard heading towards the tile grid */
+header .header-copy{
+  margin-left:auto;
+  width:calc(100% - 610px);
+}
+
+/* If You Are Injured — white tile */
+.injury-tile{
+  background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(244,246,245,.88)) !important;
+  border-color:rgba(255,255,255,.82) !important;
+  color:#3D3935 !important;
+}
+.injury-tile h3,
+.injury-tile p{
+  color:#3D3935 !important;
+}
+.injury-tile .icon{
+  background:rgba(61,57,53,.10) !important;
+  color:#3D3935 !important;
+}
 </style>
 </head>
 <body>
@@ -982,7 +1018,7 @@ footer{
 </div>
 <header>
 <div class="brand">
-<img alt="Verra Mobility" class="verra-logo" src="./assets/verra-logo.png?v=4"/>
+<img alt="Verra Mobility" class="verra-logo" src="./assets/verra-logo.png?v=4"/><button class="header-policy-button" type="button">📘  IMS Policy</button>
 <div class="brand-copy">
 <h1>HSE Noticeboard</h1>
 <div class="site-line"><span class="site-pill" id="siteName">South Melbourne</span><span id="siteSubtitle">Safety information and quick access</span></div>
@@ -991,13 +1027,7 @@ footer{
 </header>
 <main>
 <section class="hero"><div><div class="eyebrow">Welcome</div><h2 id="heroTitle">Your safety information. One touch away.</h2><p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p></div><div class="focus-card"><div class="focus-title">Current focus</div><div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div><div class="touch-hint">Touch any tile to open • Returns home automatically after inactivity</div></div></section>
-<section class="tiles"><button class="tile accent-purple ims-policy-tile" type="button">
-<div class="ims-policy-head">
-<div class="icon">📘</div>
-<h3>IMS Policy</h3>
-</div>
-<p>Read the current Integrated Management System Policy.</p>
-</button><button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button><button class="tile hazards-tile" data-content="hazards">
+<section class="tiles"><button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button><button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button><button class="tile hazards-tile" data-content="hazards">
 <div class="hazards-head">
 <div class="icon">◎</div>
 <h3>Hazards and Near Misses</h3>
@@ -1039,7 +1069,7 @@ footer{
 <h3>Report an Event</h3>
 </div>
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
-</div><button class="tile accent-green" data-content="emergency"><div class="icon">☎</div><h3>Emergency Assistance</h3><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="icon">⌖</div><h3>Emergency Control Map</h3><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button></section>
+</div><button class="tile accent-green" data-content="emergency"><div class="icon">☎</div><h3>Emergency Assistance</h3><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="icon">⌖</div><h3>Emergency Control Map</h3><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile injury-tile" data-content="injury" type="button"><div class="icon">✚</div><h3>If You Are Injured</h3><p>What to do if you are injured at work.</p></button></section>
 </main>
 <footer><div><span class="status-dot"></span>Noticeboard online</div><div>Touchscreen HSE Noticeboard • <span id="footerSite">South Melbourne</span></div></footer>
 </div>
@@ -1437,5 +1467,16 @@ policyClose?.addEventListener("click",()=>{policyOverlay.classList.remove("activ
 policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyOverlay.classList.remove("active"); resetIdle();}});
 
 </script>
-</body>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const btn=document.querySelector(".header-policy-button");
+  const overlay=document.getElementById("policyOverlay");
+  if(btn && overlay){
+    btn.addEventListener("click",()=>{
+      overlay.classList.add("active");
+      if(typeof resetIdle==="function") resetIdle();
+    });
+  }
+});
+</script></body>
 </html>

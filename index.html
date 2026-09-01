@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
 <title>HSE Noticeboard</title>
 <style>
 :root{--black:#3D3935;--green:#A9C23F;--grey:#857874;--teal:#1D8296;--purple:#464E7E;--white:#F7F7F5;--panel:rgba(255,255,255,.12);--shadow:0 18px 50px rgba(0,0,0,.22)}
@@ -711,124 +712,90 @@ footer{
 </head>
 <body>
 <div class="screen">
-<div class="motion-bg" aria-hidden="true">
-  <span class="orb orb-a"></span>
-  <span class="orb orb-b"></span>
-  <span class="orb orb-c"></span>
-  <span class="line line-a"></span>
-  <span class="line line-b"></span>
-  <span class="line line-c"></span>
-  <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span>
-  <span class="particle p4"></span><span class="particle p5"></span><span class="particle p6"></span>
+<div aria-hidden="true" class="motion-bg">
+<span class="orb orb-a"></span>
+<span class="orb orb-b"></span>
+<span class="orb orb-c"></span>
+<span class="line line-a"></span>
+<span class="line line-b"></span>
+<span class="line line-c"></span>
+<span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span>
+<span class="particle p4"></span><span class="particle p5"></span><span class="particle p6"></span>
 </div>
 <header>
 <div class="brand">
-  <img class="verra-logo" src="./assets/verra-logo.png?v=4" alt="Verra Mobility">
-  <div class="brand-copy">
-    <h1>HSE Noticeboard</h1>
-    <div class="site-line"><span class="site-pill" id="siteName">South Melbourne</span><span id="siteSubtitle">Safety information and quick access</span></div>
-  </div>
+<img alt="Verra Mobility" class="verra-logo" src="./assets/verra-logo.png?v=4"/>
+<div class="brand-copy">
+<h1>HSE Noticeboard</h1>
+<div class="site-line"><span class="site-pill" id="siteName">South Melbourne</span><span id="siteSubtitle">Safety information and quick access</span></div>
+</div>
 </div>
 </header>
 <main>
 <section class="hero"><div><div class="eyebrow">Welcome</div><h2 id="heroTitle">Your safety information. One touch away.</h2><p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p></div><div class="focus-card"><div class="focus-title">Current focus</div><div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div><div class="touch-hint">Touch any tile to open • Returns home automatically after inactivity</div></div></section>
-<section class="tiles">
-<button class="tile accent-purple ims-policy-tile" type="button">
-  <div class="ims-policy-head">
-    <div class="icon">📘</div>
-    <h3>IMS Policy</h3>
-  </div>
-  <p>Read the current Integrated Management System Policy.</p>
-</button>
-<button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button>
-<button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button>
-<button class="tile hazards-tile" data-content="hazards">
-  <div class="hazards-head">
-    <div class="icon">◎</div>
-    <h3>Hazards and Near Misses</h3>
-  </div>
-  <div class="hazards-values">
-    <div class="hazards-value-block">
-      <div class="hazards-value-label">Last month</div>
-      <div class="metric" id="hazardMetric">12</div>
-    </div>
-    <div class="hazards-divider"></div>
-    <div class="hazards-value-block">
-      <div class="hazards-value-label">Target</div>
-      <div class="metric hazards-target-value" id="hazardTarget">12</div>
-    </div>
-  </div>
-  <div class="hazards-view">Click to view last 12 months</div>
-  <div class="hazards-status" id="hazardsStatus">On target</div>
-</button>
-<button class="tile tifr-tile" data-content="tifr">
-  <div class="tifr-head">
-    <div class="icon">↗</div>
-    <h3>TIFR</h3>
-  </div>
-  <div class="tifr-values">
-    <div class="tifr-value-block">
-      <div class="tifr-value-label">Last month</div>
-      <div class="metric" id="tifrMetric">7.0</div>
-    </div>
-    <div class="tifr-divider"></div>
-    <div class="tifr-value-block">
-      <div class="tifr-value-label">Target</div>
-      <div class="metric tifr-target-value" id="tifrTarget">8.0</div>
-    </div>
-  </div>
-  <div class="tifr-view">Click to view last 12 months</div>
-  <div class="tifr-status" id="tifrStatus">On target</div>
-</button>
-<div class="tile accent-green report-event-tile" aria-label="Report an Event QR code">
-  <div class="report-event-head">
-    <div class="icon">⚠</div>
-    <h3>Report an Event</h3>
-  </div>
-  <img class="home-qr" src="./assets/report-event-qr.png?v=1" alt="Report an Event QR code">
+<section class="tiles"><button class="tile accent-purple ims-policy-tile" type="button">
+<div class="ims-policy-head">
+<div class="icon">📘</div>
+<h3>IMS Policy</h3>
 </div>
-<button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button>
-<button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button>
-<button class="tile accent-purple ims-policy-tile" type="button">
-  <div class="ims-policy-head">
-    <div class="icon">📘</div>
-    <h3>IMS Policy</h3>
-  </div>
-  <p>Read the current Integrated Management System Policy.</p>
-</button>
-<button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button>
-<button class="tile tifr-tile" data-content="tifr">
-  <div class="tifr-head">
-    <div class="icon">↗</div>
-    <h3>TIFR</h3>
-  </div>
-  <div class="tifr-values">
-    <div class="tifr-value-block">
-      <div class="tifr-value-label">Last month</div>
-      <div class="metric" id="tifrMetric">7.0</div>
-    </div>
-<button class="tile accent-green" data-content="emergency"><div class="icon">☎</div><h3>Emergency Assistance</h3><p>Hunt Line and urgent assistance information.</p></button>
-<button class="tile" data-content="map"><div class="icon">⌖</div><h3>Emergency Control Map</h3><p>Evacuation routes, emergency equipment and assembly areas.</p></button>
-<button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button>
-</section>
+<p>Read the current Integrated Management System Policy.</p>
+</button><button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button><button class="tile hazards-tile" data-content="hazards">
+<div class="hazards-head">
+<div class="icon">◎</div>
+<h3>Hazards and Near Misses</h3>
+</div>
+<div class="hazards-values">
+<div class="hazards-value-block">
+<div class="hazards-value-label">Last month</div>
+<div class="metric" id="hazardMetric">12</div>
+</div>
+<div class="hazards-divider"></div>
+<div class="hazards-value-block">
+<div class="hazards-value-label">Target</div>
+<div class="metric hazards-target-value" id="hazardTarget">12</div>
+</div>
+</div>
+<div class="hazards-view">Click to view last 12 months</div>
+<div class="hazards-status" id="hazardsStatus">On target</div>
+</button><button class="tile tifr-tile" data-content="tifr">
+<div class="tifr-head">
+<div class="icon">↗</div>
+<h3>TIFR</h3>
+</div>
+<div class="tifr-values">
+<div class="tifr-value-block">
+<div class="tifr-value-label">Last month</div>
+<div class="metric" id="tifrMetric">7.0</div>
+</div>
+<div class="tifr-divider"></div>
+<div class="tifr-value-block">
+<div class="tifr-value-label">Target</div>
+<div class="metric tifr-target-value" id="tifrTarget">8.0</div>
+</div>
+</div>
+<div class="tifr-view">Click to view last 12 months</div>
+<div class="tifr-status" id="tifrStatus">On target</div>
+</button><div aria-label="Report an Event QR code" class="tile accent-green report-event-tile">
+<div class="report-event-head">
+<div class="icon">⚠</div>
+<h3>Report an Event</h3>
+</div>
+<img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
+</div><button class="tile accent-green" data-content="emergency"><div class="icon">☎</div><h3>Emergency Assistance</h3><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="icon">⌖</div><h3>Emergency Control Map</h3><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button></section>
 </main>
 <footer><div><span class="status-dot"></span>Noticeboard online</div><div>Touchscreen HSE Noticeboard • <span id="footerSite">South Melbourne</span></div></footer>
 </div>
-
 <div class="policy-overlay" id="policyOverlay">
-  <div class="policy-panel">
-    <div class="policy-head">
-      <div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
-      <button class="policy-close" id="policyClose" type="button" aria-label="Close">✕</button>
-    </div>
-    <iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
-  </div>
+<div class="policy-panel">
+<div class="policy-head">
+<div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
+<button aria-label="Close" class="policy-close" id="policyClose" type="button">✕</button>
 </div>
-
+<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
+</div>
+</div>
 <div class="overlay" id="overlay"><div class="panel"><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
-
 <div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div>
-
 <script>
 const params = new URLSearchParams(location.search);
 const siteKey = params.get("site") || "south-melbourne";

@@ -1155,20 +1155,22 @@ header .brand-copy{
 }
 
 
-/* FINAL HEADER POSITIONING
-   - IMS Policy keeps its existing horizontal position
-   - IMS Policy centreline matches the Verra Mobility logo
-   - HSE Noticeboard starts exactly at the first tile's left edge
-*/
-header .header-policy-button{
-  top:50% !important;
-  transform:translateY(-50%) !important;
+/* Exact header alignment anchors.
+   HSE Noticeboard vertical position is untouched.
+   IMS Policy horizontal + vertical position is anchored to real elements. */
+.header-policy-button{
+  position:absolute !important;
+  right:auto !important;
+  margin:0 !important;
+  transform:none !important;
+  z-index:20 !important;
 }
 
 header .brand-copy{
-  left:calc(36% + 24px) !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
+  position:absolute !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:none !important;
 }
 
 </style>
@@ -1649,5 +1651,50 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   }
 });
-</script></body>
+</script>
+<script>
+(function () {
+  function alignHeaderExactly() {
+    const header = document.querySelector("header");
+    const policy = document.querySelector(".header-policy-button");
+    const logo = document.querySelector("header img");
+    const hero = document.querySelector(".hero");
+    const firstTile = document.querySelector(".tiles > *");
+    const brandCopy = document.querySelector("header .brand-copy");
+
+    if (!header || !policy || !logo || !hero || !firstTile || !brandCopy) return;
+
+    const headerRect = header.getBoundingClientRect();
+    const heroRect = hero.getBoundingClientRect();
+    const logoRect = logo.getBoundingClientRect();
+    const tileRect = firstTile.getBoundingClientRect();
+    const policyRect = policy.getBoundingClientRect();
+
+    // IMS Policy:
+    // right edge = right edge of large left panel
+    // vertical centre = vertical centre of Verra Mobility logo
+    policy.style.left =
+      (heroRect.right - headerRect.left - policyRect.width) + "px";
+    policy.style.top =
+      ((logoRect.top + logoRect.height / 2) - headerRect.top - policyRect.height / 2) + "px";
+
+    // HSE Noticeboard block:
+    // LEFT edge = LEFT edge of the first tile.
+    // Keep its existing vertical position.
+    brandCopy.style.left =
+      (tileRect.left - headerRect.left) + "px";
+  }
+
+  window.addEventListener("load", alignHeaderExactly);
+  window.addEventListener("resize", alignHeaderExactly);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(alignHeaderExactly);
+  }
+
+  requestAnimationFrame(alignHeaderExactly);
+})();
+</script>
+
+</body>
 </html>

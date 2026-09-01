@@ -650,6 +650,16 @@ footer{
   color:inherit;
 }
 
+
+.policy-overlay{position:fixed;inset:0;z-index:50;display:none;place-items:center;background:rgba(13,13,13,.88);backdrop-filter:blur(18px);padding:28px}
+.policy-overlay.active{display:grid}
+.policy-panel{width:min(1180px,95vw);height:min(840px,92vh);display:flex;flex-direction:column;overflow:hidden;border-radius:24px;background:#f4f6f5;box-shadow:0 28px 80px rgba(0,0,0,.5)}
+.policy-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 14px 24px;background:#242526;color:#fff}
+.policy-head .eyebrow{font-size:11px;font-weight:800;letter-spacing:1.4px;color:#A9C23F}
+.policy-head h2{margin:3px 0 0;font-size:26px}
+.policy-close{width:52px;height:52px;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:rgba(255,255,255,.1);color:#fff;font-size:24px;cursor:pointer}
+.policy-panel iframe{flex:1;width:100%;min-height:0;border:0;background:#fff}
+
 </style>
 </head>
 <body>
@@ -685,7 +695,7 @@ footer{
 </div>
 <button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button>
 <button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button>
-<a class="tile accent-purple direct-tile-link" href="./assets/IMS-Policy.pdf" target="_blank" rel="noopener"><div class="icon">📘</div><h3>IMS Policy</h3><p>Read the current Integrated Management System Policy.</p></a>
+<button class="tile accent-purple ims-policy-tile" type="button"><div class="icon">📘</div><h3>IMS Policy</h3><p>Read the current Integrated Management System Policy.</p></button>
 <button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button>
 <button class="tile tifr-tile" data-content="tifr">
   <div class="tifr-head">
@@ -730,6 +740,16 @@ footer{
 </section>
 </main>
 <footer><div><span class="status-dot"></span>Noticeboard online</div><div>Touchscreen HSE Noticeboard • <span id="footerSite">South Melbourne</span></div></footer>
+</div>
+
+<div class="policy-overlay" id="policyOverlay">
+  <div class="policy-panel">
+    <div class="policy-head">
+      <div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
+      <button class="policy-close" id="policyClose" type="button" aria-label="Close">✕</button>
+    </div>
+    <iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
+  </div>
 </div>
 
 <div class="overlay" id="overlay"><div class="panel"><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
@@ -1110,6 +1130,14 @@ function wireTiles(){
 setInterval(()=>location.reload(), 15*60*1000);
 
 loadBoard();
+
+const policyTile=document.querySelector(".ims-policy-tile");
+const policyOverlay=document.getElementById("policyOverlay");
+const policyClose=document.getElementById("policyClose");
+policyTile?.addEventListener("click",()=>{policyOverlay.classList.add("active"); resetIdle();});
+policyClose?.addEventListener("click",()=>{policyOverlay.classList.remove("active"); resetIdle();});
+policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyOverlay.classList.remove("active"); resetIdle();}});
+
 </script>
 </body>
 </html>

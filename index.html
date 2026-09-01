@@ -510,6 +510,90 @@ footer{
   .tifr-view{padding-top:5px;font-size:10px}
 }
 
+
+/* Hazards and Near Misses performance tile */
+.hazards-tile{
+  padding:14px 18px 12px;
+  transition:background .25s ease, border-color .25s ease, transform .15s ease;
+}
+.hazards-tile.hazards-good{
+  background:linear-gradient(145deg,rgba(70,145,78,.62),rgba(35,92,48,.34));
+  border-color:rgba(168,221,141,.38);
+}
+.hazards-tile.hazards-bad{
+  background:linear-gradient(145deg,rgba(178,58,58,.68),rgba(104,31,31,.38));
+  border-color:rgba(255,144,144,.42);
+}
+.hazards-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  margin-bottom:10px;
+}
+.hazards-tile .hazards-head .icon{
+  margin:0;
+  flex:0 0 auto;
+}
+.hazards-tile .hazards-head h3{
+  margin:0;
+}
+.hazards-values{
+  display:grid;
+  grid-template-columns:1fr 1px 1fr;
+  align-items:center;
+  width:100%;
+  gap:12px;
+  margin-top:1px;
+}
+.hazards-value-block{
+  text-align:center;
+  min-width:0;
+}
+.hazards-value-label{
+  font-size:12px;
+  line-height:1.1;
+  color:rgba(255,255,255,.9);
+  margin-bottom:3px;
+}
+.hazards-tile .metric{
+  font-size:34px;
+  line-height:1;
+  margin:0;
+}
+.hazards-divider{
+  width:1px;
+  height:48px;
+  background:rgba(255,255,255,.35);
+}
+.hazards-target-value{
+  font-weight:900;
+}
+.hazards-view{
+  margin-top:auto;
+  padding-top:8px;
+  font-size:11px;
+  line-height:1.1;
+  text-align:center;
+  color:#d7ef61;
+}
+.hazards-status{
+  display:none;
+}
+@media (min-width:1051px) and (max-height:900px){
+  .hazards-tile{padding:11px 15px 9px}
+  .hazards-head{gap:8px;margin-bottom:6px}
+  .hazards-tile .hazards-head .icon{
+    width:38px;height:38px;min-height:38px;font-size:19px;border-radius:12px
+  }
+  .hazards-tile .hazards-head h3{font-size:18px}
+  .hazards-values{gap:9px}
+  .hazards-value-label{font-size:10px;margin-bottom:2px}
+  .hazards-tile .metric{font-size:29px}
+  .hazards-divider{height:40px}
+  .hazards-view{padding-top:5px;font-size:10px}
+}
+
 </style>
 </head>
 <body>
@@ -560,7 +644,25 @@ footer{
   <div class="tifr-view">Click to view last 12 months</div>
   <div class="tifr-status" id="tifrStatus">On target</div>
 </button>
-<button class="tile" data-content="hazards"><div class="icon">◎</div><h3>Hazards and Near Misses</h3><div class="metric" id="hazardMetric">12</div><div class="submetric">reported this month</div></button>
+<button class="tile hazards-tile" data-content="hazards">
+  <div class="hazards-head">
+    <div class="icon">◎</div>
+    <h3>Hazards and Near Misses</h3>
+  </div>
+  <div class="hazards-values">
+    <div class="hazards-value-block">
+      <div class="hazards-value-label">Last month</div>
+      <div class="metric" id="hazardMetric">12</div>
+    </div>
+    <div class="hazards-divider"></div>
+    <div class="hazards-value-block">
+      <div class="hazards-value-label">Target</div>
+      <div class="metric hazards-target-value" id="hazardTarget">12</div>
+    </div>
+  </div>
+  <div class="hazards-view">Click to view last 12 months</div>
+  <div class="hazards-status" id="hazardsStatus">On target</div>
+</button>
 <button class="tile accent-green" data-content="emergency"><div class="icon">☎</div><h3>Emergency Assistance</h3><p>Hunt Line and urgent assistance information.</p></button>
 <button class="tile" data-content="map"><div class="icon">⌖</div><h3>Emergency Control Map</h3><p>Evacuation routes, emergency equipment and assembly areas.</p></button>
 </section>
@@ -633,7 +735,15 @@ function applySite(){
   tifrTile.classList.toggle("tifr-good", isGood);
   tifrTile.classList.toggle("tifr-bad", !isGood);
   document.getElementById("tifrStatus").textContent = isGood ? "On target" : "Above target";
-  document.getElementById("hazardMetric").textContent = globalContent.hazards;
+  const hazards = globalContent.hazards;
+  document.getElementById("hazardMetric").textContent = Number(hazards.lastMonth).toFixed(0);
+  document.getElementById("hazardTarget").textContent = Number(hazards.target).toFixed(0);
+
+  const hazardsTile = document.querySelector(".hazards-tile");
+  const hazardsGood = Number(hazards.lastMonth) >= Number(hazards.target);
+  hazardsTile.classList.toggle("hazards-good", hazardsGood);
+  hazardsTile.classList.toggle("hazards-bad", !hazardsGood);
+  document.getElementById("hazardsStatus").textContent = hazardsGood ? "On target" : "Below target";
   document.getElementById("minutesDate").textContent = "Latest meeting: " + globalContent.minutesDate;
 }
 
@@ -774,6 +884,80 @@ function renderTifrTrend(){
     </div>`;
 }
 
+
+function renderHazardsTrend(){
+  const history = globalContent.hazards?.history || [];
+  const target = Number(globalContent.hazards?.target || 0);
+
+  if(!history.length){
+    return `<div class="content-box"><p>No hazard and near miss history has been added yet.</p></div>`;
+  }
+
+  const values = history.map(d=>Number(d.value));
+  const maxValue = Math.max(...values, target, 1);
+  const chartMax = Math.ceil(maxValue * 1.18);
+  const W = 900, H = 360;
+  const left = 58, right = 24, top = 28, bottom = 64;
+  const plotW = W - left - right;
+  const plotH = H - top - bottom;
+
+  const x = i => left + (history.length === 1 ? plotW/2 : (i * plotW/(history.length-1)));
+  const y = v => top + plotH - (v/chartMax)*plotH;
+
+  const grid = [0,.25,.5,.75,1].map(p=>{
+    const val = chartMax*p;
+    const yy = y(val);
+    return `<line x1="${left}" y1="${yy}" x2="${W-right}" y2="${yy}" class="chart-grid"/>
+            <text x="${left-10}" y="${yy+4}" text-anchor="end" class="chart-axis">${Math.round(val)}</text>`;
+  }).join("");
+
+  const linePoints = history.map((d,i)=>`${x(i)},${y(Number(d.value))}`).join(" ");
+  const dots = history.map((d,i)=>{
+    const good = Number(d.value) >= target;
+    return `<circle cx="${x(i)}" cy="${y(Number(d.value))}" r="7" class="${good ? "chart-dot-good" : "chart-dot-bad"}">
+              <title>${d.month}: ${Number(d.value).toFixed(0)}</title>
+            </circle>`;
+  }).join("");
+
+  const labels = history.map((d,i)=>{
+    const parts = String(d.month).split(" ");
+    const label = parts[0].slice(0,3);
+    return `<text x="${x(i)}" y="${H-28}" text-anchor="middle" class="chart-month">${label}</text>`;
+  }).join("");
+
+  const targetY = y(target);
+
+  return `
+    <div class="tifr-summary-row">
+      <div class="tifr-summary-card">
+        <div class="tifr-summary-label">Last month</div>
+        <div class="tifr-summary-value">${Number(globalContent.hazards.lastMonth).toFixed(0)}</div>
+      </div>
+      <div class="tifr-summary-card">
+        <div class="tifr-summary-label">Target</div>
+        <div class="tifr-summary-value">${target.toFixed(0)}</div>
+      </div>
+      <div class="tifr-summary-card ${Number(globalContent.hazards.lastMonth) >= target ? "summary-good" : "summary-bad"}">
+        <div class="tifr-summary-label">Status</div>
+        <div class="tifr-summary-status">${Number(globalContent.hazards.lastMonth) >= target ? "On target" : "Below target"}</div>
+      </div>
+    </div>
+    <div class="tifr-chart-wrap">
+      <svg viewBox="0 0 ${W} ${H}" class="tifr-chart" role="img" aria-label="Hazards and near misses trend for the last 12 months">
+        ${grid}
+        <line x1="${left}" y1="${targetY}" x2="${W-right}" y2="${targetY}" class="chart-target"/>
+        <text x="${W-right}" y="${targetY-8}" text-anchor="end" class="chart-target-label">Target ${target.toFixed(0)}</text>
+        <polyline points="${linePoints}" class="chart-line"/>
+        ${dots}
+        ${labels}
+      </svg>
+      <div class="chart-legend">
+        <span><i class="legend-dot good"></i> At or above target</span>
+        <span><i class="legend-dot bad"></i> Below target</span>
+      </div>
+    </div>`;
+}
+
 function getContent(){
   return {
     report:{
@@ -820,9 +1004,9 @@ function getContent(){
       body:()=>renderTifrTrend()
     },
     hazards:{
-      title:"Hazard and Near Miss Reporting",
-      intro:"Current reporting activity for this site.",
-      body:()=>`<div class="content-box"><div style="font-size:86px;font-weight:900">${globalContent.hazards}</div><p>Hazards and near misses reported this month.</p>${linkButton(globalContent.links.report,"Report now")}</div>`
+      title:"Hazards and Near Misses — Last 12 Months",
+      intro:`Last month: ${Number(globalContent.hazards.lastMonth).toFixed(0)} • Target: ${Number(globalContent.hazards.target).toFixed(0)}`,
+      body:()=>renderHazardsTrend()
     },
     emergency:{
       title:"Emergency Assistance",

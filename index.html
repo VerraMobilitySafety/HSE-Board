@@ -1000,6 +1000,47 @@ header .header-copy{
   background:rgba(61,57,53,.10) !important;
   color:#3D3935 !important;
 }
+
+/* Header alignment refinement:
+   logo + IMS Policy occupy the left panel width;
+   HSE Noticeboard begins where the tile grid begins. */
+header{
+  display:grid !important;
+  grid-template-columns:150px 1fr 2.6fr !important;
+  align-items:center !important;
+  column-gap:18px !important;
+}
+
+header > img{
+  grid-column:1 !important;
+  justify-self:start !important;
+}
+
+.header-policy-button{
+  grid-column:2 !important;
+  justify-self:end !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+
+header .header-copy{
+  grid-column:3 !important;
+  margin-left:0 !important;
+  width:auto !important;
+  justify-self:stretch !important;
+}
+
+/* Align title precisely with the left edge of the tile grid */
+header .header-copy{
+  padding-left:0 !important;
+}
+
+@media (min-width:1051px){
+  header{
+    grid-template-columns:150px 445px minmax(0,1fr) !important;
+  }
+}
+
 </style>
 </head>
 <body>

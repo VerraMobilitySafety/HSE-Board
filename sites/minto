@@ -1,0 +1,32 @@
+{
+  "name": "Minto",
+  "subtitle": "Safety information and quick access",
+  "heroTitle": "Your safety information. One touch away.",
+  "heroText": "Access site safety information, support, reporting, emergency resources and the latest HSE updates.",
+  "focus": "See it. Say it. Make it safer.",
+  "tifr": "7.0",
+  "hazards": "12",
+  "minutesDate": "August 2026",
+  "links": {
+    "report": "#",
+    "injury": "#",
+    "eap": "#",
+    "minutes": "#",
+    "policy": "#",
+    "emergency": "#",
+    "map": "#"
+  },
+  "qrImages": {
+    "report": "",
+    "injury": "",
+    "eap": "",
+    "minutes": "",
+    "emergency": ""
+  },
+  "hsrs": [
+    {
+      "name": "HSR Name",
+      "area": "Minto"
+    }
+  ]
+}

@@ -1,5 +1,58 @@
 {
-  "tifr": "7.0",
+  "tifr": {
+    "lastMonth": 7.0,
+    "target": 8.0,
+    "history": [
+      {
+        "month": "Sep 2025",
+        "value": 8.4
+      },
+      {
+        "month": "Oct 2025",
+        "value": 7.9
+      },
+      {
+        "month": "Nov 2025",
+        "value": 7.6
+      },
+      {
+        "month": "Dec 2025",
+        "value": 7.8
+      },
+      {
+        "month": "Jan 2026",
+        "value": 8.1
+      },
+      {
+        "month": "Feb 2026",
+        "value": 7.7
+      },
+      {
+        "month": "Mar 2026",
+        "value": 7.5
+      },
+      {
+        "month": "Apr 2026",
+        "value": 7.4
+      },
+      {
+        "month": "May 2026",
+        "value": 7.2
+      },
+      {
+        "month": "Jun 2026",
+        "value": 7.1
+      },
+      {
+        "month": "Jul 2026",
+        "value": 7.0
+      },
+      {
+        "month": "Aug 2026",
+        "value": 7.0
+      }
+    ]
+  },
   "hazards": "12",
   "minutesDate": "August 2026",
   "links": {

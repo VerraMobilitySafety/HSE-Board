@@ -1173,6 +1173,18 @@ header .brand-copy{
   transform:none !important;
 }
 
+
+/* HSE Noticeboard alignment ONLY.
+   IMS Policy positioning is left completely untouched. */
+header .brand-copy{
+  position:relative !important;
+  left:auto !important;
+  top:auto !important;
+  transform:translateX(var(--brand-shift, 0px)) !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
 </style>
 </head>
 <body>
@@ -1693,6 +1705,37 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   requestAnimationFrame(alignHeaderExactly);
+})();
+</script>
+
+
+<script>
+(function () {
+  function alignNoticeboardTitle() {
+    const titleBlock = document.querySelector("header .brand-copy");
+    const firstTile = document.querySelector(".tiles > *");
+    if (!titleBlock || !firstTile) return;
+
+    /* Reset shift first so we measure its natural position */
+    titleBlock.style.setProperty("--brand-shift", "0px");
+
+    requestAnimationFrame(() => {
+      const titleRect = titleBlock.getBoundingClientRect();
+      const tileRect = firstTile.getBoundingClientRect();
+      const shift = tileRect.left - titleRect.left;
+
+      titleBlock.style.setProperty("--brand-shift", shift + "px");
+    });
+  }
+
+  window.addEventListener("load", alignNoticeboardTitle);
+  window.addEventListener("resize", alignNoticeboardTitle);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(alignNoticeboardTitle);
+  }
+
+  setTimeout(alignNoticeboardTitle, 100);
 })();
 </script>
 

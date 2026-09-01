@@ -112,7 +112,7 @@
     "report": "#",
     "injury": "#",
     "minutes": "#",
-    "policy": "#"
+    "policy": "assets/IMS-Policy.pdf"
   },
   "qrImages": {
     "report": "",

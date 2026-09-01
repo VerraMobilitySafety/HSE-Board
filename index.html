@@ -733,6 +733,53 @@ footer{
 <main>
 <section class="hero"><div><div class="eyebrow">Welcome</div><h2 id="heroTitle">Your safety information. One touch away.</h2><p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p></div><div class="focus-card"><div class="focus-title">Current focus</div><div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div><div class="touch-hint">Touch any tile to open • Returns home automatically after inactivity</div></div></section>
 <section class="tiles">
+<button class="tile accent-purple ims-policy-tile" type="button">
+  <div class="ims-policy-head">
+    <div class="icon">📘</div>
+    <h3>IMS Policy</h3>
+  </div>
+  <p>Read the current Integrated Management System Policy.</p>
+</button>
+<button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button>
+<button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button>
+<button class="tile hazards-tile" data-content="hazards">
+  <div class="hazards-head">
+    <div class="icon">◎</div>
+    <h3>Hazards and Near Misses</h3>
+  </div>
+  <div class="hazards-values">
+    <div class="hazards-value-block">
+      <div class="hazards-value-label">Last month</div>
+      <div class="metric" id="hazardMetric">12</div>
+    </div>
+    <div class="hazards-divider"></div>
+    <div class="hazards-value-block">
+      <div class="hazards-value-label">Target</div>
+      <div class="metric hazards-target-value" id="hazardTarget">12</div>
+    </div>
+  </div>
+  <div class="hazards-view">Click to view last 12 months</div>
+  <div class="hazards-status" id="hazardsStatus">On target</div>
+</button>
+<button class="tile tifr-tile" data-content="tifr">
+  <div class="tifr-head">
+    <div class="icon">↗</div>
+    <h3>TIFR</h3>
+  </div>
+  <div class="tifr-values">
+    <div class="tifr-value-block">
+      <div class="tifr-value-label">Last month</div>
+      <div class="metric" id="tifrMetric">7.0</div>
+    </div>
+    <div class="tifr-divider"></div>
+    <div class="tifr-value-block">
+      <div class="tifr-value-label">Target</div>
+      <div class="metric tifr-target-value" id="tifrTarget">8.0</div>
+    </div>
+  </div>
+  <div class="tifr-view">Click to view last 12 months</div>
+  <div class="tifr-status" id="tifrStatus">On target</div>
+</button>
 <div class="tile accent-green report-event-tile" aria-label="Report an Event QR code">
   <div class="report-event-head">
     <div class="icon">⚠</div>
@@ -760,36 +807,9 @@ footer{
       <div class="tifr-value-label">Last month</div>
       <div class="metric" id="tifrMetric">7.0</div>
     </div>
-    <div class="tifr-divider"></div>
-    <div class="tifr-value-block">
-      <div class="tifr-value-label">Target</div>
-      <div class="metric tifr-target-value" id="tifrTarget">8.0</div>
-    </div>
-  </div>
-  <div class="tifr-view">Click to view last 12 months</div>
-  <div class="tifr-status" id="tifrStatus">On target</div>
-</button>
-<button class="tile hazards-tile" data-content="hazards">
-  <div class="hazards-head">
-    <div class="icon">◎</div>
-    <h3>Hazards and Near Misses</h3>
-  </div>
-  <div class="hazards-values">
-    <div class="hazards-value-block">
-      <div class="hazards-value-label">Last month</div>
-      <div class="metric" id="hazardMetric">12</div>
-    </div>
-    <div class="hazards-divider"></div>
-    <div class="hazards-value-block">
-      <div class="hazards-value-label">Target</div>
-      <div class="metric hazards-target-value" id="hazardTarget">12</div>
-    </div>
-  </div>
-  <div class="hazards-view">Click to view last 12 months</div>
-  <div class="hazards-status" id="hazardsStatus">On target</div>
-</button>
 <button class="tile accent-green" data-content="emergency"><div class="icon">☎</div><h3>Emergency Assistance</h3><p>Hunt Line and urgent assistance information.</p></button>
 <button class="tile" data-content="map"><div class="icon">⌖</div><h3>Emergency Control Map</h3><p>Evacuation routes, emergency equipment and assembly areas.</p></button>
+<button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button>
 </section>
 </main>
 <footer><div><span class="status-dot"></span>Noticeboard online</div><div>Touchscreen HSE Noticeboard • <span id="footerSite">South Melbourne</span></div></footer>

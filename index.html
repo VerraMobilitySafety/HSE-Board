@@ -980,12 +980,6 @@ footer{
   cursor:pointer;
 }
 
-/* Shift noticeboard heading towards the tile grid */
-header .header-copy{
-  margin-left:auto;
-  width:calc(100% - 610px);
-}
-
 /* If You Are Injured — white tile */
 .injury-tile{
   background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(244,246,245,.88)) !important;
@@ -1001,56 +995,17 @@ header .header-copy{
   color:#3D3935 !important;
 }
 
-/* Header alignment refinement:
-   logo + IMS Policy occupy the left panel width;
-   HSE Noticeboard begins where the tile grid begins. */
-header{
-  display:grid !important;
-  grid-template-columns:150px 1fr 2.6fr !important;
-  align-items:center !important;
-  column-gap:18px !important;
-}
 
-header > img{
-  grid-column:1 !important;
-  justify-self:start !important;
-}
-
-.header-policy-button{
-  grid-column:2 !important;
-  justify-self:end !important;
-  margin-left:0 !important;
-  margin-right:0 !important;
-}
-
-header .header-copy{
-  grid-column:3 !important;
-  margin-left:0 !important;
-  width:auto !important;
-  justify-self:stretch !important;
-}
-
-/* Align title precisely with the left edge of the tile grid */
-header .header-copy{
-  padding-left:0 !important;
-}
-
-@media (min-width:1051px){
-  header{
-    grid-template-columns:150px 445px minmax(0,1fr) !important;
-  }
-}
-
-
-/* Header alignment — mirror the main content grid exactly */
+/* =========================================================
+   HEADER ALIGNMENT — mirrors the main two-column grid exactly
+   Left: Verra logo + IMS Policy
+   Right: HSE Noticeboard, aligned to first tile
+   ========================================================= */
 header{
   display:block !important;
-  padding-left:34px !important;
-  padding-right:34px !important;
 }
 
 header .brand{
-  position:relative !important;
   width:100% !important;
   display:grid !important;
   grid-template-columns:1.08fr 1.92fr !important;
@@ -1058,121 +1013,32 @@ header .brand{
   align-items:center !important;
 }
 
-/* Logo stays at the far-left of the welcome-panel zone */
-header .verra-logo{
-  position:absolute !important;
-  left:0 !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
-  margin:0 !important;
+header .brand-left{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-/* Policy button sits at the right edge of that same left zone */
-header .header-policy-button{
-  grid-column:1 !important;
-  justify-self:end !important;
-  align-self:center !important;
+header .brand-copy{
+  min-width:0;
   margin:0 !important;
+  padding:0 !important;
+  position:static !important;
   transform:none !important;
 }
 
-/* Title begins exactly where the tile grid begins */
-header .brand-copy{
-  grid-column:2 !important;
-  margin:0 !important;
-  padding:0 !important;
-  min-width:0 !important;
-}
-
-
-/* Precise header alignment to the main content grid */
-header{
-  position:relative !important;
-  display:block !important;
-  padding:22px 34px 10px !important;
-  min-height:88px !important;
-}
-
-header .brand{
-  position:relative !important;
-  width:100% !important;
-  height:66px !important;
-  display:block !important;
-}
-
-/* Keep the Verra logo at the far left */
-header .verra-logo{
-  position:absolute !important;
-  left:0 !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
-  margin:0 !important;
-}
-
-/*
- Main grid maths:
- available width = 100vw - 68px outer padding
- grid gap = 24px
- first column = 36% of remaining grid width
-*/
 .header-policy-button{
-  position:absolute !important;
-  left:calc(((100vw - 92px) * .36) - 188px) !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
-  width:188px !important;
   margin:0 !important;
+  flex:0 0 auto;
 }
 
-/* Start header copy exactly where the tile grid starts */
-header .brand-copy{
-  position:absolute !important;
-  left:calc(((100vw - 92px) * .36) + 24px) !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
-  margin:0 !important;
-  padding:0 !important;
-  width:auto !important;
+/* Match the same compact grid used by main on 1080p-style touchscreens */
+@media (min-width:1051px) and (max-height:900px){
+  header .brand{
+    gap:16px !important;
+  }
 }
-
-header .brand-copy h1{
-  white-space:nowrap !important;
-}
-
-
-/* IMS Policy: align its RIGHT edge with the RIGHT edge of the large left panel */
-.header-policy-button{
-  left:auto !important;
-  right:calc(64% + 24px) !important;
-  transform:translateY(-50%) !important;
-  margin:0 !important;
-}
-
-/* HSE title: start exactly at the LEFT edge of the tile grid */
-header .brand-copy{
-  left:calc(36% + 24px) !important;
-  transform:translateY(-50%) !important;
-}
-
-
-/* Exact header alignment anchors.
-   HSE Noticeboard vertical position is untouched.
-   IMS Policy horizontal + vertical position is anchored to real elements. */
-.header-policy-button{
-  position:absolute !important;
-  right:auto !important;
-  margin:0 !important;
-  transform:none !important;
-  z-index:20 !important;
-}
-
-header .brand-copy{
-  position:absolute !important;
-  margin:0 !important;
-  padding:0 !important;
-  transform:none !important;
-}
-
 </style>
 </head>
 <body>
@@ -1190,8 +1056,8 @@ header .brand-copy{
 <span class="particle p4"></span><span class="particle p5"></span><span class="particle p6"></span>
 </div>
 <header>
-<div class="brand">
-<img alt="Verra Mobility" class="verra-logo" src="./assets/verra-logo.png?v=4"/><button class="header-policy-button" type="button">📘  IMS Policy</button>
+<div class="brand"><div class="brand-left"><img alt="Verra Mobility" class="verra-logo" src="./assets/verra-logo.png?v=4"/><button class="header-policy-button" type="button">📘  IMS Policy</button></div>
+
 <div class="brand-copy">
 <h1>HSE Noticeboard</h1>
 <div class="site-line"><span class="site-pill" id="siteName">South Melbourne</span><span id="siteSubtitle">Safety information and quick access</span></div>
@@ -1651,50 +1517,5 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   }
 });
-</script>
-<script>
-(function () {
-  function alignHeaderExactly() {
-    const header = document.querySelector("header");
-    const policy = document.querySelector(".header-policy-button");
-    const logo = document.querySelector("header img");
-    const hero = document.querySelector(".hero");
-    const firstTile = document.querySelector(".tiles > *");
-    const brandCopy = document.querySelector("header .brand-copy");
-
-    if (!header || !policy || !logo || !hero || !firstTile || !brandCopy) return;
-
-    const headerRect = header.getBoundingClientRect();
-    const brandRect = brandCopy.parentElement.getBoundingClientRect();
-    const heroRect = hero.getBoundingClientRect();
-    const logoRect = logo.getBoundingClientRect();
-    const tileRect = firstTile.getBoundingClientRect();
-    const policyRect = policy.getBoundingClientRect();
-
-    // IMS Policy:
-    // KEEP EXACTLY AS IT IS NOW — it was confirmed correct.
-    policy.style.left =
-      (heroRect.right - brandRect.left - policyRect.width) + "px";
-    policy.style.top =
-      ((logoRect.top + logoRect.height / 2) - brandRect.top - policyRect.height / 2) + "px";
-
-    // HSE Noticeboard block:
-    // Its containing block is .brand, not header.
-    // Align its LEFT edge exactly with the LEFT edge of the first tile.
-    brandCopy.style.left =
-      (tileRect.left - brandRect.left) + "px";
-  }
-
-  window.addEventListener("load", alignHeaderExactly);
-  window.addEventListener("resize", alignHeaderExactly);
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(alignHeaderExactly);
-  }
-
-  requestAnimationFrame(alignHeaderExactly);
-})();
-</script>
-
-</body>
+</script></body>
 </html>

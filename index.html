@@ -1140,13 +1140,18 @@ header .brand-copy h1{
 }
 
 
-/* Tiny final alignment nudge */
+/* IMS Policy: align its RIGHT edge with the RIGHT edge of the large left panel */
 .header-policy-button{
-  transform:translate(-14px,-50%) !important;
+  left:auto !important;
+  right:calc(64% + 24px) !important;
+  transform:translateY(-50%) !important;
+  margin:0 !important;
 }
 
+/* HSE title: start exactly at the LEFT edge of the tile grid */
 header .brand-copy{
-  transform:translate(-20px,-50%) !important;
+  left:calc(36% + 24px) !important;
+  transform:translateY(-50%) !important;
 }
 
 </style>

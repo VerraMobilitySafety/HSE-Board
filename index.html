@@ -254,43 +254,63 @@ footer{
 
 /* Report an Event — permanent global QR tile */
 .report-event-tile{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  padding:17px 20px 22px;
+  position:relative;
+  display:block;
+  padding:16px 18px 14px;
 }
 .report-event-head{
-  width:100%;
+  position:absolute;
+  top:16px;
+  left:18px;
+  right:18px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:12px;
-  margin-bottom:10px;
+  gap:10px;
+  z-index:2;
 }
 .report-event-tile .report-event-head .icon{
+  width:44px;
+  height:44px;
+  min-height:44px;
   margin:0;
-  flex:0 0 auto;
+  border-radius:14px;
+  font-size:22px;
+  flex:0 0 44px;
 }
 .report-event-tile .report-event-head h3{
   margin:0;
+  font-size:22px;
+  line-height:1;
 }
 .home-qr{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
   display:block;
-  width:min(118px,50%);
-  max-height:calc(100% - 62px);
-  aspect-ratio:1/1;
+  width:138px;
+  height:138px;
   object-fit:contain;
-  margin:0 auto 8px;
   padding:6px;
   border-radius:12px;
   background:#fff;
   box-shadow:0 8px 24px rgba(0,0,0,.18);
 }
 @media (min-width:1051px) and (max-height:900px){
-  .report-event-tile{padding:13px 16px 18px}
-  .report-event-head{margin-bottom:7px}
-  .home-qr{width:min(96px,48%);max-height:calc(100% - 54px);padding:5px;border-radius:10px;margin-bottom:7px}
+  .report-event-tile{padding:12px 16px 12px}
+  .report-event-head{top:12px;left:16px;right:16px;gap:9px}
+  .report-event-tile .report-event-head .icon{
+    width:40px;height:40px;min-height:40px;flex-basis:40px;font-size:20px
+  }
+  .report-event-tile .report-event-head h3{font-size:20px}
+  .home-qr{
+    width:126px;
+    height:126px;
+    bottom:12px;
+    padding:5px;
+    border-radius:10px;
+  }
 }
 
 </style>

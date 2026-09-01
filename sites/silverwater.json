@@ -1,0 +1,32 @@
+{
+  "name": "Silverwater",
+  "subtitle": "Local HSE information",
+  "heroTitle": "Safe work starts with good information.",
+  "heroText": "Use this noticeboard for local reporting, emergency information, support and safety updates.",
+  "focus": "Pause. Check. Proceed safely.",
+  "tifr": "6.4",
+  "hazards": "9",
+  "minutesDate": "August 2026",
+  "links": {
+    "report": "#",
+    "injury": "#",
+    "eap": "#",
+    "minutes": "#",
+    "policy": "#",
+    "emergency": "#",
+    "map": "#"
+  },
+  "qrImages": {
+    "report": "",
+    "injury": "",
+    "eap": "",
+    "minutes": "",
+    "emergency": ""
+  },
+  "hsrs": [
+    {
+      "name": "HSR Name",
+      "area": "Silverwater"
+    }
+  ]
+}

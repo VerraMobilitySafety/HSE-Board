@@ -1142,9 +1142,14 @@ header .site-pill{
   margin:0 !important;
   white-space:nowrap !important;
 }
+
+/* Fixed 1920x1080 signage canvas: scale whole board, do not reflow it. */
+html,body{width:100%;height:100%;margin:0;overflow:hidden!important;background:#0D0D0D}
+#viewport{position:fixed;inset:0;overflow:hidden;background:#0D0D0D}
+#board{position:absolute;width:1920px;height:1080px;left:0;top:0;transform-origin:top left;overflow:hidden}
 </style>
 </head>
-<body>
+<body><div id="viewport"><div id="board">
 <div class="screen">
 <div aria-hidden="true" class="motion-bg">
 <span class="verra-chevron vc1"></span>
@@ -1619,5 +1624,16 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   }
 });
+</script></div></div><script>
+(function(){
+ const W=1920,H=1080,board=document.getElementById("board");
+ function fit(){
+   const s=Math.min(window.innerWidth/W,window.innerHeight/H);
+   board.style.transform=`scale(${s})`;
+   board.style.left=`${(window.innerWidth-W*s)/2}px`;
+   board.style.top=`${(window.innerHeight-H*s)/2}px`;
+ }
+ fit(); window.addEventListener("resize",fit); window.addEventListener("orientationchange",fit);
+})();
 </script></body>
 </html>

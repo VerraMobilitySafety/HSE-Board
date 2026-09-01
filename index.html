@@ -755,45 +755,6 @@ footer{
 }
 
 
-/* Verra brand chevrons — visible inside the existing animated background */
-.motion-bg .verra-chevron{
-  position:absolute;
-  width:220px;
-  height:220px;
-  opacity:.13;
-  pointer-events:none;
-  will-change:transform;
-  animation:verraChevronDrift 34s ease-in-out infinite alternate;
-}
-
-.motion-bg .verra-chevron::before,
-.motion-bg .verra-chevron::after{
-  content:"";
-  position:absolute;
-  left:92px;
-  width:34px;
-  height:150px;
-  border-radius:8px;
-  background:rgba(255,255,255,.55);
-  transform-origin:center;
-}
-
-.motion-bg .verra-chevron::before{
-  top:0;
-  transform:rotate(-46deg);
-}
-
-.motion-bg .verra-chevron::after{
-  bottom:0;
-  transform:rotate(46deg);
-}
-
-.motion-bg .vc1{top:-5%;left:27%;transform:scale(1.55);animation-duration:38s}
-.motion-bg .vc2{top:13%;right:-2%;transform:scale(2.15);animation-duration:44s;animation-delay:-9s;opacity:.11}
-.motion-bg .vc3{bottom:-8%;left:46%;transform:scale(1.8);animation-duration:41s;animation-delay:-16s;opacity:.115}
-.motion-bg .vc4{bottom:13%;right:20%;transform:scale(1.05);animation-duration:36s;animation-delay:-6s;opacity:.085}
-.motion-bg .vc5{top:45%;left:-3%;transform:scale(1.25);animation-duration:40s;animation-delay:-20s;opacity:.08}
-
 /* soften the older generic rings/particles so the chevrons become the main brand device */
 .motion-bg .line{opacity:.55}
 .motion-bg .particle{opacity:.55}
@@ -820,14 +781,6 @@ footer{
   opacity:.72 !important;
 }
 
-
-/* FINAL BACKGROUND: Verra chevrons + floating dots only */
-.motion-bg .arc,
-.motion-bg .ring,
-.motion-bg .line{
-  display:none !important;
-  opacity:0 !important;
-}
 
 /* Remove circular outlines produced by pseudo-elements on the background */
 .motion-bg::before,
@@ -889,78 +842,107 @@ footer{
 }
 
 
-/* CLEAN VERRA BACKGROUND: chevrons travel left-to-right + floating dots only */
-.hero::before{
-  display:none !important;
-  content:none !important;
-}
 
-/* remove all old circular glow/ring devices */
+/* VERRA BACKGROUND — brand chevrons moving ONE WAY only */
+.hero::before,
+.motion-bg::before,
+.motion-bg::after,
 .motion-bg .orb,
 .motion-bg .line,
 .motion-bg .ring,
 .motion-bg .arc{
   display:none !important;
+  content:none !important;
 }
 
-/* keep and brighten the floating dots slightly */
+/* Keep the floating dots */
 .motion-bg .particle{
   display:block !important;
-  opacity:.82 !important;
-  z-index:3;
+  opacity:.80 !important;
+  z-index:3 !important;
 }
 
-/* rebuild chevrons so they visibly cross the screen from left to right */
+/*
+  Verra chevron:
+  one solid, angular > shape rather than two rounded bars.
+*/
 .motion-bg .verra-chevron{
-  position:absolute;
-  left:-28vw !important;
+  position:absolute !important;
+  left:-32vw !important;
   right:auto !important;
-  width:170px;
-  height:270px;
-  opacity:.16;
-  z-index:2;
-  pointer-events:none;
+  width:260px !important;
+  height:220px !important;
+  background:rgba(255,255,255,.11) !important;
+  clip-path:polygon(
+    0 0,
+    44% 0,
+    100% 50%,
+    44% 100%,
+    0 100%,
+    56% 50%
+  ) !important;
+  border:0 !important;
+  border-radius:0 !important;
+  opacity:1 !important;
+  pointer-events:none !important;
+  z-index:2 !important;
   will-change:transform;
-  animation-name:verraChevronAcross;
-  animation-timing-function:linear;
-  animation-iteration-count:infinite;
+  animation-name:verraChevronLeftToRight !important;
+  animation-timing-function:linear !important;
+  animation-iteration-count:infinite !important;
+  animation-direction:normal !important;
+  animation-fill-mode:none !important;
 }
 
+/* Disable the old two-bar chevron construction */
 .motion-bg .verra-chevron::before,
 .motion-bg .verra-chevron::after{
-  content:"";
-  position:absolute;
-  left:70px;
-  width:34px;
-  height:172px;
-  border-radius:3px;
-  background:rgba(255,255,255,.55);
-  transform-origin:center;
+  display:none !important;
+  content:none !important;
 }
 
-.motion-bg .verra-chevron::before{
-  top:-4px;
-  transform:rotate(-43deg);
+/* Different lanes / sizes / timings */
+.motion-bg .vc1{
+  top:-4% !important;
+  --scale:1.55;
+  animation-duration:34s !important;
+  animation-delay:-8s !important;
+}
+.motion-bg .vc2{
+  top:18% !important;
+  --scale:1.05;
+  animation-duration:42s !important;
+  animation-delay:-28s !important;
+  opacity:.72 !important;
+}
+.motion-bg .vc3{
+  top:43% !important;
+  --scale:1.35;
+  animation-duration:38s !important;
+  animation-delay:-18s !important;
+  opacity:.78 !important;
+}
+.motion-bg .vc4{
+  top:67% !important;
+  --scale:.90;
+  animation-duration:46s !important;
+  animation-delay:-36s !important;
+  opacity:.62 !important;
+}
+.motion-bg .vc5{
+  top:80% !important;
+  --scale:1.20;
+  animation-duration:40s !important;
+  animation-delay:-5s !important;
+  opacity:.70 !important;
 }
 
-.motion-bg .verra-chevron::after{
-  bottom:-4px;
-  transform:rotate(43deg);
-}
-
-/* stagger height, size and speed */
-.motion-bg .vc1{top:-8%;--scale:1.55;animation-duration:30s;animation-delay:-4s}
-.motion-bg .vc2{top:14%;--scale:1.15;animation-duration:36s;animation-delay:-19s;opacity:.12}
-.motion-bg .vc3{top:42%;--scale:1.75;animation-duration:42s;animation-delay:-30s;opacity:.11}
-.motion-bg .vc4{top:66%;--scale:1.05;animation-duration:34s;animation-delay:-11s;opacity:.10}
-.motion-bg .vc5{top:78%;--scale:1.45;animation-duration:39s;animation-delay:-25s;opacity:.12}
-
-@keyframes verraChevronAcross{
-  from{
+@keyframes verraChevronLeftToRight{
+  0%{
     transform:translate3d(0,0,0) scale(var(--scale));
   }
-  to{
-    transform:translate3d(160vw,0,0) scale(var(--scale));
+  100%{
+    transform:translate3d(165vw,0,0) scale(var(--scale));
   }
 }
 

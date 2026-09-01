@@ -1113,6 +1113,35 @@ header .brand-copy{
     margin-bottom:8px;
   }
 }
+
+/* Header only: logo, IMS Policy, HSE Noticeboard and site on one centred line */
+header .brand{
+  align-items:center !important;
+}
+
+header .brand-copy{
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  gap:18px !important;
+}
+
+header .brand-copy h1{
+  margin:0 !important;
+  white-space:nowrap !important;
+}
+
+header .site-line{
+  display:flex !important;
+  align-items:center !important;
+  margin:0 !important;
+  gap:0 !important;
+}
+
+header .site-pill{
+  margin:0 !important;
+  white-space:nowrap !important;
+}
 </style>
 </head>
 <body>
@@ -1133,7 +1162,7 @@ header .brand-copy{
 <div class="brand"><div class="brand-left"><img alt="Verra Mobility" class="verra-logo" src="./assets/verra-logo.png?v=4"/><button class="header-policy-button" type="button">📘  IMS Policy</button></div>
 <div class="brand-copy">
 <h1>HSE Noticeboard</h1>
-<div class="site-line"><span class="site-pill" id="siteName">South Melbourne</span><span id="siteSubtitle">Safety information and quick access</span></div>
+<div class="site-line"><span class="site-pill" id="siteName">South Melbourne</span></div>
 </div>
 </div>
 </header>

@@ -312,6 +312,129 @@ footer{
   }
 }
 
+
+/* TIFR performance tile and 12-month trend */
+.tifr-tile{
+  transition:background .25s ease, border-color .25s ease, transform .15s ease;
+}
+.tifr-tile.tifr-good{
+  background:linear-gradient(145deg,rgba(70,145,78,.62),rgba(35,92,48,.34));
+  border-color:rgba(168,221,141,.38);
+}
+.tifr-tile.tifr-bad{
+  background:linear-gradient(145deg,rgba(178,58,58,.68),rgba(104,31,31,.38));
+  border-color:rgba(255,144,144,.42);
+}
+.tifr-target{
+  margin-top:6px;
+  font-size:13px;
+  color:rgba(255,255,255,.9);
+}
+.tifr-status{
+  margin-top:4px;
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color:rgba(255,255,255,.92);
+}
+.tifr-summary-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin:24px 0 18px;
+}
+.tifr-summary-card{
+  border:1px solid #e4e5df;
+  background:#fff;
+  border-radius:18px;
+  padding:18px 20px;
+}
+.tifr-summary-label{
+  color:#777;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+}
+.tifr-summary-value{
+  margin-top:5px;
+  font-size:42px;
+  font-weight:900;
+}
+.tifr-summary-status{
+  margin-top:10px;
+  font-size:24px;
+  font-weight:900;
+}
+.summary-good{background:#f1f8ef;border-color:#cfe4ca}
+.summary-bad{background:#fff0f0;border-color:#efcccc}
+.tifr-chart-wrap{
+  background:#fff;
+  border:1px solid #e6e7e1;
+  border-radius:20px;
+  padding:18px 18px 12px;
+}
+.tifr-chart{
+  width:100%;
+  height:auto;
+  display:block;
+}
+.chart-grid{stroke:#e6e7e2;stroke-width:1}
+.chart-axis,.chart-month{
+  fill:#777;
+  font-size:12px;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.chart-line{
+  fill:none;
+  stroke:#3D3935;
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.chart-target{
+  stroke:#857874;
+  stroke-width:2;
+  stroke-dasharray:10 8;
+}
+.chart-target-label{
+  fill:#666;
+  font-size:13px;
+  font-weight:700;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.chart-dot-good{
+  fill:#62a65e;
+  stroke:#fff;
+  stroke-width:3;
+}
+.chart-dot-bad{
+  fill:#d94c4c;
+  stroke:#fff;
+  stroke-width:3;
+}
+.chart-legend{
+  display:flex;
+  gap:22px;
+  align-items:center;
+  justify-content:center;
+  color:#666;
+  font-size:13px;
+  padding:2px 0 4px;
+}
+.legend-dot{
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  margin-right:6px;
+}
+.legend-dot.good{background:#62a65e}
+.legend-dot.bad{background:#d94c4c}
+@media(max-width:700px){
+  .tifr-summary-row{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -343,7 +466,14 @@ footer{
 <button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button>
 <button class="tile accent-purple" data-content="policy"><div class="icon">📘</div><h3>HSE Policy</h3><p>Read the current Health, Safety and Environment Policy.</p></button>
 <button class="tile" data-content="hsr"><div class="icon">👥</div><h3>Your HSRs</h3><p>Meet your Health and Safety Representatives.</p></button>
-<button class="tile accent-teal" data-content="tifr"><div class="icon">↗</div><h3>TIFR</h3><div class="metric" id="tifrMetric">7.0</div><div class="submetric">Current total injury frequency rate</div></button>
+<button class="tile tifr-tile" data-content="tifr">
+  <div class="icon">↗</div>
+  <h3>TIFR</h3>
+  <div class="metric" id="tifrMetric">7.0</div>
+  <div class="submetric">Last month</div>
+  <div class="tifr-target">Target: <strong id="tifrTarget">8.0</strong></div>
+  <div class="tifr-status" id="tifrStatus">On target</div>
+</button>
 <button class="tile" data-content="hazards"><div class="icon">◎</div><h3>Hazards and Near Misses</h3><div class="metric" id="hazardMetric">12</div><div class="submetric">reported this month</div></button>
 <button class="tile accent-green" data-content="emergency"><div class="icon">☎</div><h3>Emergency Assistance</h3><p>Hunt Line and urgent assistance information.</p></button>
 <button class="tile" data-content="map"><div class="icon">⌖</div><h3>Emergency Control Map</h3><p>Evacuation routes, emergency equipment and assembly areas.</p></button>
@@ -408,7 +538,15 @@ function applySite(){
   document.getElementById("heroTitle").textContent = site.heroTitle;
   document.getElementById("heroText").textContent = site.heroText;
   document.getElementById("focusMessage").textContent = site.focus;
-  document.getElementById("tifrMetric").textContent = globalContent.tifr;
+  const tifr = globalContent.tifr;
+  document.getElementById("tifrMetric").textContent = Number(tifr.lastMonth).toFixed(1);
+  document.getElementById("tifrTarget").textContent = Number(tifr.target).toFixed(1);
+
+  const tifrTile = document.querySelector(".tifr-tile");
+  const isGood = Number(tifr.lastMonth) <= Number(tifr.target);
+  tifrTile.classList.toggle("tifr-good", isGood);
+  tifrTile.classList.toggle("tifr-bad", !isGood);
+  document.getElementById("tifrStatus").textContent = isGood ? "On target" : "Above target";
   document.getElementById("hazardMetric").textContent = globalContent.hazards;
   document.getElementById("minutesDate").textContent = "Latest meeting: " + globalContent.minutesDate;
 }
@@ -476,6 +614,80 @@ function linkButton(url,label){
   return `<a class="open-link" href="${url}" target="_blank" rel="noopener">${label} →</a>`;
 }
 
+
+function renderTifrTrend(){
+  const history = globalContent.tifr?.history || [];
+  const target = Number(globalContent.tifr?.target || 0);
+
+  if(!history.length){
+    return `<div class="content-box"><p>No TIFR history has been added yet.</p></div>`;
+  }
+
+  const values = history.map(d=>Number(d.value));
+  const maxValue = Math.max(...values, target, 1);
+  const chartMax = Math.ceil(maxValue * 1.18 * 10) / 10;
+  const W = 900, H = 360;
+  const left = 58, right = 24, top = 28, bottom = 64;
+  const plotW = W - left - right;
+  const plotH = H - top - bottom;
+
+  const x = i => left + (history.length === 1 ? plotW/2 : (i * plotW/(history.length-1)));
+  const y = v => top + plotH - (v/chartMax)*plotH;
+
+  const grid = [0,.25,.5,.75,1].map(p=>{
+    const val = chartMax*p;
+    const yy = y(val);
+    return `<line x1="${left}" y1="${yy}" x2="${W-right}" y2="${yy}" class="chart-grid"/>
+            <text x="${left-10}" y="${yy+4}" text-anchor="end" class="chart-axis">${val.toFixed(1)}</text>`;
+  }).join("");
+
+  const linePoints = history.map((d,i)=>`${x(i)},${y(Number(d.value))}`).join(" ");
+  const dots = history.map((d,i)=>{
+    const good = Number(d.value) <= target;
+    return `<circle cx="${x(i)}" cy="${y(Number(d.value))}" r="7" class="${good ? "chart-dot-good" : "chart-dot-bad"}">
+              <title>${d.month}: ${Number(d.value).toFixed(1)}</title>
+            </circle>`;
+  }).join("");
+
+  const labels = history.map((d,i)=>{
+    const parts = String(d.month).split(" ");
+    const label = parts[0].slice(0,3);
+    return `<text x="${x(i)}" y="${H-28}" text-anchor="middle" class="chart-month">${label}</text>`;
+  }).join("");
+
+  const targetY = y(target);
+
+  return `
+    <div class="tifr-summary-row">
+      <div class="tifr-summary-card">
+        <div class="tifr-summary-label">Last month</div>
+        <div class="tifr-summary-value">${Number(globalContent.tifr.lastMonth).toFixed(1)}</div>
+      </div>
+      <div class="tifr-summary-card">
+        <div class="tifr-summary-label">Target</div>
+        <div class="tifr-summary-value">${target.toFixed(1)}</div>
+      </div>
+      <div class="tifr-summary-card ${Number(globalContent.tifr.lastMonth) <= target ? "summary-good" : "summary-bad"}">
+        <div class="tifr-summary-label">Status</div>
+        <div class="tifr-summary-status">${Number(globalContent.tifr.lastMonth) <= target ? "On target" : "Above target"}</div>
+      </div>
+    </div>
+    <div class="tifr-chart-wrap">
+      <svg viewBox="0 0 ${W} ${H}" class="tifr-chart" role="img" aria-label="TIFR trend for the last 12 months">
+        ${grid}
+        <line x1="${left}" y1="${targetY}" x2="${W-right}" y2="${targetY}" class="chart-target"/>
+        <text x="${W-right}" y="${targetY-8}" text-anchor="end" class="chart-target-label">Target ${target.toFixed(1)}</text>
+        <polyline points="${linePoints}" class="chart-line"/>
+        ${dots}
+        ${labels}
+      </svg>
+      <div class="chart-legend">
+        <span><i class="legend-dot good"></i> At or below target</span>
+        <span><i class="legend-dot bad"></i> Above target</span>
+      </div>
+    </div>`;
+}
+
 function getContent(){
   return {
     report:{
@@ -517,9 +729,9 @@ function getContent(){
       body:()=>`<div class="content-grid">${(site.hsrs || []).map(h=>`<div class="content-box"><h3>${h.name}</h3><p>${h.area}</p></div>`).join("")}</div>`
     },
     tifr:{
-      title:"TIFR",
-      intro:"Current total injury frequency rate.",
-      body:()=>`<div class="content-box"><div style="font-size:86px;font-weight:900">${globalContent.tifr}</div><p>Current TIFR for this site.</p></div>`
+      title:"TIFR — Last 12 Months",
+      intro:`Last month: ${Number(globalContent.tifr.lastMonth).toFixed(1)} • Target: ${Number(globalContent.tifr.target).toFixed(1)}`,
+      body:()=>renderTifrTrend()
     },
     hazards:{
       title:"Hazard and Near Miss Reporting",

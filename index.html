@@ -1042,42 +1042,46 @@ header .header-copy{
 }
 
 
-/* Final header alignment:
-   - IMS Policy sits at the right edge of the left welcome panel
-   - HSE Noticeboard begins exactly above the first tile column */
+/* Header alignment — mirror the main content grid exactly */
 header{
+  display:block !important;
+  padding-left:34px !important;
+  padding-right:34px !important;
+}
+
+header .brand{
+  position:relative !important;
+  width:100% !important;
   display:grid !important;
-  grid-template-columns:610px minmax(0,1fr) !important;
+  grid-template-columns:1.08fr 1.92fr !important;
+  gap:24px !important;
   align-items:center !important;
-  column-gap:22px !important;
 }
 
-header > img{
+/* Logo stays at the far-left of the welcome-panel zone */
+header .verra-logo{
   position:absolute !important;
-  left:22px !important;
-  top:28px !important;
+  left:0 !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  margin:0 !important;
 }
 
-.header-policy-button{
+/* Policy button sits at the right edge of that same left zone */
+header .header-policy-button{
   grid-column:1 !important;
   justify-self:end !important;
+  align-self:center !important;
   margin:0 !important;
-  transform:translateX(-8px);
+  transform:none !important;
 }
 
-header .header-copy{
+/* Title begins exactly where the tile grid begins */
+header .brand-copy{
   grid-column:2 !important;
-  justify-self:stretch !important;
   margin:0 !important;
-  width:auto !important;
   padding:0 !important;
-}
-
-/* Match the tile grid's exact left edge */
-@media (min-width:1051px){
-  header{
-    grid-template-columns:610px minmax(0,1fr) !important;
-  }
+  min-width:0 !important;
 }
 
 </style>

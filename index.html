@@ -251,6 +251,44 @@ footer{
   footer{padding:8px 24px 10px}
 }
 
+
+/* Report an Event — permanent global QR tile */
+.report-event-tile{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
+}
+.report-event-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:10px;
+}
+.report-event-tile .report-event-head .icon{
+  margin:0;
+  flex:0 0 auto;
+}
+.report-event-tile .report-event-head h3{
+  margin:0;
+}
+.home-qr{
+  display:block;
+  width:min(118px,44%);
+  aspect-ratio:1/1;
+  object-fit:contain;
+  align-self:center;
+  margin:auto;
+  padding:6px;
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+@media (min-width:1051px) and (max-height:900px){
+  .report-event-head{margin-bottom:6px}
+  .home-qr{width:min(94px,42%);padding:5px;border-radius:10px}
+}
+
 </style>
 </head>
 <body>
@@ -277,7 +315,7 @@ footer{
 <main>
 <section class="hero"><div><div class="eyebrow">Welcome</div><h2 id="heroTitle">Your safety information. One touch away.</h2><p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p></div><div class="focus-card"><div class="focus-title">Current focus</div><div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div><div class="touch-hint">Touch any tile to open • Returns home automatically after inactivity</div></div></section>
 <section class="tiles">
-<button class="tile accent-green" data-content="report"><div class="icon">⚠</div><h3>Report an Incident</h3><p>Incident reporting and what to do if you are injured.</p></button>
+<button class="tile accent-green report-event-tile" data-content="report"><div class="report-event-head"><div class="icon">⚠</div><h3>Report an Event</h3></div><img class="home-qr" src="./assets/report-event-qr.png?v=1" alt="Report an Event QR code"></button>
 <button class="tile" data-content="eap"><div class="icon">❤</div><h3>Employee Assistance</h3><p>Confidential support and wellbeing assistance.</p></button>
 <button class="tile" data-content="minutes"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3><p id="minutesDate">Latest meeting: August 2026</p></button>
 <button class="tile accent-purple" data-content="policy"><div class="icon">📘</div><h3>HSE Policy</h3><p>Read the current Health, Safety and Environment Policy.</p></button>
@@ -485,6 +523,7 @@ function wireTiles(){
   const content = getContent();
 
   document.querySelectorAll(".tile").forEach(tile=>{
+    if(tile.classList.contains("report-event-tile")) return;
     tile.addEventListener("click", ()=>{
       const item = content[tile.dataset.content];
       document.getElementById("panelTitle").textContent = item.title;

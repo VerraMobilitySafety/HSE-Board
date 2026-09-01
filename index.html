@@ -137,7 +137,7 @@ header{padding-top:24px}
 </div>
 <header>
 <div class="brand">
-  <img class="verra-logo" src="verra-logo.png" alt="Verra Mobility">
+  <img class="verra-logo" src="assets/verra-logo.png" alt="Verra Mobility">
   <div class="brand-copy">
     <h1>HSE Noticeboard</h1>
     <div class="site-line"><span class="site-pill" id="siteName">South Melbourne</span><span id="siteSubtitle">Safety information and quick access</span></div>
@@ -166,37 +166,211 @@ header{padding-top:24px}
 <div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div>
 
 <script>
-const sites={
-"south-melbourne":{name:"South Melbourne",subtitle:"Safety information and quick access",heroTitle:"Your safety information. One touch away.",heroText:"Access site safety information, support, reporting, emergency resources and the latest HSE updates.",focus:"See it. Say it. Make it safer.",tifr:"7.0",hazards:"12",minutesDate:"August 2026",links:{report:"#",injury:"#",eap:"#",minutes:"#",policy:"#",emergency:"#",map:"#"},hsrs:[{name:"HSR Name",area:"South Melbourne"},{name:"HSR Name",area:"Operations"}]},
-"silverwater":{name:"Silverwater",subtitle:"Local HSE information",heroTitle:"Safe work starts with good information.",heroText:"Use this noticeboard for local reporting, emergency information, support and safety updates.",focus:"Pause. Check. Proceed safely.",tifr:"6.4",hazards:"9",minutesDate:"August 2026",links:{report:"#",injury:"#",eap:"#",minutes:"#",policy:"#",emergency:"#",map:"#"},hsrs:[{name:"HSR Name",area:"Silverwater"}]}
-};
-const adverts=[
-{kicker:"Safety focus",title:"See it. Say it. Make it safer.",text:"Report hazards and near misses early. Small interventions prevent bigger incidents."},
-{kicker:"Need support?",title:"Employee Assistance is confidential.",text:"Support is available when work or life feels difficult. Open Employee Assistance from the noticeboard for current contact details."},
-{kicker:"Emergency readiness",title:"Know where to go before you need to.",text:"Check the Emergency Control Map and familiarise yourself with exits, emergency equipment and assembly areas."}
-];
-const params=new URLSearchParams(location.search),siteKey=params.get("site")||"south-melbourne",site=sites[siteKey]||sites["south-melbourne"];
-function applySite(){siteName.textContent=site.name;siteSubtitle.textContent=site.subtitle;footerSite.textContent=site.name;heroTitle.textContent=site.heroTitle;heroText.textContent=site.heroText;focusMessage.textContent=site.focus;tifrMetric.textContent=site.tifr;hazardMetric.textContent=site.hazards;minutesDate.textContent="Latest meeting: "+site.minutesDate} applySite();
+const params = new URLSearchParams(location.search);
+const siteKey = params.get("site") || "south-melbourne";
 
-const overlay=document.getElementById("overlay"),adOverlay=document.getElementById("adOverlay");let inactivityTimer,advertTimer,advertIndex=0;const RETURN_HOME_MS=75000,SHOW_AD_AFTER_MS=180000,AD_DURATION_MS=22000;
-function scheduleAdvert(){clearTimeout(advertTimer);advertTimer=setTimeout(showAdvert,SHOW_AD_AFTER_MS)}
-function resetInactivity(){clearTimeout(inactivityTimer);clearTimeout(advertTimer);inactivityTimer=setTimeout(()=>{overlay.classList.remove("active");adOverlay.classList.remove("active");scheduleAdvert()},RETURN_HOME_MS);if(!overlay.classList.contains("active")&&!adOverlay.classList.contains("active"))scheduleAdvert()}
-function showAdvert(){if(overlay.classList.contains("active"))return;const a=adverts[advertIndex%adverts.length];advertIndex++;adKicker.textContent=a.kicker;adTitle.textContent=a.title;adText.textContent=a.text;adOverlay.classList.add("active");setTimeout(()=>{adOverlay.classList.remove("active");resetInactivity()},AD_DURATION_MS)}
-["pointerdown","touchstart","keydown"].forEach(e=>document.addEventListener(e,resetInactivity,{passive:true}));adOverlay.addEventListener("click",()=>{adOverlay.classList.remove("active");resetInactivity()});
-const qrBox=l=>`<div><div class="qr"></div><p style="font-size:13px;color:#777">Placeholder for ${l} QR code.</p></div>`;
-const linkButton=(u,l)=>`<a class="open-link" href="${u}" target="_blank" rel="noopener">${l} →</a>`;
-const content={
-report:{title:"Report an Incident / If You Are Injured",intro:"Quick access to reporting and injury guidance.",body:()=>`<div class="content-grid"><div class="content-box"><h3>Report an incident</h3><p>Use the current incident reporting process for incidents, hazards and near misses.</p>${qrBox("incident reporting")}${linkButton(site.links.report,"Open reporting")}</div><div class="content-box"><h3>If you are injured</h3><p>Follow the current injury response process and seek assistance promptly.</p>${qrBox("injury guidance")}${linkButton(site.links.injury,"Open injury guidance")}</div></div>`},
-eap:{title:"Employee Assistance Program",intro:"Confidential support and wellbeing assistance.",body:()=>`<div class="content-box">${qrBox("EAP")}${linkButton(site.links.eap,"Open EAP information")}</div>`},
-minutes:{title:"Latest IMS Committee Minutes",intro:`Current meeting minutes for ${site.name}.`,body:()=>`<div class="content-box"><h3>${site.minutesDate}</h3>${qrBox("IMS Committee Minutes")}${linkButton(site.links.minutes,"Open latest minutes")}</div>`},
-policy:{title:"HSE Policy",intro:"Read the current Health, Safety and Environment Policy.",body:()=>`<div class="content-box">${linkButton(site.links.policy,"Open HSE Policy")}</div>`},
-hsr:{title:"Your Health and Safety Representatives",intro:"Know who represents workers on health and safety matters.",body:()=>`<div class="content-grid">${site.hsrs.map(h=>`<div class="content-box"><h3>${h.name}</h3><p>${h.area}</p></div>`).join("")}</div>`},
-tifr:{title:"TIFR",intro:"Current total injury frequency rate.",body:()=>`<div class="content-box"><div style="font-size:86px;font-weight:900">${site.tifr}</div><p>Add current reporting period, target and trend here.</p></div>`},
-hazards:{title:"Hazard and Near Miss Reporting",intro:"Current reporting activity for this site.",body:()=>`<div class="content-box"><div style="font-size:86px;font-weight:900">${site.hazards}</div><p>Hazards and near misses reported this month.</p>${linkButton(site.links.report,"Report now")}</div>`},
-emergency:{title:"Emergency Assistance",intro:"Urgent support, Hunt Line and emergency information.",body:()=>`<div class="content-grid"><div class="content-box">${qrBox("Emergency Assistance Hunt Line")}${linkButton(site.links.emergency,"Open Emergency Assistance")}</div><div class="content-box"><h3>In an emergency</h3><p>Follow your site emergency procedures and call emergency services where required.</p></div></div>`},
-map:{title:"Emergency Control Map",intro:`Emergency control information for ${site.name}.`,body:()=>`<div class="content-box"><p>Replace this panel with the current site Emergency Control Map image or PDF.</p>${linkButton(site.links.map,"Open Emergency Control Map")}</div>`}
-};
-document.querySelectorAll(".tile").forEach(t=>t.addEventListener("click",()=>{const i=content[t.dataset.content];panelTitle.textContent=i.title;panelIntro.textContent=i.intro;panelBody.innerHTML=i.body();overlay.classList.add("active");resetInactivity()}));closeBtn.addEventListener("click",()=>{overlay.classList.remove("active");resetInactivity()});resetInactivity();setInterval(()=>location.reload(),6*60*60*1000);
+let site = null;
+let adverts = [];
+let advertIndex = 0;
+let inactivityTimer;
+let advertTimer;
+
+const RETURN_HOME_MS = 75000;
+const SHOW_AD_AFTER_MS = 180000;
+const AD_DURATION_MS = 22000;
+
+const overlay = document.getElementById("overlay");
+const adOverlay = document.getElementById("adOverlay");
+
+async function loadJSON(path){
+  const response = await fetch(path, {cache:"no-store"});
+  if(!response.ok) throw new Error(`Could not load ${path}`);
+  return response.json();
+}
+
+async function loadBoard(){
+  try{
+    [site, adverts] = await Promise.all([
+      loadJSON(`sites/${siteKey}.json`),
+      loadJSON("adverts.json")
+    ]);
+  }catch(error){
+    console.error(error);
+    document.getElementById("siteName").textContent = "HSE Noticeboard";
+    document.getElementById("siteSubtitle").textContent = "Content unavailable";
+    document.getElementById("heroTitle").textContent = "Noticeboard content could not be loaded.";
+    document.getElementById("heroText").textContent = "Please check the site configuration file.";
+    return;
+  }
+
+  applySite();
+  wireTiles();
+  resetInactivity();
+}
+
+function applySite(){
+  document.getElementById("siteName").textContent = site.name;
+  document.getElementById("siteSubtitle").textContent = site.subtitle;
+  document.getElementById("footerSite").textContent = site.name;
+  document.getElementById("heroTitle").textContent = site.heroTitle;
+  document.getElementById("heroText").textContent = site.heroText;
+  document.getElementById("focusMessage").textContent = site.focus;
+  document.getElementById("tifrMetric").textContent = site.tifr;
+  document.getElementById("hazardMetric").textContent = site.hazards;
+  document.getElementById("minutesDate").textContent = "Latest meeting: " + site.minutesDate;
+}
+
+function scheduleAdvert(){
+  clearTimeout(advertTimer);
+  advertTimer = setTimeout(showAdvert, SHOW_AD_AFTER_MS);
+}
+
+function resetInactivity(){
+  clearTimeout(inactivityTimer);
+  clearTimeout(advertTimer);
+
+  inactivityTimer = setTimeout(()=>{
+    overlay.classList.remove("active");
+    adOverlay.classList.remove("active");
+    scheduleAdvert();
+  }, RETURN_HOME_MS);
+
+  if(!overlay.classList.contains("active") && !adOverlay.classList.contains("active")){
+    scheduleAdvert();
+  }
+}
+
+function showAdvert(){
+  if(overlay.classList.contains("active") || !adverts.length) return;
+
+  const ad = adverts[advertIndex % adverts.length];
+  advertIndex++;
+
+  document.getElementById("adKicker").textContent = ad.kicker || "";
+  document.getElementById("adTitle").textContent = ad.title || "";
+  document.getElementById("adText").textContent = ad.text || "";
+  adOverlay.classList.add("active");
+
+  setTimeout(()=>{
+    adOverlay.classList.remove("active");
+    resetInactivity();
+  }, AD_DURATION_MS);
+}
+
+["pointerdown","touchstart","keydown"].forEach(evt=>{
+  document.addEventListener(evt, resetInactivity, {passive:true});
+});
+
+adOverlay.addEventListener("click", ()=>{
+  adOverlay.classList.remove("active");
+  resetInactivity();
+});
+
+function qrBox(key,label){
+  const image = site.qrImages?.[key];
+  if(image){
+    return `<div><img src="${image}" alt="${label} QR code" style="width:190px;height:190px;object-fit:contain;border-radius:18px;background:white;padding:10px;border:1px solid #ddd"></div>`;
+  }
+  return `<div><div class="qr"></div><p style="font-size:13px;color:#777">Add a QR image path in sites/${siteKey}.json</p></div>`;
+}
+
+function linkButton(url,label){
+  if(!url || url === "#"){
+    return `<span class="open-link" style="opacity:.45;cursor:default">${label} →</span>`;
+  }
+  return `<a class="open-link" href="${url}" target="_blank" rel="noopener">${label} →</a>`;
+}
+
+function getContent(){
+  return {
+    report:{
+      title:"Report an Incident / If You Are Injured",
+      intro:"Quick access to reporting and injury guidance.",
+      body:()=>`<div class="content-grid">
+        <div class="content-box">
+          <h3>Report an incident</h3>
+          <p>Use the current incident reporting process for incidents, hazards and near misses.</p>
+          ${qrBox("report","Incident reporting")}
+          ${linkButton(site.links.report,"Open reporting")}
+        </div>
+        <div class="content-box">
+          <h3>If you are injured</h3>
+          <p>Follow the current injury response process and seek assistance promptly.</p>
+          ${qrBox("injury","Injury guidance")}
+          ${linkButton(site.links.injury,"Open injury guidance")}
+        </div>
+      </div>`
+    },
+    eap:{
+      title:"Employee Assistance Program",
+      intro:"Confidential support and wellbeing assistance.",
+      body:()=>`<div class="content-box">${qrBox("eap","EAP")}${linkButton(site.links.eap,"Open EAP information")}</div>`
+    },
+    minutes:{
+      title:"Latest IMS Committee Minutes",
+      intro:`Current meeting minutes for ${site.name}.`,
+      body:()=>`<div class="content-box"><h3>${site.minutesDate}</h3>${qrBox("minutes","IMS Committee Minutes")}${linkButton(site.links.minutes,"Open latest minutes")}</div>`
+    },
+    policy:{
+      title:"HSE Policy",
+      intro:"Read the current Health, Safety and Environment Policy.",
+      body:()=>`<div class="content-box">${linkButton(site.links.policy,"Open HSE Policy")}</div>`
+    },
+    hsr:{
+      title:"Your Health and Safety Representatives",
+      intro:"Know who represents workers on health and safety matters.",
+      body:()=>`<div class="content-grid">${(site.hsrs || []).map(h=>`<div class="content-box"><h3>${h.name}</h3><p>${h.area}</p></div>`).join("")}</div>`
+    },
+    tifr:{
+      title:"TIFR",
+      intro:"Current total injury frequency rate.",
+      body:()=>`<div class="content-box"><div style="font-size:86px;font-weight:900">${site.tifr}</div><p>Current TIFR for this site.</p></div>`
+    },
+    hazards:{
+      title:"Hazard and Near Miss Reporting",
+      intro:"Current reporting activity for this site.",
+      body:()=>`<div class="content-box"><div style="font-size:86px;font-weight:900">${site.hazards}</div><p>Hazards and near misses reported this month.</p>${linkButton(site.links.report,"Report now")}</div>`
+    },
+    emergency:{
+      title:"Emergency Assistance",
+      intro:"Urgent support, Hunt Line and emergency information.",
+      body:()=>`<div class="content-grid">
+        <div class="content-box">${qrBox("emergency","Emergency Assistance Hunt Line")}${linkButton(site.links.emergency,"Open Emergency Assistance")}</div>
+        <div class="content-box"><h3>In an emergency</h3><p>Follow your site emergency procedures and call emergency services where required.</p></div>
+      </div>`
+    },
+    map:{
+      title:"Emergency Control Map",
+      intro:`Emergency control information for ${site.name}.`,
+      body:()=>`<div class="content-box"><p>Open the current Emergency Control Map for this site.</p>${linkButton(site.links.map,"Open Emergency Control Map")}</div>`
+    }
+  };
+}
+
+function wireTiles(){
+  const content = getContent();
+
+  document.querySelectorAll(".tile").forEach(tile=>{
+    tile.addEventListener("click", ()=>{
+      const item = content[tile.dataset.content];
+      document.getElementById("panelTitle").textContent = item.title;
+      document.getElementById("panelIntro").textContent = item.intro;
+      document.getElementById("panelBody").innerHTML = item.body();
+      overlay.classList.add("active");
+      resetInactivity();
+    });
+  });
+
+  document.getElementById("closeBtn").addEventListener("click", ()=>{
+    overlay.classList.remove("active");
+    resetInactivity();
+  });
+}
+
+/* Reload the page periodically so remote GitHub updates appear without touching the TV. */
+setInterval(()=>location.reload(), 15*60*1000);
+
+loadBoard();
 </script>
 </body>
 </html>

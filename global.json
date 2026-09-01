@@ -53,7 +53,60 @@
       }
     ]
   },
-  "hazards": "12",
+  "hazards": {
+    "lastMonth": 12,
+    "target": 12,
+    "history": [
+      {
+        "month": "Sep 2025",
+        "value": 9
+      },
+      {
+        "month": "Oct 2025",
+        "value": 11
+      },
+      {
+        "month": "Nov 2025",
+        "value": 10
+      },
+      {
+        "month": "Dec 2025",
+        "value": 8
+      },
+      {
+        "month": "Jan 2026",
+        "value": 13
+      },
+      {
+        "month": "Feb 2026",
+        "value": 10
+      },
+      {
+        "month": "Mar 2026",
+        "value": 12
+      },
+      {
+        "month": "Apr 2026",
+        "value": 14
+      },
+      {
+        "month": "May 2026",
+        "value": 11
+      },
+      {
+        "month": "Jun 2026",
+        "value": 12
+      },
+      {
+        "month": "Jul 2026",
+        "value": 13
+      },
+      {
+        "month": "Aug 2026",
+        "value": 12
+      }
+    ]
+  },
   "minutesDate": "August 2026",
   "links": {
     "report": "#",

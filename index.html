@@ -1039,6 +1039,48 @@ header .brand-copy{
     gap:16px !important;
   }
 }
+
+/* HEADER: use the EXACT SAME grid as <main>.
+   This aligns HSE Noticeboard with tile 1 and the IMS Policy
+   button with the right edge of the large left panel. */
+header .brand{
+  grid-template-columns:minmax(0,1.06fr) minmax(0,1.94fr) !important;
+  gap:20px !important;
+}
+
+header .brand-left{
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+}
+
+header .brand-copy{
+  position:static !important;
+  left:auto !important;
+  top:auto !important;
+  transform:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Policy button: right edge = left-panel right edge;
+   vertical centre = Verra logo vertical centre. */
+.header-policy-button{
+  position:static !important;
+  margin:0 !important;
+  transform:none !important;
+  flex:0 0 auto !important;
+  align-self:center !important;
+}
+
+@media (min-width:1051px) and (max-height:900px){
+  header .brand{
+    grid-template-columns:minmax(0,1.06fr) minmax(0,1.94fr) !important;
+    gap:16px !important;
+  }
+}
+
 </style>
 </head>
 <body>

@@ -808,6 +808,18 @@ footer{
   .motion-bg .verra-chevron{animation:none!important}
 }
 
+
+/* Background simplification — chevrons + floating dots only */
+.motion-bg .ring,
+.motion-bg .line{
+  display:none !important;
+}
+
+/* Keep the floating dots visible and gently animated */
+.motion-bg .particle{
+  opacity:.72 !important;
+}
+
 </style>
 </head>
 <body>
@@ -821,9 +833,6 @@ footer{
 <span class="orb orb-a"></span>
 <span class="orb orb-b"></span>
 <span class="orb orb-c"></span>
-<span class="line line-a"></span>
-<span class="line line-b"></span>
-<span class="line line-c"></span>
 <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span>
 <span class="particle p4"></span><span class="particle p5"></span><span class="particle p6"></span>
 </div>

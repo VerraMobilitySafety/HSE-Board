@@ -2012,9 +2012,9 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.27 — NK9 colour and route are now randomised independently */
+/* v1.0.29 — NK9 routes use the actual visible board edges */
 .motion-bg .nk9-floater{
-  left:-14%;
+  left:0;
   top:20%;
   animation:none !important;
   transition:none;
@@ -2135,7 +2135,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.28</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.29</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2665,13 +2665,18 @@ document.addEventListener("DOMContentLoaded",()=>{
     cam.style.opacity = random(.11,.17).toFixed(2);
     cam.classList.remove("is-facing","do-flash");
 
-    /* NK9s live inside the fixed 1920px design canvas, so animate
-       against that canvas width rather than the browser viewport. */
+    /* .motion-bg extends 12% beyond the board on both sides.
+       Compensate for that overscan so cameras cross the ENTIRE
+       visible 1920px noticeboard before disappearing. */
     const DESIGN_W = 1920;
-    const startX = -220;
-    const mid1 = DESIGN_W * .30;
-    const mid2 = DESIGN_W * .66;
-    const endX = DESIGN_W + 260;
+    const bg = cam.parentElement;
+    const bgLeft = bg.offsetLeft;   // negative because motion-bg uses inset:-12%
+    const margin = 40;
+
+    const startX = -bgLeft - width - margin;
+    const mid1 = -bgLeft + DESIGN_W * .30;
+    const mid2 = -bgLeft + DESIGN_W * .66;
+    const endX = -bgLeft + DESIGN_W + width + margin;
 
     const anim = cam.animate([
       { transform:`translate(${startX}px, 0px) rotate(${rotA}deg)` },

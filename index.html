@@ -1519,27 +1519,55 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.17 — subtle EAP heartbeat experiment */
-.tile[data-content="eap"] .eap-tile-art{
-  transform-origin:50% 62%;
-  animation:eapHeartbeat 3.2s ease-in-out infinite;
+/* v1.0.19 — 3D layered EAP artwork: fixed hands + beating heart */
+.tile[data-content="eap"] .eap-layered-art{
+  position:absolute;
+  left:50%;
+  bottom:2px;
+  transform:translateX(-50%);
+  width:64%;
+  height:54%;
+  max-height:54%;
+  pointer-events:none;
+  user-select:none;
+}
+
+.tile[data-content="eap"] .eap-layered-art img{
+  position:absolute;
+  pointer-events:none;
+  user-select:none;
+  object-fit:contain;
+}
+
+/* Stationary hands */
+.tile[data-content="eap"] .eap-hands-layer{
+  width:100%;
+  height:100%;
+  left:0;
+  bottom:0;
+  object-position:center bottom;
+}
+
+/* Independent heart, centred above the cupped hands */
+.tile[data-content="eap"] .eap-heart-layer{
+  width:40%;
+  height:40%;
+  left:30%;
+  top:2%;
+  object-position:center center;
+  transform-origin:50% 58%;
+  animation:eapHeartOnlyBeat 3.2s ease-in-out infinite;
   will-change:transform;
 }
 
-@keyframes eapHeartbeat{
-  0%, 12%, 24%, 100%{
-    transform:translateX(-50%) scale(1);
-  }
-  7%{
-    transform:translateX(-50%) scale(1.025);
-  }
-  18%{
-    transform:translateX(-50%) scale(1.015);
-  }
+@keyframes eapHeartOnlyBeat{
+  0%, 12%, 24%, 100%{ transform:scale(1); }
+  7%{ transform:scale(1.065); }
+  18%{ transform:scale(1.032); }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .tile[data-content="eap"] .eap-tile-art{
+  .tile[data-content="eap"] .eap-heart-layer{
     animation:none !important;
   }
 }
@@ -1570,7 +1598,10 @@ body > .ad-overlay{
 </header>
 <main>
 <section class="hero"><div><div class="eyebrow">Welcome</div><h2 id="heroTitle">Your safety information. One touch away.</h2><p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p></div><div class="focus-card"><div class="focus-title">Current focus</div><div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div><div class="touch-hint">Touch any tile to open • Returns home automatically after inactivity</div></div></section>
-<section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance</h3></div><p>Confidential support and wellbeing assistance.</p><img class="eap-tile-art" src="./assets/eap-tile-hands-heart.png" alt="" aria-hidden="true"></button><button class="tile" data-content="minutes"><div class="tile-head"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3></div><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👥</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><img class="hsr-tile-art" src="./assets/hsr-tile.png" alt="" aria-hidden="true"></button><button class="tile hazards-tile" data-content="hazards">
+<section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance</h3></div><p>Confidential support and wellbeing assistance.</p><div class="eap-tile-art eap-layered-art" aria-hidden="true">
+  <img class="eap-hands-layer" src="./assets/eap-hands.png" alt="">
+  <img class="eap-heart-layer" src="./assets/eap-heart.png" alt="">
+</div></button><button class="tile" data-content="minutes"><div class="tile-head"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3></div><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👥</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><img class="hsr-tile-art" src="./assets/hsr-tile.png" alt="" aria-hidden="true"></button><button class="tile hazards-tile" data-content="hazards">
 <div class="hazards-head">
 <div class="icon">◎</div>
 <h3>Hazards and Near Misses</h3>
@@ -1614,7 +1645,7 @@ body > .ad-overlay{
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
 </div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Evacuation Map</h3></div><p>View site evacuation routes and assembly points.</p><img class="evac-tile-art" src="./assets/emergency-evacuation-map-tile.png" alt="" aria-hidden="true"></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p><img class="injury-tile-art" src="./assets/injured-worker-tile.png" alt="" aria-hidden="true"></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.17</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.19</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

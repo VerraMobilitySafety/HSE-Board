@@ -2135,7 +2135,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.27</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.28</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2665,10 +2665,13 @@ document.addEventListener("DOMContentLoaded",()=>{
     cam.style.opacity = random(.11,.17).toFixed(2);
     cam.classList.remove("is-facing","do-flash");
 
-    const startX = -180;
-    const mid1 = window.innerWidth * .30;
-    const mid2 = window.innerWidth * .66;
-    const endX = window.innerWidth + 180;
+    /* NK9s live inside the fixed 1920px design canvas, so animate
+       against that canvas width rather than the browser viewport. */
+    const DESIGN_W = 1920;
+    const startX = -220;
+    const mid1 = DESIGN_W * .30;
+    const mid2 = DESIGN_W * .66;
+    const endX = DESIGN_W + 260;
 
     const anim = cam.animate([
       { transform:`translate(${startX}px, 0px) rotate(${rotA}deg)` },

@@ -1441,6 +1441,48 @@ body > .ad-overlay{
   box-shadow:0 5px 18px rgba(0,0,0,.28) !important;
 }
 
+
+/* v1.0.9 — Employee Assistance hands + heart artwork */
+.tile[data-content="eap"]{
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.tile[data-content="eap"] > p{
+  position:relative;
+  z-index:2;
+}
+.eap-support-art{
+  position:absolute;
+  left:50%;
+  bottom:6px;
+  transform:translateX(-50%);
+  width:76%;
+  height:54%;
+  pointer-events:none;
+  opacity:.9;
+}
+.eap-support-art svg{
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+.eap-art-heart{
+  fill:none;
+  stroke:#A9C23F;
+  stroke-width:9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.eap-art-hand{
+  fill:none;
+  stroke:#8F9CE0;
+  stroke-width:9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
 </style>
 </head>
 <body>
@@ -1467,7 +1509,7 @@ body > .ad-overlay{
 </header>
 <main>
 <section class="hero"><div><div class="eyebrow">Welcome</div><h2 id="heroTitle">Your safety information. One touch away.</h2><p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p></div><div class="focus-card"><div class="focus-title">Current focus</div><div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div><div class="touch-hint">Touch any tile to open • Returns home automatically after inactivity</div></div></section>
-<section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance</h3></div><p>Confidential support and wellbeing assistance.</p></button><button class="tile" data-content="minutes"><div class="tile-head"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3></div><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👥</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p></button><button class="tile hazards-tile" data-content="hazards">
+<section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance</h3></div><p>Confidential support and wellbeing assistance.</p><div class="eap-support-art" aria-hidden="true"><svg viewBox="0 0 320 180" role="presentation"><path class="eap-art-heart" d="M160 83 C136 49 88 55 88 96 C88 128 121 149 160 169 C199 149 232 128 232 96 C232 55 184 49 160 83 Z"/><path class="eap-art-hand" d="M151 156 C137 147 126 137 116 126 L91 102 C84 95 74 94 68 100 C62 106 63 116 70 123 L89 143 L63 119 L48 76 C45 66 37 61 30 64 C23 67 21 75 24 85 L39 135 C41 143 45 150 51 156 L76 178"/><path class="eap-art-hand" d="M169 156 C183 147 194 137 204 126 L229 102 C236 95 246 94 252 100 C258 106 257 116 250 123 L231 143 L257 119 L272 76 C275 66 283 61 290 64 C297 67 299 75 296 85 L281 135 C279 143 275 150 269 156 L244 178"/></svg></div></button><button class="tile" data-content="minutes"><div class="tile-head"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3></div><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👥</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p></button><button class="tile hazards-tile" data-content="hazards">
 <div class="hazards-head">
 <div class="icon">◎</div>
 <h3>Hazards and Near Misses</h3>
@@ -1511,7 +1553,7 @@ body > .ad-overlay{
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
 </div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Control Map</h3></div><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.7</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.9</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

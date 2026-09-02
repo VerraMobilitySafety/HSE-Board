@@ -1386,6 +1386,188 @@ body > .ad-overlay{
   }
 }
 
+
+/* =========================================================
+   v1.0.4 — SOUTH MELBOURNE EAP POPUP
+   Content/style only. Existing popup wiring and screen-fit untouched.
+   ========================================================= */
+.eap-sm{
+  position:relative;
+  min-height:610px;
+  overflow:hidden;
+  border-radius:22px;
+  background:#3D3935;
+  color:#fff;
+  padding:28px 34px 30px;
+  isolation:isolate;
+}
+.eap-sm *{box-sizing:border-box}
+.eap-sm-chevrons{
+  position:absolute; inset:0; overflow:hidden; z-index:-1; pointer-events:none;
+}
+.eap-sm-chevron{
+  position:absolute;
+  width:310px; height:210px;
+  opacity:.12;
+  clip-path:polygon(0 0,100% 30%,100% 65%,0 100%,0 65%,55% 50%,0 35%);
+  animation:eapChevronDrift 22s linear infinite;
+}
+.eap-sm-chevron.c1{background:#A9C23F;top:20px;left:-330px}
+.eap-sm-chevron.c2{background:#1D8296;top:185px;left:-500px;animation-delay:-7s;transform:scale(.82)}
+.eap-sm-chevron.c3{background:#857874;top:355px;left:-390px;animation-delay:-14s;transform:scale(1.18)}
+@keyframes eapChevronDrift{
+  from{translate:0 0}
+  to{translate:1550px 0}
+}
+@media (prefers-reduced-motion:reduce){
+  .eap-sm-chevron{animation:none}
+  .eap-sm-chevron.c1{left:72%}
+  .eap-sm-chevron.c2{left:55%}
+  .eap-sm-chevron.c3{left:78%}
+}
+.eap-sm-top{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:24px;
+  align-items:start;
+}
+.eap-sm-brand{
+  display:flex; gap:18px; align-items:center;
+}
+.eap-sm-heart{
+  width:100px;height:100px;flex:0 0 100px;
+  display:grid;place-items:center;
+  color:#A9C23F;font-size:72px;line-height:1;
+}
+.eap-sm-title strong,
+.eap-sm-title span{
+  display:block;
+  font-weight:800;
+  letter-spacing:.01em;
+  line-height:.95;
+}
+.eap-sm-title strong{font-size:34px;color:#fff}
+.eap-sm-title span{font-size:34px;color:#A9C23F;margin-top:7px}
+.eap-sm-title small{
+  display:block;margin-top:10px;
+  font-size:18px;letter-spacing:.30em;color:#fff;
+}
+.eap-sm-logo{
+  width:220px;max-height:84px;object-fit:contain;
+}
+.eap-sm-copy{
+  margin:22px 0 24px;
+  max-width:1160px;
+  font-size:16px;
+  line-height:1.48;
+}
+.eap-sm-copy p{margin:0 0 14px}
+.eap-sm-copy p:last-child{margin-bottom:0}
+.eap-sm-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:26px;
+}
+.eap-sm-card{
+  position:relative;
+  min-height:286px;
+  border:1px solid;
+  border-radius:18px 62px 0 18px;
+  background:rgba(61,57,53,.94);
+  overflow:hidden;
+  padding:18px 24px 18px 98px;
+}
+.eap-sm-card.appointment{border-color:#A9C23F}
+.eap-sm-card.connect{border-color:#1D8296}
+.eap-sm-stripe{
+  position:absolute;left:0;top:0;bottom:0;width:62px;
+}
+.appointment .eap-sm-stripe{background:#A9C23F}
+.connect .eap-sm-stripe{background:#1D8296}
+.eap-sm-card h3{
+  margin:0 0 13px;
+  font-size:25px;
+  line-height:1.05;
+}
+.appointment h3{color:#A9C23F}
+.connect h3{color:#fff}
+.eap-code{
+  display:inline-block;
+  min-width:360px;
+  border-radius:8px;
+  padding:8px 12px;
+  margin-bottom:18px;
+  background:#A9C23F;
+  color:#3D3935;
+  font-weight:700;
+  font-size:14px;
+}
+.eap-sm-instruction{font-size:13px;margin:0 0 13px}
+.eap-phone-row{
+  display:grid;
+  grid-template-columns:34px 155px 1fr;
+  gap:10px;
+  align-items:center;
+  min-height:39px;
+  font-size:17px;
+  font-weight:700;
+}
+.eap-phone-row .ico{color:#A9C23F;font-size:23px;text-align:center}
+.eap-phone-row .number{color:#A9C23F}
+.eap-support{
+  margin-top:8px;
+  font-size:17px;
+  font-weight:700;
+}
+.eap-support strong{margin-left:18px}
+.appointment .eap-support strong{color:#A9C23F}
+.connect .eap-support strong{color:#1D8296}
+.eap-connect-layout{
+  display:grid;
+  grid-template-columns:1fr 190px;
+  gap:22px;
+  align-items:start;
+}
+.eap-app-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:190px;
+  min-height:40px;
+  padding:8px 18px;
+  border-radius:8px;
+  background:#1D8296;
+  color:#fff;
+  font-weight:800;
+  text-decoration:none;
+  margin:2px 0 18px;
+}
+.eap-other-label{font-size:13px;margin-bottom:10px}
+.eap-option{
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:12px;
+  align-items:center;
+  min-height:40px;
+  font-size:17px;
+  font-weight:700;
+}
+.eap-option .ico{color:#1D8296;font-size:22px;text-align:center}
+.eap-sm-qr-wrap{text-align:center}
+.eap-sm-qr{
+  display:block;
+  width:176px;height:176px;
+  object-fit:contain;
+  padding:8px;
+  background:#fff;
+  margin:0 auto 8px;
+}
+.eap-sm-qr-label{
+  color:#fff;
+  font-size:13px;
+  line-height:1.2;
+}
+
 </style>
 </head>
 <body>
@@ -1456,7 +1638,7 @@ body > .ad-overlay{
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
 </div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Control Map</h3></div><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.3</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.4</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -1756,6 +1938,67 @@ function renderHazardsTrend(){
     </div>`;
 }
 
+
+function renderSouthMelbourneEAP(){
+  return `<div class="eap-sm">
+    <div class="eap-sm-chevrons" aria-hidden="true">
+      <div class="eap-sm-chevron c1"></div>
+      <div class="eap-sm-chevron c2"></div>
+      <div class="eap-sm-chevron c3"></div>
+    </div>
+
+    <div class="eap-sm-top">
+      <div class="eap-sm-brand">
+        <div class="eap-sm-heart" aria-hidden="true">♥</div>
+        <div class="eap-sm-title">
+          <strong>EMPLOYEE</strong>
+          <span>ASSISTANCE</span>
+          <small>PROGRAM</small>
+        </div>
+      </div>
+      <img class="eap-sm-logo" src="./assets/verra-logo.png" alt="Verra Mobility">
+    </div>
+
+    <div class="eap-sm-copy">
+      <p>The Employee Assistance Program (EAP) is a confidential, professional support service available to all Verra Mobility Employees. If recent events have affected you in any way, whether you’re feeling anxious, unsettled, distracted, or simply not yourself, there is someone to talk to.</p>
+      <p>The EAP is there to provide a safe space to talk things through with a trained counsellor who can help you process what you’re feeling and guide you towards practical steps for support.</p>
+      <p>Details of your discussion will not be shared with your manager or workplace.</p>
+    </div>
+
+    <div class="eap-sm-grid">
+      <section class="eap-sm-card appointment">
+        <div class="eap-sm-stripe"></div>
+        <h3>MAKING AN APPOINTMENT</h3>
+        <div class="eap-code">Organisation Code:&nbsp;&nbsp; REDFICZU</div>
+        <p class="eap-sm-instruction">To make an appointment with a Converge Counsellor, call:</p>
+        <div class="eap-phone-row"><span class="ico">☎</span><span>Australia:</span><span class="number">1300 687 327</span></div>
+        <div class="eap-phone-row"><span class="ico">☎</span><span>New Zealand:</span><span class="number">0800 666 367</span></div>
+        <div class="eap-phone-row"><span class="ico">☎</span><span>International:</span><span class="number">+61 3 8620 5300</span></div>
+        <div class="eap-support">Phone support is <strong>24 / 7</strong></div>
+      </section>
+
+      <section class="eap-sm-card connect">
+        <div class="eap-sm-stripe"></div>
+        <h3>OTHER WAYS TO CHAT</h3>
+        <div class="eap-connect-layout">
+          <div>
+            <a class="eap-app-button" href="#" onclick="return false;">GET THE APP</a>
+            <div class="eap-other-label">Other Ways to Connect:</div>
+            <div class="eap-option"><span class="ico">●</span><span>Face to face</span></div>
+            <div class="eap-option"><span class="ico">●</span><span>Live Chat</span></div>
+            <div class="eap-option"><span class="ico">▯</span><span>Through the App</span></div>
+            <div class="eap-support">App support is <strong>24 / 7</strong></div>
+          </div>
+          <div class="eap-sm-qr-wrap">
+            <img class="eap-sm-qr" src="./assets/eap-south-melbourne-qr.png" alt="QR code for the EAP app">
+            <div class="eap-sm-qr-label">Scan to download<br>the app</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>`;
+}
+
 function getContent(){
   return {
     report:{
@@ -1777,9 +2020,11 @@ function getContent(){
       </div>`
     },
     eap:{
-      title:"Employee Assistance Program",
-      intro:"Confidential support and wellbeing assistance.",
-      body:()=>`<div class="content-box">${qrBox("eap","EAP")}${linkButton(site.links.eap,"Open EAP information")}</div>`
+      title: siteKey === "south-melbourne" ? "Employee Assistance Program" : "Employee Assistance Program",
+      intro: siteKey === "south-melbourne" ? "" : "Confidential support and wellbeing assistance.",
+      body:()=> siteKey === "south-melbourne"
+        ? renderSouthMelbourneEAP()
+        : `<div class="content-box">${qrBox("eap","EAP")}${linkButton(site.links.eap,"Open EAP information")}</div>`
     },
     minutes:{
       title:"Latest IMS Committee Minutes",

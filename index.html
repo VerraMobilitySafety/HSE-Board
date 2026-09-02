@@ -1938,6 +1938,140 @@ body > .ad-overlay{
   height:20% !important;
 }
 
+
+/* v1.0.26 — ambient NK9 camera background */
+.motion-bg .nk9-floater{
+  position:absolute;
+  width:112px;
+  height:86px;
+  opacity:.14;
+  pointer-events:none;
+  user-select:none;
+  will-change:transform,left;
+  z-index:1;
+  filter:saturate(.92);
+}
+
+.motion-bg .nk9-floater img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  transition:opacity .38s ease, transform .38s ease;
+}
+
+.motion-bg .nk9-angle{
+  opacity:1;
+  transform:scale(1);
+}
+.motion-bg .nk9-front{
+  opacity:0;
+  transform:scaleX(.12) scaleY(.96);
+}
+
+/* Random "looks at you" state */
+.motion-bg .nk9-floater.is-facing{
+  opacity:.28;
+}
+.motion-bg .nk9-floater.is-facing .nk9-angle{
+  opacity:0;
+  transform:scaleX(.12) scaleY(.96);
+}
+.motion-bg .nk9-floater.is-facing .nk9-front{
+  opacity:1;
+  transform:scale(1);
+}
+
+/* Flash comes from the lens area, not the whole screen */
+.motion-bg .nk9-flash{
+  position:absolute;
+  left:50%;
+  top:40%;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  transform:translate(-50%,-50%) scale(.2);
+  opacity:0;
+  background:rgba(255,255,255,.98);
+  box-shadow:
+    0 0 12px 5px rgba(255,255,255,.95),
+    0 0 28px 12px rgba(244,246,245,.68),
+    0 0 52px 20px rgba(169,194,63,.20);
+}
+
+.motion-bg .nk9-floater.do-flash .nk9-flash{
+  animation:nk9LensFlash .42s ease-out 1;
+}
+
+@keyframes nk9LensFlash{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  18%{opacity:1;transform:translate(-50%,-50%) scale(2.2)}
+  38%{opacity:.92;transform:translate(-50%,-50%) scale(1.45)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(3.1)}
+}
+
+/* Slow independent paths. They remain behind the noticeboard UI. */
+.motion-bg .nk9-a{
+  top:10%;
+  left:-9%;
+  animation:nk9DriftA 34s linear infinite;
+}
+.motion-bg .nk9-b{
+  top:37%;
+  left:-12%;
+  width:96px;
+  height:74px;
+  animation:nk9DriftB 42s linear infinite;
+  animation-delay:-14s;
+}
+.motion-bg .nk9-c{
+  top:66%;
+  left:-10%;
+  width:122px;
+  height:94px;
+  animation:nk9DriftC 38s linear infinite;
+  animation-delay:-25s;
+}
+.motion-bg .nk9-d{
+  top:82%;
+  left:-14%;
+  width:88px;
+  height:68px;
+  animation:nk9DriftD 46s linear infinite;
+  animation-delay:-7s;
+}
+
+@keyframes nk9DriftA{
+  0%{left:-9%;transform:translateY(0) rotate(-2deg)}
+  25%{transform:translateY(18px) rotate(1deg)}
+  50%{transform:translateY(-10px) rotate(-1deg)}
+  75%{transform:translateY(12px) rotate(2deg)}
+  100%{left:104%;transform:translateY(0) rotate(-2deg)}
+}
+@keyframes nk9DriftB{
+  0%{left:-12%;transform:translateY(0) rotate(2deg)}
+  35%{transform:translateY(-16px) rotate(-1deg)}
+  70%{transform:translateY(14px) rotate(1deg)}
+  100%{left:105%;transform:translateY(0) rotate(2deg)}
+}
+@keyframes nk9DriftC{
+  0%{left:-10%;transform:translateY(0) rotate(-1deg)}
+  30%{transform:translateY(12px) rotate(2deg)}
+  65%{transform:translateY(-18px) rotate(0deg)}
+  100%{left:104%;transform:translateY(0) rotate(-1deg)}
+}
+@keyframes nk9DriftD{
+  0%{left:-14%;transform:translateY(0) rotate(1deg)}
+  40%{transform:translateY(-12px) rotate(-2deg)}
+  75%{transform:translateY(10px) rotate(1deg)}
+  100%{left:105%;transform:translateY(0) rotate(1deg)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .motion-bg .nk9-floater{display:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -1953,6 +2087,26 @@ body > .ad-overlay{
 <span class="orb orb-c"></span>
 <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span>
 <span class="particle p4"></span><span class="particle p5"></span><span class="particle p6"></span>
+<div class="nk9-floater nk9-a" data-colour="green">
+  <img class="nk9-angle" src="./assets/nk9-green.png" alt="">
+  <img class="nk9-front" src="./assets/nk9-green-front.png" alt="">
+  <span class="nk9-flash"></span>
+</div>
+<div class="nk9-floater nk9-b" data-colour="teal">
+  <img class="nk9-angle" src="./assets/nk9-teal.png" alt="">
+  <img class="nk9-front" src="./assets/nk9-teal-front.png" alt="">
+  <span class="nk9-flash"></span>
+</div>
+<div class="nk9-floater nk9-c" data-colour="purple">
+  <img class="nk9-angle" src="./assets/nk9-purple.png" alt="">
+  <img class="nk9-front" src="./assets/nk9-purple-front.png" alt="">
+  <span class="nk9-flash"></span>
+</div>
+<div class="nk9-floater nk9-d" data-colour="grey">
+  <img class="nk9-angle" src="./assets/nk9-grey.png" alt="">
+  <img class="nk9-front" src="./assets/nk9-grey-front.png" alt="">
+  <span class="nk9-flash"></span>
+</div>
 </div>
 <header>
 <div class="brand"><div class="brand-left"><img alt="Verra Mobility" class="verra-logo" src="./assets/verra-logo.png?v=4"/><button class="header-policy-button" type="button">📘  IMS Policy</button></div>
@@ -2030,7 +2184,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.25</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.26</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2520,6 +2674,62 @@ document.addEventListener("DOMContentLoaded",()=>{
   fitBoard();
   window.addEventListener("resize", fitBoard);
   window.addEventListener("orientationchange", fitBoard);
+})();
+</script>
+
+
+<script>
+(function(){
+  const cameras = Array.from(document.querySelectorAll(".nk9-floater"));
+  if(!cameras.length) return;
+
+  let busy = false;
+
+  function visibleCandidates(){
+    return cameras.filter(cam=>{
+      const r = cam.getBoundingClientRect();
+      return r.right > 40 && r.left < window.innerWidth - 40 &&
+             r.bottom > 40 && r.top < window.innerHeight - 40;
+    });
+  }
+
+  function performFlash(){
+    if(busy) return scheduleNext();
+    const candidates = visibleCandidates();
+    if(!candidates.length) return scheduleNext();
+
+    busy = true;
+    const cam = candidates[Math.floor(Math.random()*candidates.length)];
+
+    /* Briefly pause only the selected camera while it faces the viewer. */
+    cam.style.animationPlayState = "paused";
+    cam.classList.add("is-facing");
+
+    setTimeout(()=>{
+      cam.classList.add("do-flash");
+
+      setTimeout(()=>{
+        cam.classList.remove("do-flash");
+
+        setTimeout(()=>{
+          cam.classList.remove("is-facing");
+          setTimeout(()=>{
+            cam.style.animationPlayState = "running";
+            busy = false;
+            scheduleNext();
+          },420);
+        },520);
+      },430);
+    },520);
+  }
+
+  function scheduleNext(){
+    const delay = 8000 + Math.random()*12000;
+    setTimeout(performFlash, delay);
+  }
+
+  /* Give the board time to settle before the first surprise. */
+  setTimeout(performFlash, 6500 + Math.random()*4500);
 })();
 </script>
 

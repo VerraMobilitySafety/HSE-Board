@@ -1204,6 +1204,188 @@ body > .ad-overlay{
   z-index:10000 !important;
 }
 
+
+/* =========================================================
+   v1.0.3 — TILE CONTENT SCALE
+   Visual sizing only. Popup/scaling architecture untouched.
+   ========================================================= */
+
+/* KPI tiles: use the full tile height rather than clustering at the top */
+.hazards-tile,
+.tifr-tile{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  padding:20px 22px 16px !important;
+}
+
+.hazards-head,
+.tifr-head{
+  margin-bottom:10px !important;
+  gap:12px !important;
+}
+
+.hazards-tile .hazards-head .icon,
+.tifr-tile .tifr-head .icon{
+  width:54px !important;
+  height:54px !important;
+  min-height:54px !important;
+  flex-basis:54px !important;
+  border-radius:15px !important;
+  font-size:25px !important;
+}
+
+.hazards-tile .hazards-head h3,
+.tifr-tile .tifr-head h3{
+  font-size:29px !important;
+  line-height:1.05 !important;
+}
+
+/* The numbers occupy the centre of the tile */
+.hazards-values,
+.tifr-values{
+  flex:1 1 auto !important;
+  display:grid !important;
+  grid-template-columns:1fr 1px 1fr !important;
+  align-items:center !important;
+  gap:20px !important;
+  margin:0 !important;
+}
+
+.hazards-value-label,
+.tifr-value-label{
+  font-size:15px !important;
+  margin-bottom:7px !important;
+}
+
+.hazards-tile .metric,
+.tifr-tile .metric{
+  font-size:52px !important;
+  line-height:.95 !important;
+}
+
+.hazards-divider,
+.tifr-divider{
+  height:72px !important;
+}
+
+.hazards-view,
+.tifr-view{
+  margin-top:0 !important;
+  padding-top:8px !important;
+  font-size:13px !important;
+  line-height:1.15 !important;
+}
+
+/* Report an Event: make the QR the visual focus and use the empty tile area */
+.report-event-tile{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  padding:20px 22px 18px !important;
+}
+
+.report-event-head{
+  gap:12px !important;
+  margin-bottom:8px !important;
+}
+
+.report-event-tile .report-event-head .icon{
+  width:54px !important;
+  height:54px !important;
+  min-height:54px !important;
+  flex-basis:54px !important;
+  border-radius:15px !important;
+  font-size:25px !important;
+}
+
+.report-event-tile .report-event-head h3{
+  font-size:27px !important;
+  line-height:1.05 !important;
+}
+
+.report-event-tile .home-qr{
+  width:172px !important;
+  height:172px !important;
+  flex:0 0 172px !important;
+  padding:8px !important;
+  border-radius:14px !important;
+  align-self:center !important;
+  margin:auto auto !important;
+}
+
+/* Because the noticeboard itself is now fixed-size and scaled,
+   old short-screen media sizing must not shrink these three tiles. */
+@media (min-width:1051px) and (max-height:900px){
+  .hazards-tile,
+  .tifr-tile,
+  .report-event-tile{
+    padding:20px 22px 16px !important;
+  }
+
+  .hazards-head,
+  .tifr-head,
+  .report-event-head{
+    gap:12px !important;
+    margin-bottom:10px !important;
+  }
+
+  .hazards-tile .hazards-head .icon,
+  .tifr-tile .tifr-head .icon,
+  .report-event-tile .report-event-head .icon{
+    width:54px !important;
+    height:54px !important;
+    min-height:54px !important;
+    flex-basis:54px !important;
+    font-size:25px !important;
+    border-radius:15px !important;
+  }
+
+  .hazards-tile .hazards-head h3,
+  .tifr-tile .tifr-head h3{
+    font-size:29px !important;
+  }
+
+  .report-event-tile .report-event-head h3{
+    font-size:27px !important;
+  }
+
+  .hazards-values,
+  .tifr-values{
+    gap:20px !important;
+  }
+
+  .hazards-value-label,
+  .tifr-value-label{
+    font-size:15px !important;
+    margin-bottom:7px !important;
+  }
+
+  .hazards-tile .metric,
+  .tifr-tile .metric{
+    font-size:52px !important;
+  }
+
+  .hazards-divider,
+  .tifr-divider{
+    height:72px !important;
+  }
+
+  .hazards-view,
+  .tifr-view{
+    padding-top:8px !important;
+    font-size:13px !important;
+  }
+
+  .report-event-tile .home-qr{
+    width:172px !important;
+    height:172px !important;
+    flex-basis:172px !important;
+    padding:8px !important;
+    margin:auto auto !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1274,7 +1456,7 @@ body > .ad-overlay{
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
 </div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Control Map</h3></div><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.2</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.3</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

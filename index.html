@@ -2011,63 +2011,14 @@ body > .ad-overlay{
   100%{opacity:0;transform:translate(-50%,-50%) scale(3.1)}
 }
 
-/* Slow independent paths. They remain behind the noticeboard UI. */
-.motion-bg .nk9-a{
-  top:10%;
-  left:-9%;
-  animation:nk9DriftA 34s linear infinite;
-}
-.motion-bg .nk9-b{
-  top:37%;
-  left:-12%;
-  width:96px;
-  height:74px;
-  animation:nk9DriftB 42s linear infinite;
-  animation-delay:-14s;
-}
-.motion-bg .nk9-c{
-  top:66%;
-  left:-10%;
-  width:122px;
-  height:94px;
-  animation:nk9DriftC 38s linear infinite;
-  animation-delay:-25s;
-}
-.motion-bg .nk9-d{
-  top:82%;
+
+/* v1.0.27 — NK9 colour and route are now randomised independently */
+.motion-bg .nk9-floater{
   left:-14%;
-  width:88px;
-  height:68px;
-  animation:nk9DriftD 46s linear infinite;
-  animation-delay:-7s;
+  top:20%;
+  animation:none !important;
+  transition:none;
 }
-
-@keyframes nk9DriftA{
-  0%{left:-9%;transform:translateY(0) rotate(-2deg)}
-  25%{transform:translateY(18px) rotate(1deg)}
-  50%{transform:translateY(-10px) rotate(-1deg)}
-  75%{transform:translateY(12px) rotate(2deg)}
-  100%{left:104%;transform:translateY(0) rotate(-2deg)}
-}
-@keyframes nk9DriftB{
-  0%{left:-12%;transform:translateY(0) rotate(2deg)}
-  35%{transform:translateY(-16px) rotate(-1deg)}
-  70%{transform:translateY(14px) rotate(1deg)}
-  100%{left:105%;transform:translateY(0) rotate(2deg)}
-}
-@keyframes nk9DriftC{
-  0%{left:-10%;transform:translateY(0) rotate(-1deg)}
-  30%{transform:translateY(12px) rotate(2deg)}
-  65%{transform:translateY(-18px) rotate(0deg)}
-  100%{left:104%;transform:translateY(0) rotate(-1deg)}
-}
-@keyframes nk9DriftD{
-  0%{left:-14%;transform:translateY(0) rotate(1deg)}
-  40%{transform:translateY(-12px) rotate(-2deg)}
-  75%{transform:translateY(10px) rotate(1deg)}
-  100%{left:105%;transform:translateY(0) rotate(1deg)}
-}
-
 @media (prefers-reduced-motion: reduce){
   .motion-bg .nk9-floater{display:none!important}
 }
@@ -2184,7 +2135,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.26</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.27</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2678,31 +2629,90 @@ document.addEventListener("DOMContentLoaded",()=>{
 </script>
 
 
+
 <script>
 (function(){
   const cameras = Array.from(document.querySelectorAll(".nk9-floater"));
   if(!cameras.length) return;
 
+  const colours = ["green","teal","purple","grey","charcoal","white"];
   let busy = false;
+
+  function random(min,max){ return min + Math.random()*(max-min); }
+  function choose(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  function setColour(cam, colour){
+    cam.querySelector(".nk9-angle").src = "./assets/nk9-" + colour + ".png";
+    cam.querySelector(".nk9-front").src = "./assets/nk9-" + colour + "-front.png";
+    cam.dataset.colour = colour;
+  }
+
+  function launch(cam, initial=false){
+    const colour = choose(colours);
+    const top = random(7,84);
+    const width = random(82,126);
+    const duration = random(30,48);
+    const yA = random(-18,18);
+    const yB = random(-18,18);
+    const rotA = random(-2.2,2.2);
+    const rotB = random(-2.2,2.2);
+
+    setColour(cam, colour);
+
+    cam.style.top = top + "%";
+    cam.style.width = width + "px";
+    cam.style.height = (width * .77) + "px";
+    cam.style.opacity = random(.11,.17).toFixed(2);
+    cam.classList.remove("is-facing","do-flash");
+
+    const startX = -180;
+    const mid1 = window.innerWidth * .30;
+    const mid2 = window.innerWidth * .66;
+    const endX = window.innerWidth + 180;
+
+    const anim = cam.animate([
+      { transform:`translate(${startX}px, 0px) rotate(${rotA}deg)` },
+      { transform:`translate(${mid1}px, ${yA}px) rotate(${rotB}deg)` },
+      { transform:`translate(${mid2}px, ${yB}px) rotate(${rotA}deg)` },
+      { transform:`translate(${endX}px, 0px) rotate(${rotB}deg)` }
+    ],{
+      duration:duration*1000,
+      easing:"linear",
+      iterations:1
+    });
+
+    cam._travelAnimation = anim;
+
+    anim.onfinish = ()=>{
+      setTimeout(()=>launch(cam), random(1200,5200));
+    };
+
+    if(initial){
+      anim.currentTime = random(0,duration*1000);
+    }
+  }
 
   function visibleCandidates(){
     return cameras.filter(cam=>{
       const r = cam.getBoundingClientRect();
-      return r.right > 40 && r.left < window.innerWidth - 40 &&
-             r.bottom > 40 && r.top < window.innerHeight - 40;
+      return r.right > 50 &&
+             r.left < window.innerWidth - 50 &&
+             r.bottom > 50 &&
+             r.top < window.innerHeight - 50;
     });
   }
 
   function performFlash(){
     if(busy) return scheduleNext();
+
     const candidates = visibleCandidates();
     if(!candidates.length) return scheduleNext();
 
     busy = true;
-    const cam = candidates[Math.floor(Math.random()*candidates.length)];
+    const cam = choose(candidates);
+    const travel = cam._travelAnimation;
 
-    /* Briefly pause only the selected camera while it faces the viewer. */
-    cam.style.animationPlayState = "paused";
+    if(travel) travel.pause();
     cam.classList.add("is-facing");
 
     setTimeout(()=>{
@@ -2713,8 +2723,9 @@ document.addEventListener("DOMContentLoaded",()=>{
 
         setTimeout(()=>{
           cam.classList.remove("is-facing");
+
           setTimeout(()=>{
-            cam.style.animationPlayState = "running";
+            if(travel) travel.play();
             busy = false;
             scheduleNext();
           },420);
@@ -2724,14 +2735,14 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   function scheduleNext(){
-    const delay = 8000 + Math.random()*12000;
-    setTimeout(performFlash, delay);
+    setTimeout(performFlash, random(8000,20000));
   }
 
-  /* Give the board time to settle before the first surprise. */
-  setTimeout(performFlash, 6500 + Math.random()*4500);
+  cameras.forEach(cam=>launch(cam,true));
+  setTimeout(performFlash, random(6500,11000));
 })();
 </script>
+
 
 </body>
 </html>

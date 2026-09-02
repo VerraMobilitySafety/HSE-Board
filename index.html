@@ -1849,6 +1849,86 @@ body > .ad-overlay{
   }
 }
 
+
+/* v1.0.24 — HSR: stationary artwork + continuously moving original three signal lines */
+.tile[data-content="hsr"] .hsr-layered-art{
+  position:absolute;
+  left:50%;
+  bottom:2px;
+  transform:translateX(-50%);
+  width:62%;
+  height:54%;
+  max-height:54%;
+  pointer-events:none;
+  user-select:none;
+}
+
+.tile[data-content="hsr"] .hsr-main-layer{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center bottom;
+  pointer-events:none;
+  user-select:none;
+}
+
+/* Three marks stay in one fixed location; only their length changes. */
+.tile[data-content="hsr"] .hsr-signal-bars{
+  position:absolute;
+  left:74%;
+  top:19%;
+  width:18%;
+  height:22%;
+  transform:rotate(20deg);
+  transform-origin:center;
+  z-index:5;
+}
+
+.tile[data-content="hsr"] .hsr-signal{
+  position:absolute;
+  bottom:0;
+  width:15%;
+  border-radius:999px;
+  background:#A9C23F;
+  box-shadow:
+    inset 1px 1px 2px rgba(255,255,255,.55),
+    0 0 5px rgba(169,194,63,.38);
+  transform-origin:50% 100%;
+  animation:hsrSignalHiFi .72s ease-in-out infinite alternate;
+}
+
+.tile[data-content="hsr"] .hsr-signal-1{
+  left:4%;
+  height:46%;
+  animation-delay:0s;
+}
+.tile[data-content="hsr"] .hsr-signal-2{
+  left:42%;
+  height:78%;
+  animation-delay:-.24s;
+}
+.tile[data-content="hsr"] .hsr-signal-3{
+  left:80%;
+  height:58%;
+  animation-delay:-.48s;
+}
+
+@keyframes hsrSignalHiFi{
+  0%{ transform:scaleY(.48); }
+  35%{ transform:scaleY(1); }
+  70%{ transform:scaleY(.68); }
+  100%{ transform:scaleY(.88); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .tile[data-content="hsr"] .hsr-signal{
+    animation:none !important;
+    transform:scaleY(1) !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1878,7 +1958,14 @@ body > .ad-overlay{
 <section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance</h3></div><p>Confidential support and wellbeing assistance.</p><div class="eap-tile-art eap-layered-art" aria-hidden="true">
   <img class="eap-hands-layer" src="./assets/eap-hands.png" alt="">
   <img class="eap-heart-layer" src="./assets/eap-heart.png" alt="">
-</div></button><button class="tile" data-content="minutes"><div class="tile-head"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3></div><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👥</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><img class="hsr-tile-art" src="./assets/hsr-tile.png" alt="" aria-hidden="true"></button><button class="tile hazards-tile" data-content="hazards">
+</div></button><button class="tile" data-content="minutes"><div class="tile-head"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3></div><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👥</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><div class="hsr-tile-art hsr-layered-art" aria-hidden="true">
+  <img class="hsr-main-layer" src="./assets/hsr-worker.png" alt="">
+  <div class="hsr-signal-bars">
+    <span class="hsr-signal hsr-signal-1"></span>
+    <span class="hsr-signal hsr-signal-2"></span>
+    <span class="hsr-signal hsr-signal-3"></span>
+  </div>
+</div></button><button class="tile hazards-tile" data-content="hazards">
 <div class="hazards-head">
 <div class="icon">◎</div>
 <h3>Hazards and Near Misses</h3>
@@ -1934,7 +2021,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.23</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.24</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

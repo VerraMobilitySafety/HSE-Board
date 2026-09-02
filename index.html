@@ -1568,6 +1568,202 @@ body > .ad-overlay{
   line-height:1.2;
 }
 
+
+/* =========================================================
+   v1.0.5 — SOUTH MELBOURNE EAP VISUAL REFINEMENT
+   Visual-only. Popup wiring and scaling architecture untouched.
+   ========================================================= */
+
+/* Let the EAP experience use the modal properly */
+#panelBody:has(.eap-sm){
+  padding:0 !important;
+  overflow:hidden !important;
+}
+
+#panelBody:has(.eap-sm) .eap-sm{
+  width:100% !important;
+  min-height:660px !important;
+  height:660px !important;
+  border-radius:20px !important;
+}
+
+/* Hide generic modal intro spacing when this bespoke EAP view is open */
+#panelIntro:empty{
+  display:none !important;
+}
+
+/* Increase usable width of the modal itself */
+.overlay.active .panel{
+  width:min(1540px,92vw) !important;
+  max-width:1540px !important;
+}
+
+/* EAP canvas */
+.eap-sm{
+  padding:30px 38px 30px !important;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(29,130,150,.08), transparent 34%),
+    linear-gradient(145deg,#3D3935 0%,#2F2C29 100%) !important;
+}
+
+/* Background chevrons: subtler and cleaner */
+.eap-sm-chevron{
+  width:360px !important;
+  height:240px !important;
+  opacity:.08 !important;
+}
+.eap-sm-chevron.c1{background:#A9C23F !important;top:8px !important}
+.eap-sm-chevron.c2{background:#1D8296 !important;top:180px !important}
+.eap-sm-chevron.c3{background:#857874 !important;top:390px !important}
+
+/* Header area */
+.eap-sm-top{
+  grid-template-columns:1fr 245px !important;
+  align-items:center !important;
+}
+.eap-sm-brand{
+  gap:20px !important;
+}
+.eap-sm-heart{
+  width:92px !important;
+  height:92px !important;
+  flex-basis:92px !important;
+  font-size:66px !important;
+}
+.eap-sm-title strong,
+.eap-sm-title span{
+  font-size:36px !important;
+}
+.eap-sm-title small{
+  font-size:18px !important;
+  letter-spacing:.34em !important;
+}
+.eap-sm-logo{
+  width:230px !important;
+  max-height:78px !important;
+}
+
+/* Body copy — readable white text */
+.eap-sm-copy{
+  max-width:none !important;
+  margin:22px 0 22px !important;
+  font-size:17px !important;
+  line-height:1.42 !important;
+  color:#FFFFFF !important;
+}
+.eap-sm-copy p{
+  color:#FFFFFF !important;
+  opacity:1 !important;
+}
+
+/* Cards */
+.eap-sm-grid{
+  grid-template-columns:1fr 1fr !important;
+  gap:24px !important;
+}
+.eap-sm-card{
+  min-height:320px !important;
+  border-radius:18px 54px 0 18px !important;
+  padding:22px 28px 22px 98px !important;
+  background:rgba(45,42,40,.97) !important;
+}
+.eap-sm-card h3{
+  font-size:27px !important;
+  margin-bottom:14px !important;
+}
+.eap-code{
+  min-width:0 !important;
+  width:72% !important;
+  font-size:15px !important;
+  padding:9px 12px !important;
+  margin-bottom:18px !important;
+}
+.eap-sm-instruction{
+  color:#FFFFFF !important;
+  font-size:14px !important;
+  margin-bottom:12px !important;
+}
+.eap-phone-row{
+  grid-template-columns:36px 170px 1fr !important;
+  min-height:42px !important;
+  font-size:18px !important;
+}
+.eap-phone-row span:not(.ico):not(.number){
+  color:#FFFFFF !important;
+}
+.eap-phone-row .number{
+  font-size:19px !important;
+}
+.eap-support{
+  color:#FFFFFF !important;
+  font-size:18px !important;
+  margin-top:8px !important;
+}
+
+/* Connection card */
+.eap-connect-layout{
+  grid-template-columns:minmax(0,1fr) 210px !important;
+  gap:24px !important;
+}
+.eap-app-button{
+  min-width:190px !important;
+  min-height:42px !important;
+  font-size:14px !important;
+  box-shadow:0 8px 18px rgba(0,0,0,.18) !important;
+}
+.eap-other-label{
+  color:#FFFFFF !important;
+  font-size:14px !important;
+  margin-bottom:8px !important;
+}
+.eap-option{
+  min-height:42px !important;
+  font-size:18px !important;
+  color:#FFFFFF !important;
+}
+.eap-sm-qr{
+  width:188px !important;
+  height:188px !important;
+  padding:8px !important;
+  border-radius:12px !important;
+  border:3px solid #A9C23F !important;
+}
+.eap-sm-qr-label{
+  color:#FFFFFF !important;
+  font-size:14px !important;
+  line-height:1.25 !important;
+}
+
+/* Remove the generic title duplication inside the modal header for this bespoke view */
+.overlay.active:has(.eap-sm) #panelTitle{
+  font-size:0 !important;
+  margin:0 !important;
+  height:0 !important;
+  overflow:hidden !important;
+}
+.overlay.active:has(.eap-sm) .eyebrow{
+  display:none !important;
+}
+.overlay.active:has(.eap-sm) .panel-head{
+  position:absolute !important;
+  top:18px !important;
+  right:18px !important;
+  z-index:20 !important;
+  padding:0 !important;
+}
+.overlay.active:has(.eap-sm) .close{
+  background:rgba(255,255,255,.92) !important;
+  box-shadow:0 6px 18px rgba(0,0,0,.22) !important;
+}
+
+/* Make the modal shell disappear visually so the EAP feels full-screen and premium */
+.overlay.active:has(.eap-sm) .panel{
+  background:transparent !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  overflow:visible !important;
+}
+
 </style>
 </head>
 <body>
@@ -1638,7 +1834,7 @@ body > .ad-overlay{
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
 </div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Control Map</h3></div><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.4</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.5</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

@@ -1274,7 +1274,7 @@ body > .ad-overlay{
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
 </div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Control Map</h3></div><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.1</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.2</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -1321,7 +1321,8 @@ async function loadBoard(){
   }catch(error){
     console.error(error);
     document.getElementById("siteName").textContent = "HSE Noticeboard";
-    document.getElementById("siteSubtitle")?.textContent = "Content unavailable";
+    const siteSubtitleEl = document.getElementById("siteSubtitle");
+    if (siteSubtitleEl) siteSubtitleEl.textContent = "Content unavailable";
     document.getElementById("heroTitle").textContent = "Noticeboard content could not be loaded.";
     document.getElementById("heroText").textContent = "Please check the site configuration file.";
     return;
@@ -1334,8 +1335,10 @@ async function loadBoard(){
 
 function applySite(){
   document.getElementById("siteName").textContent = site.name;
-  document.getElementById("siteSubtitle")?.textContent = site.subtitle;
-  document.getElementById("footerSite")?.textContent = site.name;
+  const siteSubtitleEl = document.getElementById("siteSubtitle");
+    if (siteSubtitleEl) siteSubtitleEl.textContent = site.subtitle;
+  const footerSiteEl = document.getElementById("footerSite");
+    if (footerSiteEl) footerSiteEl.textContent = site.name;
   document.getElementById("heroTitle").textContent = site.heroTitle;
   document.getElementById("heroText").textContent = site.heroText;
   document.getElementById("focusMessage").textContent = site.focus;

@@ -1147,6 +1147,25 @@ header .site-pill{
 html,body{width:100%;height:100%;margin:0;overflow:hidden!important;background:#0D0D0D}
 #viewport{position:fixed;inset:0;overflow:hidden;background:#0D0D0D}
 #board{position:absolute;width:1920px;height:1080px;left:0;top:0;transform-origin:top left;overflow:hidden}
+
+/* Popups live outside the scaled 1920x1080 board so they remain fully interactive */
+#viewport > .overlay,
+#viewport > .policy-overlay,
+#viewport > .ad-overlay{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  z-index:1000 !important;
+  transform:none !important;
+  pointer-events:auto !important;
+}
+
+#viewport > .overlay.active,
+#viewport > .policy-overlay.active,
+#viewport > .ad-overlay.active{
+  display:grid !important;
+}
 </style>
 </head>
 <body><div id="viewport"><div id="board">
@@ -1219,17 +1238,9 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden!important;background:#
 </main>
 <footer><div><span class="status-dot"></span>Noticeboard online</div><div>Touchscreen HSE Noticeboard • <span id="footerSite">South Melbourne</span></div></footer>
 </div>
-<div class="policy-overlay" id="policyOverlay">
-<div class="policy-panel">
-<div class="policy-head">
-<div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
-<button aria-label="Close" class="policy-close" id="policyClose" type="button">✕</button>
-</div>
-<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
-</div>
-</div>
-<div class="overlay" id="overlay"><div class="panel"><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
-<div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div>
+
+
+
 <script>
 const params = new URLSearchParams(location.search);
 const siteKey = params.get("site") || "south-melbourne";
@@ -1624,7 +1635,15 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   }
 });
-</script></div></div><script>
+</script></div><div class="overlay" id="overlay"><div class="panel"><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div><div class="policy-overlay" id="policyOverlay">
+<div class="policy-panel">
+<div class="policy-head">
+<div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
+<button aria-label="Close" class="policy-close" id="policyClose" type="button">✕</button>
+</div>
+<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
+</div>
+</div><div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div></div><script>
 (function(){
  const W=1920,H=1080,board=document.getElementById("board");
  function fit(){

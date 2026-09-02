@@ -1144,64 +1144,64 @@ header .site-pill{
 }
 
 /* =========================================================
-   SCREEN FIT
-   IMPORTANT: only .screen is scaled.
-   Existing popup overlays remain untouched as direct body
-   children, so their original click/modal behaviour is preserved.
+   FINAL SCREEN-FIT LAYER
+   Keep the noticeboard at a fixed 1920x1080 design size.
+   Only scale/translate .screen. Modal overlays remain untouched.
    ========================================================= */
-html, body {
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-  background: #0D0D0D !important;
+html, body{
+  width:100% !important;
+  height:100% !important;
+  margin:0 !important;
+  overflow:hidden !important;
+  background:#0D0D0D !important;
 }
 
-.screen {
-  position: absolute !important;
-  inset: auto !important;
-  left: 0;
-  top: 0;
-  width: 1920px !important;
-  height: 1080px !important;
-  min-width: 1920px !important;
-  min-height: 1080px !important;
-  overflow: hidden !important;
-  transform-origin: 0 0 !important;
+.screen{
+  position:fixed !important;
+  inset:auto !important;
+  left:0 !important;
+  top:0 !important;
+  width:1920px !important;
+  height:1080px !important;
+  min-width:1920px !important;
+  min-height:1080px !important;
+  display:grid !important;
+  grid-template-rows:auto 1fr auto !important;
+  overflow:hidden !important;
+  transform-origin:0 0 !important;
 }
 
-/* Lock the established desktop composition.
-   The whole surface scales instead of reflowing. */
-.screen header {
-  padding: 22px 34px 10px !important;
+/* Cancel responsive reflow. The board scales as one object instead. */
+.screen main{
+  grid-template-columns:minmax(0,1.06fr) minmax(0,1.94fr) !important;
+  gap:20px !important;
+  padding:8px 28px 14px !important;
+  overflow:hidden !important;
 }
 
-.screen main {
-  grid-template-columns: minmax(0,1.06fr) minmax(0,1.94fr) !important;
-  grid-template-rows: none !important;
-  gap: 20px !important;
-  padding: 8px 28px 14px !important;
-  overflow: visible !important;
+.screen .hero{
+  min-height:0 !important;
 }
 
-.screen .hero {
-  min-height: 0 !important;
+.screen .tiles{
+  grid-template-columns:repeat(3,1fr) !important;
+  grid-template-rows:repeat(3,1fr) !important;
 }
 
-.screen .tiles {
-  grid-template-columns: repeat(3,1fr) !important;
-  grid-template-rows: repeat(3,1fr) !important;
+.screen header{
+  padding:22px 34px 10px !important;
 }
 
-.screen footer {
-  padding: 13px 34px 18px !important;
+.screen footer{
+  padding:13px 34px 18px !important;
 }
 
-/* Popups deliberately stay OUTSIDE the transformed noticeboard. */
+/* Existing full-screen popups stay on the real viewport. */
 body > .overlay,
 body > .policy-overlay,
-body > .ad-overlay {
-  z-index: 10000 !important;
+body > .ad-overlay{
+  position:fixed !important;
+  z-index:10000 !important;
 }
 
 </style>
@@ -1321,7 +1321,7 @@ async function loadBoard(){
   }catch(error){
     console.error(error);
     document.getElementById("siteName").textContent = "HSE Noticeboard";
-    document.getElementById("siteSubtitle").textContent = "Content unavailable";
+    document.getElementById("siteSubtitle")?.textContent = "Content unavailable";
     document.getElementById("heroTitle").textContent = "Noticeboard content could not be loaded.";
     document.getElementById("heroText").textContent = "Please check the site configuration file.";
     return;
@@ -1334,7 +1334,7 @@ async function loadBoard(){
 
 function applySite(){
   document.getElementById("siteName").textContent = site.name;
-  document.getElementById("siteSubtitle").textContent = site.subtitle;
+  document.getElementById("siteSubtitle")?.textContent = site.subtitle;
   document.getElementById("footerSite").textContent = site.name;
   document.getElementById("heroTitle").textContent = site.heroTitle;
   document.getElementById("heroText").textContent = site.heroText;
@@ -1683,32 +1683,28 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 </script>
 <script>
-/* Scale the visible noticeboard only.
-   Popup DOM and popup JavaScript are intentionally untouched. */
-(function () {
-  const DESIGN_WIDTH = 1920;
-  const DESIGN_HEIGHT = 1080;
+(function(){
+  const DESIGN_W = 1920;
+  const DESIGN_H = 1080;
 
-  function fitNoticeboard() {
+  function fitBoard(){
     const board = document.querySelector(".screen");
-    if (!board) return;
+    if(!board) return;
 
-    const scale = Math.min(
-      window.innerWidth / DESIGN_WIDTH,
-      window.innerHeight / DESIGN_HEIGHT
-    );
+    const vw = document.documentElement.clientWidth;
+    const vh = document.documentElement.clientHeight;
+    const scale = Math.min(vw / DESIGN_W, vh / DESIGN_H);
 
-    const scaledWidth = DESIGN_WIDTH * scale;
-    const scaledHeight = DESIGN_HEIGHT * scale;
+    const x = (vw - DESIGN_W * scale) / 2;
+    const y = (vh - DESIGN_H * scale) / 2;
 
-    board.style.transform = "scale(" + scale + ")";
-    board.style.left = ((window.innerWidth - scaledWidth) / 2) + "px";
-    board.style.top = ((window.innerHeight - scaledHeight) / 2) + "px";
+    board.style.transform =
+      "translate3d(" + x + "px," + y + "px,0) scale(" + scale + ")";
   }
 
-  fitNoticeboard();
-  window.addEventListener("resize", fitNoticeboard);
-  window.addEventListener("orientationchange", fitNoticeboard);
+  fitBoard();
+  window.addEventListener("resize", fitBoard);
+  window.addEventListener("orientationchange", fitBoard);
 })();
 </script>
 

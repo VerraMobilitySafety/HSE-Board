@@ -1,0 +1,32 @@
+{
+  "name": "Southampton",
+  "subtitle": "Safety information and quick access",
+
+  "hsrs": {
+    "title": "Your HSRs",
+    "description": "Meet your Health and Safety Representatives.",
+    "people": []
+  },
+
+  "emergency": {
+    "title": "Emergency Assistance",
+    "description": "Emergency contacts and important information.",
+    "contacts": []
+  },
+
+  "links": {
+    "eap": "",
+    "hsrs": "",
+    "emergency": "",
+    "map": "",
+    "injury": ""
+  },
+
+  "qr": {
+    "eap": "",
+    "hsrs": "",
+    "emergency": "",
+    "map": "",
+    "injury": ""
+  }
+}

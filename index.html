@@ -868,7 +868,7 @@ footer{
 */
 .motion-bg .verra-chevron{
   position:absolute !important;
-  left:-32vw !important;
+  left:0 !important;
   right:auto !important;
   width:260px !important;
   height:220px !important;
@@ -938,11 +938,16 @@ footer{
 }
 
 @keyframes verraChevronLeftToRight{
+  /*
+    .motion-bg extends 12% beyond the fixed 1920px board.
+    Use fixed design-canvas distances rather than browser vw so every
+    chevron travels completely across the visible board before resetting.
+  */
   0%{
-    transform:translate3d(0,0,0) scale(var(--scale));
+    transform:translate3d(-360px,0,0) scale(var(--scale));
   }
   100%{
-    transform:translate3d(165vw,0,0) scale(var(--scale));
+    transform:translate3d(2260px,0,0) scale(var(--scale));
   }
 }
 
@@ -2135,7 +2140,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.29</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.30</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

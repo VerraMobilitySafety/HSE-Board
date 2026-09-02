@@ -1275,7 +1275,7 @@ async function loadBoard(){
   }catch(error){
     console.error(error);
     document.getElementById("siteName").textContent = "HSE Noticeboard";
-    document.getElementById("siteSubtitle").textContent = "Content unavailable";
+    document.getElementById("siteSubtitle")?.textContent = "Content unavailable";
     document.getElementById("heroTitle").textContent = "Noticeboard content could not be loaded.";
     document.getElementById("heroText").textContent = "Please check the site configuration file.";
     return;
@@ -1288,7 +1288,7 @@ async function loadBoard(){
 
 function applySite(){
   document.getElementById("siteName").textContent = site.name;
-  document.getElementById("siteSubtitle").textContent = site.subtitle;
+  document.getElementById("siteSubtitle")?.textContent = site.subtitle;
   document.getElementById("footerSite").textContent = site.name;
   document.getElementById("heroTitle").textContent = site.heroTitle;
   document.getElementById("heroText").textContent = site.heroText;

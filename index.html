@@ -1143,40 +1143,70 @@ header .site-pill{
   white-space:nowrap !important;
 }
 
-/* Fixed 1920x1080 signage canvas: scale whole board, do not reflow it. */
-html,body{width:100%;height:100%;margin:0;overflow:hidden!important;background:#0D0D0D}
-#viewport{position:fixed;inset:0;overflow:hidden;background:#0D0D0D}
-#board{position:absolute;width:1920px;height:1080px;left:0;top:0;transform-origin:top left;overflow:hidden}
-
-/* Popups live outside the scaled 1920x1080 board so they remain fully interactive */
-#viewport > .overlay,
-#viewport > .policy-overlay,
-#viewport > .ad-overlay{
-  position:fixed !important;
-  inset:0 !important;
-  width:100vw !important;
-  height:100vh !important;
-  z-index:1000 !important;
-  transform:none !important;
-  pointer-events:auto !important;
+/* =========================================================
+   SCREEN FIT
+   IMPORTANT: only .screen is scaled.
+   Existing popup overlays remain untouched as direct body
+   children, so their original click/modal behaviour is preserved.
+   ========================================================= */
+html, body {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: #0D0D0D !important;
 }
 
-#viewport > .overlay.active,
-#viewport > .policy-overlay.active,
-#viewport > .ad-overlay.active{
-  display:grid !important;
+.screen {
+  position: absolute !important;
+  inset: auto !important;
+  left: 0;
+  top: 0;
+  width: 1920px !important;
+  height: 1080px !important;
+  min-width: 1920px !important;
+  min-height: 1080px !important;
+  overflow: hidden !important;
+  transform-origin: 0 0 !important;
 }
+
+/* Lock the established desktop composition.
+   The whole surface scales instead of reflowing. */
+.screen header {
+  padding: 22px 34px 10px !important;
+}
+
+.screen main {
+  grid-template-columns: minmax(0,1.06fr) minmax(0,1.94fr) !important;
+  grid-template-rows: none !important;
+  gap: 20px !important;
+  padding: 8px 28px 14px !important;
+  overflow: visible !important;
+}
+
+.screen .hero {
+  min-height: 0 !important;
+}
+
+.screen .tiles {
+  grid-template-columns: repeat(3,1fr) !important;
+  grid-template-rows: repeat(3,1fr) !important;
+}
+
+.screen footer {
+  padding: 13px 34px 18px !important;
+}
+
+/* Popups deliberately stay OUTSIDE the transformed noticeboard. */
+body > .overlay,
+body > .policy-overlay,
+body > .ad-overlay {
+  z-index: 10000 !important;
+}
+
 </style>
 </head>
-<body><div id="viewport"><div class="overlay" id="overlay"><div class="panel"><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div><div class="policy-overlay" id="policyOverlay">
-<div class="policy-panel">
-<div class="policy-head">
-<div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
-<button aria-label="Close" class="policy-close" id="policyClose" type="button">✕</button>
-</div>
-<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
-</div>
-</div><div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div><div id="board">
+<body>
 <div class="screen">
 <div aria-hidden="true" class="motion-bg">
 <span class="verra-chevron vc1"></span>
@@ -1246,6 +1276,17 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden!important;background:#
 </main>
 <footer><div><span class="status-dot"></span>Noticeboard online</div><div>Touchscreen HSE Noticeboard • <span id="footerSite">South Melbourne</span></div></footer>
 </div>
+<div class="policy-overlay" id="policyOverlay">
+<div class="policy-panel">
+<div class="policy-head">
+<div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
+<button aria-label="Close" class="policy-close" id="policyClose" type="button">✕</button>
+</div>
+<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
+</div>
+</div>
+<div class="overlay" id="overlay"><div class="panel"><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
+<div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div>
 <script>
 const params = new URLSearchParams(location.search);
 const siteKey = params.get("site") || "south-melbourne";
@@ -1280,7 +1321,7 @@ async function loadBoard(){
   }catch(error){
     console.error(error);
     document.getElementById("siteName").textContent = "HSE Noticeboard";
-    document.getElementById("siteSubtitle")?.textContent = "Content unavailable";
+    document.getElementById("siteSubtitle").textContent = "Content unavailable";
     document.getElementById("heroTitle").textContent = "Noticeboard content could not be loaded.";
     document.getElementById("heroText").textContent = "Please check the site configuration file.";
     return;
@@ -1293,7 +1334,7 @@ async function loadBoard(){
 
 function applySite(){
   document.getElementById("siteName").textContent = site.name;
-  document.getElementById("siteSubtitle")?.textContent = site.subtitle;
+  document.getElementById("siteSubtitle").textContent = site.subtitle;
   document.getElementById("footerSite").textContent = site.name;
   document.getElementById("heroTitle").textContent = site.heroTitle;
   document.getElementById("heroText").textContent = site.heroText;
@@ -1640,16 +1681,36 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   }
 });
-</script></div></div><script>
-(function(){
- const W=1920,H=1080,board=document.getElementById("board");
- function fit(){
-   const s=Math.min(window.innerWidth/W,window.innerHeight/H);
-   board.style.transform=`scale(${s})`;
-   board.style.left=`${(window.innerWidth-W*s)/2}px`;
-   board.style.top=`${(window.innerHeight-H*s)/2}px`;
- }
- fit(); window.addEventListener("resize",fit); window.addEventListener("orientationchange",fit);
+</script>
+<script>
+/* Scale the visible noticeboard only.
+   Popup DOM and popup JavaScript are intentionally untouched. */
+(function () {
+  const DESIGN_WIDTH = 1920;
+  const DESIGN_HEIGHT = 1080;
+
+  function fitNoticeboard() {
+    const board = document.querySelector(".screen");
+    if (!board) return;
+
+    const scale = Math.min(
+      window.innerWidth / DESIGN_WIDTH,
+      window.innerHeight / DESIGN_HEIGHT
+    );
+
+    const scaledWidth = DESIGN_WIDTH * scale;
+    const scaledHeight = DESIGN_HEIGHT * scale;
+
+    board.style.transform = "scale(" + scale + ")";
+    board.style.left = ((window.innerWidth - scaledWidth) / 2) + "px";
+    board.style.top = ((window.innerHeight - scaledHeight) / 2) + "px";
+  }
+
+  fitNoticeboard();
+  window.addEventListener("resize", fitNoticeboard);
+  window.addEventListener("orientationchange", fitNoticeboard);
 })();
-</script></body>
+</script>
+
+</body>
 </html>

@@ -1511,7 +1511,7 @@ body > .ad-overlay{
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
 </div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Control Map</h3></div><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.6</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.7</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -1834,9 +1834,19 @@ function getContent(){
     eap:{
       title:"Employee Assistance Program",
       intro:"",
-      body:()=> siteKey === "south-melbourne"
-        ? `<div class="eap-image-popup"><img src="./assets/eap-south-melbourne.png" alt="South Melbourne Employee Assistance Program information"></div>`
-        : `<div class="content-box">${qrBox("eap","EAP")}${linkButton(site.links.eap,"Open EAP information")}</div>`
+      body:()=>{
+        const eapImages = {
+          "south-melbourne":"./assets/eap-south-melbourne.png",
+          "minto":"./assets/eap-minto.png",
+          "silverwater":"./assets/eap-silverwater.png"
+        };
+
+        const eapImage = eapImages[siteKey];
+
+        return eapImage
+          ? `<div class="eap-image-popup"><img src="${eapImage}" alt="${site?.name || "Site"} Employee Assistance Program information"></div>`
+          : `<div class="content-box">${qrBox("eap","EAP")}${linkButton(site.links.eap,"Open EAP information")}</div>`;
+      }
     },
     minutes:{
       title:"Latest IMS Committee Minutes",

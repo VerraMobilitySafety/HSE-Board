@@ -1274,7 +1274,7 @@ body > .ad-overlay{
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
 </div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Control Map</h3></div><p>Evacuation routes, emergency equipment and assembly areas.</p></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div>Touchscreen HSE Noticeboard • <span id="footerSite">South Melbourne</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.1</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -1335,7 +1335,7 @@ async function loadBoard(){
 function applySite(){
   document.getElementById("siteName").textContent = site.name;
   document.getElementById("siteSubtitle")?.textContent = site.subtitle;
-  document.getElementById("footerSite").textContent = site.name;
+  document.getElementById("footerSite")?.textContent = site.name;
   document.getElementById("heroTitle").textContent = site.heroTitle;
   document.getElementById("heroText").textContent = site.heroText;
   document.getElementById("focusMessage").textContent = site.focus;
@@ -1633,29 +1633,73 @@ function getContent(){
       title:"Emergency Control Map",
       intro:`Emergency control information for ${site.name}.`,
       body:()=>`<div class="content-box"><p>Open the current Emergency Control Map for this site.</p>${linkButton(site.links.map,"Open Emergency Control Map")}</div>`
+    },
+    injury:{
+      title:"If You Are Injured",
+      intro:"What to do if you are injured at work.",
+      body:()=>`<div class="content-box">
+        <h3>If you are injured</h3>
+        <p>Follow the current injury response process and seek assistance promptly.</p>
+        ${qrBox("injury","Injury guidance","global")}
+        ${linkButton(globalContent?.links?.injury,"Open injury guidance")}
+      </div>`
     }
   };
 }
 
 function wireTiles(){
-  const content = getContent();
+  if(window.__hseTilesWired) return;
+  window.__hseTilesWired = true;
 
-  document.querySelectorAll(".tile").forEach(tile=>{
+  document.querySelectorAll(".tile[data-content]").forEach(tile=>{
     tile.addEventListener("click", ()=>{
-      const item = content[tile.dataset.content];
-      document.getElementById("panelTitle").textContent = item.title;
-      document.getElementById("panelIntro").textContent = item.intro;
-      document.getElementById("panelBody").innerHTML = item.body();
-      overlay.classList.add("active");
-      resetInactivity();
+      try{
+        if(!site || !globalContent){
+          document.getElementById("panelTitle").textContent = tile.querySelector("h3")?.textContent || "HSE Noticeboard";
+          document.getElementById("panelIntro").textContent = "Content is still loading or could not be loaded.";
+          document.getElementById("panelBody").innerHTML =
+            '<div class="content-box"><p>Please check the site JSON files and refresh the noticeboard.</p></div>';
+          overlay.classList.add("active");
+          return;
+        }
+
+        const content = getContent();
+        const item = content[tile.dataset.content];
+
+        if(!item){
+          document.getElementById("panelTitle").textContent = tile.querySelector("h3")?.textContent || "HSE Noticeboard";
+          document.getElementById("panelIntro").textContent = "";
+          document.getElementById("panelBody").innerHTML =
+            '<div class="content-box"><p>No popup content has been configured for this tile yet.</p></div>';
+          overlay.classList.add("active");
+          resetInactivity();
+          return;
+        }
+
+        document.getElementById("panelTitle").textContent = item.title;
+        document.getElementById("panelIntro").textContent = item.intro;
+        document.getElementById("panelBody").innerHTML = item.body();
+        overlay.classList.add("active");
+        resetInactivity();
+      }catch(error){
+        console.error("Tile popup error:", error);
+        document.getElementById("panelTitle").textContent = "HSE Noticeboard";
+        document.getElementById("panelIntro").textContent = "This popup could not be opened.";
+        document.getElementById("panelBody").innerHTML =
+          '<div class="content-box"><p>Please refresh the noticeboard. If this persists, check the browser console.</p></div>';
+        overlay.classList.add("active");
+      }
     });
   });
 
-  document.getElementById("closeBtn").addEventListener("click", ()=>{
+  document.getElementById("closeBtn")?.addEventListener("click", ()=>{
     overlay.classList.remove("active");
     resetInactivity();
   });
 }
+
+/* Wire buttons immediately. Data can finish loading afterwards. */
+wireTiles();
 
 /* Reload the page periodically so remote GitHub updates appear without touching the TV. */
 setInterval(()=>location.reload(), 15*60*1000);
@@ -1665,9 +1709,9 @@ loadBoard();
 const policyTile=document.querySelector(".ims-policy-tile");
 const policyOverlay=document.getElementById("policyOverlay");
 const policyClose=document.getElementById("policyClose");
-policyTile?.addEventListener("click",()=>{policyOverlay.classList.add("active"); resetIdle();});
-policyClose?.addEventListener("click",()=>{policyOverlay.classList.remove("active"); resetIdle();});
-policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyOverlay.classList.remove("active"); resetIdle();}});
+policyTile?.addEventListener("click",()=>{policyOverlay.classList.add("active"); resetInactivity();});
+policyClose?.addEventListener("click",()=>{policyOverlay.classList.remove("active"); resetInactivity();});
+policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyOverlay.classList.remove("active"); resetInactivity();}});
 
 </script>
 <script>
@@ -1677,7 +1721,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   if(btn && overlay){
     btn.addEventListener("click",()=>{
       overlay.classList.add("active");
-      if(typeof resetIdle==="function") resetIdle();
+      if(typeof resetInactivity==="function") resetInactivity();
     });
   }
 });

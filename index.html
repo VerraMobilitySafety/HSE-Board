@@ -1664,6 +1664,191 @@ body > .ad-overlay{
   }
 }
 
+
+/* v1.0.21 — richer If You Are Injured tile */
+.tile[data-content="injury"]{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+}
+
+.tile[data-content="injury"] .tile-head,
+.tile[data-content="injury"] > p{
+  position:relative;
+  z-index:5;
+}
+
+/* Very subtle Verra-style chevron watermark */
+.tile[data-content="injury"] .injury-chevron{
+  position:absolute;
+  width:70%;
+  height:58%;
+  right:-12%;
+  bottom:-12%;
+  background:rgba(70,78,126,.055);
+  clip-path:polygon(0 0,100% 30%,100% 65%,0 100%,0 65%,55% 50%,0 35%);
+  transform:rotate(-4deg);
+  z-index:1;
+  pointer-events:none;
+}
+
+/* Soft depth behind the existing 3D artwork */
+.tile[data-content="injury"] .injury-art-glow{
+  position:absolute;
+  left:50%;
+  bottom:5%;
+  width:58%;
+  height:50%;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 44% 54%, rgba(70,78,126,.18) 0%, rgba(70,78,126,.08) 38%, transparent 68%),
+    radial-gradient(circle at 62% 38%, rgba(169,194,63,.18) 0%, rgba(169,194,63,.05) 25%, transparent 48%);
+  filter:blur(8px);
+  z-index:2;
+  pointer-events:none;
+}
+
+/* Make the existing artwork more confident without changing the asset */
+.tile[data-content="injury"] .injury-tile-art{
+  width:68% !important;
+  max-height:58% !important;
+  bottom:3px !important;
+  z-index:3;
+  filter:drop-shadow(0 8px 10px rgba(61,57,53,.16));
+}
+
+/* Quiet action prompt at the bottom */
+.tile[data-content="injury"] .injury-prompt{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:9px;
+  z-index:6;
+  text-align:center;
+  font-size:14px;
+  font-weight:700;
+  color:#464E7E;
+  letter-spacing:.01em;
+}
+
+
+/* v1.0.22 — layered injury animation: stationary worker + appearing first-aid shield */
+.tile[data-content="injury"] .injury-art-glow{
+  display:none !important;
+}
+
+.tile[data-content="injury"] .injury-layered-art{
+  position:absolute;
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%);
+  width:68%;
+  height:58%;
+  z-index:3;
+  pointer-events:none;
+  user-select:none;
+}
+
+.tile[data-content="injury"] .injury-layered-art img{
+  position:absolute;
+  object-fit:contain;
+  pointer-events:none;
+  user-select:none;
+}
+
+/* Worker remains completely stationary */
+.tile[data-content="injury"] .injury-worker-layer{
+  left:16%;
+  bottom:0;
+  width:62%;
+  height:94%;
+  object-position:center bottom;
+  z-index:4;
+  filter:drop-shadow(0 8px 10px rgba(61,57,53,.16));
+}
+
+/* Shield sits behind and to the worker's right */
+.tile[data-content="injury"] .injury-shield-layer{
+  right:8%;
+  top:8%;
+  width:42%;
+  height:58%;
+  object-position:center;
+  z-index:2;
+  opacity:0;
+  animation:injuryShieldAppear 5.2s ease-in-out infinite;
+}
+
+/* Approval Green halo follows the same cycle */
+.tile[data-content="injury"] .injury-shield-glow{
+  position:absolute;
+  right:5%;
+  top:3%;
+  width:48%;
+  height:66%;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(169,194,63,.46) 0%,
+    rgba(169,194,63,.24) 30%,
+    rgba(169,194,63,.08) 52%,
+    transparent 72%
+  );
+  filter:blur(9px);
+  z-index:1;
+  opacity:0;
+  transform:scale(.88);
+  animation:injuryShieldGlow 5.2s ease-in-out infinite;
+}
+
+@keyframes injuryShieldAppear{
+  0%, 12%{
+    opacity:0;
+    transform:scale(.94);
+  }
+  24%, 72%{
+    opacity:1;
+    transform:scale(1);
+  }
+  88%, 100%{
+    opacity:0;
+    transform:scale(.98);
+  }
+}
+
+@keyframes injuryShieldGlow{
+  0%, 16%{
+    opacity:0;
+    transform:scale(.86);
+  }
+  30%{
+    opacity:.8;
+    transform:scale(1);
+  }
+  46%, 66%{
+    opacity:.55;
+    transform:scale(1.06);
+  }
+  88%, 100%{
+    opacity:0;
+    transform:scale(.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .tile[data-content="injury"] .injury-shield-layer{
+    animation:none !important;
+    opacity:1 !important;
+    transform:none !important;
+  }
+  .tile[data-content="injury"] .injury-shield-glow{
+    animation:none !important;
+    opacity:.45 !important;
+    transform:none !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1743,9 +1928,13 @@ body > .ad-overlay{
       d="M29 54 C38 45, 43 64, 52 61 S65 48, 72 54" />
   </svg>
   <img class="evac-people-layer" src="./assets/evac-people.png" alt="">
-</div></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>What to do if you are injured at work.</p><img class="injury-tile-art" src="./assets/injured-worker-tile.png" alt="" aria-hidden="true"></button></section>
+</div></button><button class="tile injury-tile" data-content="injury" type="button"><div class="tile-head"><div class="icon">✚</div><h3>If You Are Injured</h3></div><p>Injured at work? Here’s what to do next.</p><div class="injury-chevron" aria-hidden="true"></div><div class="injury-art-glow" aria-hidden="true"></div><div class="injury-layered-art" aria-hidden="true">
+  <div class="injury-shield-glow"></div>
+  <img class="injury-shield-layer" src="./assets/first-aid-shield.png" alt="">
+  <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
+</div><div class="injury-prompt">Tap for injury support →</div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.20</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.22</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

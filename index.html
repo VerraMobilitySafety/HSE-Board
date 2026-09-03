@@ -3172,7 +3172,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.71</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.72</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -3209,6 +3209,7 @@ let site = null;
 let globalContent = null;
 let adverts = [];
 let advertIndex = 0;
+let advertCycleShown = 0;
 let inactivityTimer;
 let advertTimer;
 
@@ -3507,8 +3508,14 @@ function showAdvert(){
   const eligible=adverts.filter(ad=>ad && ad.enabled!==false && advertAppliesToSite(ad));
   if(!eligible.length) return;
 
+  /* Start a fresh idle playlist if the previous one completed. */
+  if(advertCycleShown >= eligible.length){
+    advertCycleShown = 0;
+  }
+
   const ad=eligible[advertIndex % eligible.length];
   advertIndex++;
+  advertCycleShown++;
 
   const file=ad.file || ad.src || "";
   const type=String(ad.type || "").toLowerCase();
@@ -3542,8 +3549,6 @@ function showAdvert(){
       </div>`;
     adOverlay.querySelector("video")?.play().catch(()=>{});
   }else{
-    /* Preserve the original adverts.json format exactly:
-       kicker + title + text */
     adOverlay.innerHTML=`
       <div class="ad-card">
         <div class="kicker">${ad.kicker || ""}</div>
@@ -3558,13 +3563,16 @@ function showAdvert(){
   clearTimeout(advertTimer);
   advertTimer=setTimeout(()=>{
     adOverlay.querySelectorAll("video").forEach(video=>video.pause());
-    adOverlay.classList.remove("active");
 
-    /* Stay in idle mode and advance to the next screensaver item.
-       A short fade gap lets the dashboard breathe between slides. */
-    advertTimer=setTimeout(()=>{
+    if(advertCycleShown < eligible.length){
+      /* Switch directly to the next idle item without exposing the dashboard. */
       showAdvert();
-    },900);
+    }else{
+      /* Playlist complete: return to dashboard, then wait the normal idle period. */
+      adOverlay.classList.remove("active");
+      advertCycleShown = 0;
+      resetInactivity();
+    }
   },duration);
 }
 
@@ -3573,7 +3581,9 @@ function showAdvert(){
 });
 
 adOverlay.addEventListener("click", ()=>{
+  adOverlay.querySelectorAll("video").forEach(video=>video.pause());
   adOverlay.classList.remove("active");
+  advertCycleShown = 0;
   resetInactivity();
 });
 

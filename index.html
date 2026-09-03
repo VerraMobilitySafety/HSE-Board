@@ -3140,7 +3140,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.68</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.69</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -3432,27 +3432,39 @@ function showAdvert(){
   const duration=(Number(ad.duration || 0)*1000) || AD_DURATION_MS;
 
   if(file && (type==="image" || /\.(png|jpe?g|webp|gif)$/i.test(file))){
-    adContent.innerHTML=`
+    adOverlay.innerHTML=`
       <div class="ad-media-wrap">
         <img class="ad-media ${ad.fit==="cover" ? "cover" : ""}" src="${file}" alt="${ad.title || "Safety notice"}">
+        <div class="small" style="position:absolute;right:28px;bottom:24px;color:#fff;background:rgba(0,0,0,.45);padding:10px 14px;border-radius:999px;font-weight:800;">
+          Touch anywhere to return to the HSE Noticeboard
+        </div>
       </div>`;
-    const img=adContent.querySelector("img");
+    const img=adOverlay.querySelector("img");
     img?.addEventListener("error",()=>{
-      adContent.innerHTML=`<div class="ad-media-error">This screensaver image could not be loaded:<br><strong>${file}</strong></div>`;
+      adOverlay.innerHTML=`
+        <div class="ad-media-error">
+          This screensaver image could not be loaded:<br>
+          <strong>${file}</strong>
+        </div>`;
     });
   }else if(file && (type==="video" || /\.(mp4|webm|ogg)$/i.test(file))){
-    adContent.innerHTML=`
+    adOverlay.innerHTML=`
       <div class="ad-media-wrap">
         <video class="ad-media ${ad.fit==="cover" ? "cover" : ""}" src="${file}" autoplay muted loop playsinline></video>
+        <div class="small" style="position:absolute;right:28px;bottom:24px;color:#fff;background:rgba(0,0,0,.45);padding:10px 14px;border-radius:999px;font-weight:800;">
+          Touch anywhere to return to the HSE Noticeboard
+        </div>
       </div>`;
-    adContent.querySelector("video")?.play().catch(()=>{});
+    adOverlay.querySelector("video")?.play().catch(()=>{});
   }else{
-    // Preserve the original advert card format.
-    adContent.innerHTML=`
+    /* Preserve the original adverts.json format exactly:
+       kicker + title + text */
+    adOverlay.innerHTML=`
       <div class="ad-card">
-        ${ad.eyebrow ? `<div class="ad-eyebrow">${ad.eyebrow}</div>` : ""}
-        <div class="ad-title">${ad.title || ""}</div>
-        ${ad.body ? `<div class="ad-body">${ad.body}</div>` : ""}
+        <div class="kicker">${ad.kicker || ""}</div>
+        <h2>${ad.title || ""}</h2>
+        <p>${ad.text || ""}</p>
+        <div class="small">Touch anywhere to return to the HSE Noticeboard</div>
       </div>`;
   }
 
@@ -3460,9 +3472,9 @@ function showAdvert(){
 
   clearTimeout(advertTimer);
   advertTimer=setTimeout(()=>{
+    adOverlay.querySelectorAll("video").forEach(video=>video.pause());
     adOverlay.classList.remove("active");
-    adContent.querySelectorAll("video").forEach(video=>video.pause());
-    scheduleAdvert();
+    resetInactivity();
   },duration);
 }
 

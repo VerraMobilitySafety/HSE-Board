@@ -2229,7 +2229,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.41 Southampton IMS Policy selector */
+/* v1.0.42 Southampton IMS Policy selector */
 .policy-selector{
   display:grid;
   grid-template-columns:1fr;
@@ -2276,6 +2276,53 @@ body > .ad-overlay{
   height:100%;
   border:0;
   display:block;
+}
+
+
+/* v1.0.42 — site-aware header IMS Policy overlay */
+.policy-overlay-body{
+  flex:1;
+  min-height:0;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  background:#f4f6f5;
+}
+.policy-overlay-body > iframe{
+  flex:1;
+  width:100%;
+  min-height:0;
+  border:0;
+  background:#fff;
+}
+.southampton-policy-selector{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:22px;
+  padding:42px 58px;
+}
+.southampton-policy-button{
+  min-height:130px;
+  width:100%;
+  border:1px solid rgba(61,57,53,.12);
+  border-radius:22px;
+  background:#fff;
+  color:#3D3935;
+  font:inherit;
+  font-size:30px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 10px 28px rgba(0,0,0,.12);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.southampton-policy-button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(0,0,0,.16);
+}
+.southampton-policy-button:active{
+  transform:translateY(0);
 }
 
 </style>
@@ -2396,15 +2443,15 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.41</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.42</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
 <div class="policy-head">
-<div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
+<div><div class="eyebrow">DOCUMENT</div><h2 id="policyOverlayTitle">IMS Policy</h2></div>
 <button aria-label="Close" class="policy-close" id="policyClose" type="button">✕</button>
 </div>
-<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
+<div id="policyOverlayBody" class="policy-overlay-body"><iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe></div>
 </div>
 </div>
 <div class="overlay" id="overlay"><div class="panel"><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
@@ -3048,25 +3095,66 @@ setInterval(()=>location.reload(), 15*60*1000);
 loadBoard();
 
 const policyTile=document.querySelector(".ims-policy-tile");
+const policyButton=document.querySelector(".header-policy-button");
 const policyOverlay=document.getElementById("policyOverlay");
 const policyClose=document.getElementById("policyClose");
-policyTile?.addEventListener("click",()=>{policyOverlay.classList.add("active"); resetInactivity();});
+const policyOverlayTitle=document.getElementById("policyOverlayTitle");
+const policyOverlayBody=document.getElementById("policyOverlayBody");
+
+function canonicalPolicySite(){
+  return String(site?.name || siteKey || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"");
+}
+
+function showAustralianPolicy(){
+  if(policyOverlayTitle) policyOverlayTitle.textContent="IMS Policy";
+  if(policyOverlayBody){
+    policyOverlayBody.innerHTML=`<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>`;
+  }
+}
+
+function showSouthamptonPolicyMenu(){
+  if(policyOverlayTitle) policyOverlayTitle.textContent="IMS Policies";
+  if(policyOverlayBody){
+    policyOverlayBody.innerHTML=`
+      <div class="southampton-policy-selector">
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-health-safety-southampton.pdf" data-policy-title="Health and Safety Policy">Health and Safety Policy</button>
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-quality-southampton.pdf" data-policy-title="Quality Policy">Quality Policy</button>
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-environment-southampton.pdf" data-policy-title="Environment Policy">Environment Policy</button>
+      </div>`;
+
+    policyOverlayBody.querySelectorAll(".southampton-policy-button").forEach(button=>{
+      button.addEventListener("click",()=>{
+        const src=button.dataset.policySrc;
+        const title=button.dataset.policyTitle || "IMS Policy";
+        if(policyOverlayTitle) policyOverlayTitle.textContent=title;
+        policyOverlayBody.innerHTML=`<iframe src="${src}#view=FitH" title="${title}"></iframe>`;
+        resetInactivity();
+      });
+    });
+  }
+}
+
+function openSitePolicy(){
+  if(canonicalPolicySite()==="southampton"){
+    showSouthamptonPolicyMenu();
+  }else{
+    showAustralianPolicy();
+  }
+  policyOverlay?.classList.add("active");
+  resetInactivity();
+}
+
+policyTile?.addEventListener("click",openSitePolicy);
+policyButton?.addEventListener("click",openSitePolicy);
 policyClose?.addEventListener("click",()=>{policyOverlay.classList.remove("active"); resetInactivity();});
 policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyOverlay.classList.remove("active"); resetInactivity();}});
 
 </script>
-<script>
-document.addEventListener("DOMContentLoaded",()=>{
-  const btn=document.querySelector(".header-policy-button");
-  const overlay=document.getElementById("policyOverlay");
-  if(btn && overlay){
-    btn.addEventListener("click",()=>{
-      overlay.classList.add("active");
-      if(typeof resetInactivity==="function") resetInactivity();
-    });
-  }
-});
-</script>
+
 <script>
 (function(){
   const DESIGN_W = 1920;

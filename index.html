@@ -2263,7 +2263,7 @@ body > .ad-overlay{
 <h3>Report an Event</h3>
 </div>
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
-</div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Evacuation Map</h3></div><p>View site evacuation routes and assembly points.</p><div class="evac-tile-art evac-layered-art" aria-hidden="true">
+</div><button class="tile accent-green" data-content="emergency" id="emergencyTile" type="button"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Evacuation Map</h3></div><p>View site evacuation routes and assembly points.</p><div class="evac-tile-art evac-layered-art" aria-hidden="true">
   <img class="evac-map-layer" src="./assets/evac-map.png" alt="">
   <img class="evac-pin-layer" src="./assets/evac-pin.png" alt="">
   <svg class="evac-route-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -2277,7 +2277,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.36</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.37</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2384,6 +2384,32 @@ function applySite(){
     };
     imsCommitteeQR.src = qrPath;
     imsCommitteeQR.alt = `${site?.name || "Site"} IMS Committee QR code`;
+  }
+
+  /* South Melbourne uses its Emergency Assistance QR directly on the home tile.
+     Other sites keep the existing tap-to-open contacts and wardens panel. */
+  const emergencyTile = document.getElementById("emergencyTile");
+  if(emergencyTile){
+    const canonicalSiteName = String(site?.name || siteKey || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    if(canonicalSiteName === "south-melbourne") {
+      const qrPath = "./assets/emergency-assistance-south-melbourne.png?v=1";
+      const rootFallback = qrPath.replace("./assets/", "./");
+      emergencyTile.classList.add("report-event-tile", "emergency-qr-tile");
+      emergencyTile.removeAttribute("data-content");
+      emergencyTile.setAttribute("aria-label", "South Melbourne Emergency Assistance QR code");
+      emergencyTile.innerHTML = `
+        <div class="report-event-head">
+          <div class="icon">☎</div>
+          <h3>Emergency Assistance</h3>
+        </div>
+        <img class="home-qr" src="${qrPath}" alt="South Melbourne Emergency Assistance QR code"
+          onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}">`;
+    }
   }
 }
 

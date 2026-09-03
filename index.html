@@ -755,151 +755,6 @@ footer{
 }
 
 
-/* IMS Committee — site-specific QR tile, matching Report an Event layout */
-.ims-committee-tile{
-  background:linear-gradient(145deg,rgba(133,120,116,.84),rgba(133,120,116,.48)) !important;
-  border-color:rgba(133,120,116,.78) !important;
-  cursor:default !important;
-}
-.ims-committee-tile .icon{
-  background:rgba(61,57,53,.22) !important;
-}
-.ims-committee-tile:hover{
-  transform:none !important;
-}
-
-
-
-/* Emergency Assistance QR tile must retain the emergency red treatment */
-.tile.emergency-qr-tile{
-  background:linear-gradient(145deg,rgba(154,68,64,.82),rgba(112,48,46,.56)) !important;
-  border-color:rgba(190,92,86,.62) !important;
-}
-.tile.emergency-qr-tile .icon{
-  background:rgba(61,57,53,.24) !important;
-}
-
-
-/* Emergency Assistance — animated beacon for non-South Melbourne sites */
-.emergency-beacon-tile{
-  position:relative;
-  overflow:hidden;
-}
-.emergency-beacon-art{
-  position:absolute;
-  left:50%;
-  bottom:10px;
-  width:184px;
-  height:168px;
-  transform:translateX(-50%);
-  pointer-events:none;
-}
-.emergency-beacon-art img{
-  position:absolute;
-  left:50%;
-  bottom:0;
-  width:138px;
-  height:auto;
-  transform:translateX(-50%);
-  filter:drop-shadow(0 12px 16px rgba(0,0,0,.28));
-  z-index:2;
-}
-.emergency-beacon-rays{
-  position:absolute;
-  left:50%;
-  top:0;
-  width:150px;
-  height:76px;
-  transform:translateX(-50%);
-  z-index:1;
-}
-.emergency-beacon-ray{
-  position:absolute;
-  left:50%;
-  top:24px;
-  width:12px;
-  height:36px;
-  border-radius:999px;
-  background:linear-gradient(180deg,#ffd45a,#ff8a00);
-  box-shadow:0 0 12px rgba(255,174,31,.9);
-  transform-origin:50% 74px;
-  opacity:.18;
-  animation:emergencyBeaconFlash 1.05s ease-in-out infinite;
-}
-.emergency-beacon-ray:nth-child(1){transform:translateX(-50%) rotate(-52deg);animation-delay:0s}
-.emergency-beacon-ray:nth-child(2){transform:translateX(-50%) rotate(-25deg);animation-delay:.12s}
-.emergency-beacon-ray:nth-child(3){transform:translateX(-50%) rotate(0deg);animation-delay:.24s}
-.emergency-beacon-ray:nth-child(4){transform:translateX(-50%) rotate(25deg);animation-delay:.36s}
-.emergency-beacon-ray:nth-child(5){transform:translateX(-50%) rotate(52deg);animation-delay:.48s}
-@keyframes emergencyBeaconFlash{
-  0%,58%,100%{opacity:.14;filter:brightness(.85);scale:.92}
-  18%,34%{opacity:1;filter:brightness(1.35);scale:1.08}
-}
-@media (prefers-reduced-motion:reduce){
-  .emergency-beacon-ray{animation:none;opacity:.8}
-}
-
-/* Emergency Assistance — site-specific QR, contacts and wardens */
-.emergency-assistance-wrap{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:18px;
-}
-.emergency-assistance-card{
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:18px;
-  padding:22px;
-}
-.emergency-assistance-card h3{
-  margin:0 0 14px;
-  font-size:24px;
-}
-.emergency-role-list{
-  display:grid;
-  gap:10px;
-}
-.emergency-person{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px 14px;
-  border-radius:14px;
-  background:rgba(255,255,255,.08);
-  font-size:20px;
-  font-weight:700;
-}
-.emergency-person-icon{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:rgba(154,68,64,.32);
-  flex:0 0 38px;
-}
-.emergency-note{
-  margin-top:14px;
-  font-size:16px;
-  opacity:.78;
-}
-.emergency-qr-card{
-  text-align:center;
-}
-.emergency-qr-card img{
-  display:block;
-  width:min(430px,72vw);
-  max-height:62vh;
-  object-fit:contain;
-  margin:0 auto 16px;
-  padding:12px;
-  border-radius:18px;
-  background:#fff;
-}
-@media(max-width:900px){
-  .emergency-assistance-wrap{grid-template-columns:1fr}
-}
-
 /* soften the older generic rings/particles so the chevrons become the main brand device */
 .motion-bg .line{opacity:.55}
 .motion-bg .particle{opacity:.55}
@@ -2229,420 +2084,156 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.61 Southampton IMS Policy selector */
-.policy-selector{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:18px;
-  padding:8px 0;
-}
-.policy-choice{
-  width:100%;
-  min-height:112px;
-  border:0;
-  border-radius:18px;
-  background:#fff;
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px 28px;
-  cursor:pointer;
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.policy-choice:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 30px rgba(0,0,0,.16);
-}
-.policy-choice:active{
-  transform:translateY(0);
-}
-.policy-choice-title{
-  font-size:32px;
-  line-height:1.15;
-  font-weight:800;
-  color:#3D3935;
-  text-align:center;
-}
-.policy-pdf-wrap{
-  width:100%;
-  height:78vh;
-  border-radius:16px;
-  overflow:hidden;
-  background:#fff;
-}
-.policy-pdf-wrap iframe{
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-}
-
-
-/* v1.0.61 — site-aware header IMS Policy overlay */
-.policy-overlay-body{
-  flex:1;
-  min-height:0;
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  background:#f4f6f5;
-}
-.policy-overlay-body > iframe{
-  flex:1;
-  width:100%;
-  min-height:0;
-  border:0;
-  background:#fff;
-}
-.southampton-policy-selector{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:22px;
-  padding:42px 58px;
-}
-.southampton-policy-button{
-  min-height:130px;
-  width:100%;
-  border:1px solid rgba(61,57,53,.12);
-  border-radius:22px;
-  background:#fff;
-  color:#3D3935;
-  font:inherit;
-  font-size:30px;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow:0 10px 28px rgba(0,0,0,.12);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.southampton-policy-button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 14px 34px rgba(0,0,0,.16);
-}
-.southampton-policy-button:active{
-  transform:translateY(0);
-}
-
-
-/* v1.0.61 — hero panel restructure with uploadable current focus artwork */
-.hero{
-  display:flex !important;
-  flex-direction:column !important;
-  justify-content:flex-start !important;
-  gap:18px !important;
-}
-.hero-top{
-  display:flex;
-  flex-direction:column;
-}
-.hero-touch-hint{
-  margin-top:18px;
-  font-size:14px;
-  line-height:1.25;
-  color:rgba(255,255,255,.82);
-}
-.hero .focus-card{
-  margin-top:0 !important;
-  position:static !important;
-  width:100%;
-}
-.current-focus-artwork{
-  flex:1;
-  min-height:0;
-  width:100%;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  overflow:hidden;
-  border-radius:18px;
-}
-.current-focus-artwork img{
-  width:100%;
-  height:100%;
-  max-height:100%;
-  object-fit:contain;
-  object-position:center top;
-  display:block;
-  border-radius:18px;
-}
-
-
-/* v1.0.61 — simplified hero: Welcome → instruction → Current Focus → artwork */
-.hero-top .eyebrow{
-  margin-bottom:8px;
-}
-.hero-touch-hint{
-  margin-top:0 !important;
-}
-
-
-/* v1.0.61 — stronger Welcome heading */
-.hero-top .eyebrow{
-  font-size:28px !important;
-  line-height:1.05 !important;
-  font-weight:900 !important;
-  letter-spacing:.04em !important;
-  margin-bottom:14px !important;
-}
-
-
-/* v1.0.61 — configurable Current Focus media slot */
-.current-focus-artwork{
-  display:none !important;
-}
-.current-focus-media{
-  flex:1;
-  min-height:0;
-  width:100%;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  overflow:hidden;
-  border-radius:18px;
-}
-.current-focus-media img,
-.current-focus-media video{
-  width:100%;
-  height:100%;
-  max-height:100%;
-  object-fit:contain;
-  object-position:center top;
-  display:block;
-  border-radius:18px;
-}
-.current-focus-media video{
-  background:#000;
-}
-
-
-/* v1.0.61 — portrait Current Focus poster layout */
-.current-focus-campaign{
-  flex:1;
-  min-height:0;
-  width:100%;
-  display:flex;
-  flex-direction:column;
-}
-.current-focus-media{
-  flex:1;
-  min-height:0;
-  width:100%;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  overflow:hidden;
-  border-radius:18px;
-  background:rgba(255,255,255,.06);
-}
-.current-focus-media img,
-.current-focus-media video{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:center top;
-  display:block;
-  border-radius:18px;
-}
-.current-focus-copy{
-  display:none !important;
-}
-
-
-/* v1.0.61 — Current Focus uses heading + portrait poster only */
-#focusMessage{
-  display:none !important;
-}
-
-
-/* v1.0.61 — stronger centred Current Focus heading */
-.current-focus-card .label,
-.current-focus-card .title,
-#currentFocusLabel{
-  color:#fff !important;
-  font-size:26px !important;
-  line-height:1 !important;
-  font-weight:900 !important;
-  letter-spacing:.04em !important;
-  text-align:center !important;
-  width:100% !important;
-}
-
-/* Centre the heading vertically inside its existing rounded box */
-.current-focus-card{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-}
-
-
-/* v1.0.61 — centre CURRENT FOCUS inside its existing box */
-.current-focus-card{
-  position:relative !important;
-}
-.current-focus-card .label,
-.current-focus-card .title,
-#currentFocusLabel{
-  position:absolute !important;
-  inset:0 !important;
-  margin:0 !important;
-  padding:0 !important;
-  width:100% !important;
-  height:100% !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  text-align:center !important;
-  color:#fff !important;
-  font-size:30px !important;
-  line-height:1 !important;
-  font-weight:900 !important;
-  letter-spacing:.05em !important;
-}
-
-
-/* v1.0.61 — correctly centre the existing Current Focus box */
-.hero .focus-card{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  min-height:68px !important;
-  padding:0 24px !important;
-  box-sizing:border-box !important;
-}
-.hero .focus-card .focus-label{
-  margin:0 !important;
-  padding:0 !important;
-  width:100% !important;
-  text-align:center !important;
-  color:#fff !important;
-  font-size:30px !important;
-  line-height:1 !important;
-  font-weight:900 !important;
-  letter-spacing:.05em !important;
-}
-
-
-/* v1.0.61 — keep Current Focus LEFT aligned, centre it VERTICALLY only */
-.hero .focus-card{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:flex-start !important;
-  padding:0 24px !important;
-  box-sizing:border-box !important;
-}
-.hero .focus-card .focus-label{
-  margin:0 !important;
-  padding:0 !important;
-  width:auto !important;
-  text-align:left !important;
-  color:#fff !important;
-  font-size:30px !important;
-  line-height:1 !important;
-  font-weight:900 !important;
-  letter-spacing:.05em !important;
-}
-
-
-/* v1.0.61 — visually centre Current Focus vertically; keep left alignment */
-.hero .focus-card .focus-label{
-  font-size:34px !important;
-  font-weight:950 !important;
-  line-height:1 !important;
-  transform:translateY(5px) !important;
-}
-
-
-/* v1.0.61 — breathing room around Current Focus poster */
-.current-focus-media{
-  padding:18px 0 !important;
-  box-sizing:border-box !important;
-}
-.current-focus-media img,
-.current-focus-media video{
-  max-height:100% !important;
-}
-
-
-/* v1.0.61 — fix the ACTUAL Current Focus heading element */
-.hero .focus-card{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:flex-start !important;
-  padding:0 24px !important;
-  box-sizing:border-box !important;
-}
-
-.hero .focus-card .focus-title{
-  margin:0 !important;
-  padding:0 !important;
-  color:#fff !important;
-  font-size:32px !important;
-  line-height:1 !important;
-  font-weight:900 !important;
-  letter-spacing:.04em !important;
-  text-align:left !important;
-  transform:translateY(1px) !important;
-}
-
-
-/* v1.0.61 — Current Focus + configurable campaign title */
-.hero .focus-card .focus-title{
-  margin:0 !important;
-  padding:0 !important;
-  display:flex !important;
-  align-items:center !important;
-  gap:12px !important;
-  color:#fff !important;
-  font-size:28px !important;
-  line-height:1 !important;
-  font-weight:900 !important;
-  letter-spacing:.035em !important;
-  text-align:left !important;
-  transform:translateY(1px) !important;
-  white-space:nowrap !important;
-}
-.focus-separator{
-  font-weight:500 !important;
-  opacity:.7;
-}
-.focus-dynamic-title{
-  font-weight:600 !important;
-  opacity:.92;
-  letter-spacing:.015em !important;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-
-/* v1.0.61 — reduce Current Focus heading size to allow longer campaign titles */
-.hero .focus-card .focus-title{
-  font-size:22px !important;
-  gap:10px !important;
-}
-.focus-label-fixed{
-  font-weight:900 !important;
-}
-.focus-dynamic-title{
-  font-weight:650 !important;
-}
-
-
-/* v1.0.61 — align Current Focus label and dynamic title on the same text baseline */
-.hero .focus-card .focus-title{
-  align-items:baseline !important;
-  line-height:1 !important;
-}
-.focus-label-fixed,
-.focus-dynamic-title,
-.focus-separator{
-  line-height:1 !important;
-  vertical-align:baseline !important;
-}
-.focus-separator{
+/* =========================================================
+   v1.0.34 — STANDARD POPUP VISUAL REFRESH
+   Fixed-size standard popups with a distinct graphite layer
+   and slower animated NK9 background imagery.
+   Emergency/EAP image viewers retain their dedicated layouts.
+   ========================================================= */
+.overlay .panel{
   position:relative;
-  top:0 !important;
+  width:min(1500px,94vw);
+  height:min(800px,86vh);
+  max-height:none;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  isolation:isolate;
+  padding:38px 42px 36px;
+  color:#f7f8f7;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:32px;
+  background:
+    radial-gradient(circle at 12% 18%,rgba(70,78,126,.28),transparent 34%),
+    radial-gradient(circle at 88% 82%,rgba(29,130,150,.18),transparent 30%),
+    linear-gradient(145deg,#27282b 0%,#1d1f22 52%,#151719 100%);
+  box-shadow:0 34px 100px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.overlay .panel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:.72;
+  background:
+    linear-gradient(120deg,transparent 0 46%,rgba(255,255,255,.025) 46% 47%,transparent 47% 100%),
+    radial-gradient(circle at 25% 30%,rgba(255,255,255,.055) 0 2px,transparent 3px),
+    radial-gradient(circle at 70% 68%,rgba(169,194,63,.12) 0 2px,transparent 3px);
+  background-size:100% 100%,110px 110px,145px 145px;
+}
+.overlay .panel-head,
+.overlay #panelBody{
+  position:relative;
+  z-index:2;
+}
+.overlay .panel-head{
+  flex:0 0 auto;
+  padding-bottom:22px;
+  margin-bottom:4px;
+  border-bottom:1px solid rgba(255,255,255,.11);
+}
+.overlay .panel .eyebrow{
+  color:#b7bf8a !important;
+  letter-spacing:.10em;
+}
+.overlay .panel h2{
+  color:#fff;
+  font-size:38px;
+  letter-spacing:-.02em;
+}
+.overlay .panel #panelIntro{
+  color:rgba(255,255,255,.68);
+  margin-bottom:0;
+}
+.overlay #panelBody{
+  flex:1 1 auto;
+  min-height:0;
+  overflow:auto;
+  padding:24px 8px 8px 0;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.28) transparent;
+}
+.overlay #panelBody::-webkit-scrollbar{width:8px}
+.overlay #panelBody::-webkit-scrollbar-track{background:transparent}
+.overlay #panelBody::-webkit-scrollbar-thumb{background:rgba(255,255,255,.24);border-radius:20px}
+.overlay .content-box{
+  color:#292b2d;
+  background:rgba(250,251,250,.94);
+  border:1px solid rgba(255,255,255,.58);
+  box-shadow:0 14px 34px rgba(0,0,0,.16);
+  backdrop-filter:blur(12px);
+}
+.overlay .content-box p{color:#575b5c}
+.overlay .close{
+  position:relative;
+  z-index:4;
+  color:#f6f7f6;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+  transition:transform .18s ease,background .18s ease;
+}
+.overlay .close:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.16);
+}
+
+/* Atmospheric moving imagery behind popup content */
+.popup-motion{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  overflow:hidden;
+  pointer-events:none;
+  border-radius:inherit;
+}
+.popup-motion .popup-cam{
+  position:absolute;
+  width:145px;
+  height:auto;
+  opacity:.075;
+  filter:grayscale(.30) saturate(.75) brightness(1.18);
+  will-change:transform;
+}
+.popup-motion .pc-a{left:-7%;top:18%;animation:popupCamA 28s linear infinite}
+.popup-motion .pc-b{right:-9%;top:55%;width:175px;animation:popupCamB 34s linear infinite}
+.popup-motion .pc-c{left:38%;bottom:-15%;width:125px;animation:popupCamC 31s ease-in-out infinite alternate}
+.popup-motion .popup-chevron{
+  position:absolute;
+  width:92px;
+  height:32px;
+  opacity:.075;
+  border-top:10px solid rgba(255,255,255,.85);
+  border-right:10px solid rgba(255,255,255,.85);
+  transform:skewX(-34deg) rotate(18deg);
+  animation:popupChevron 24s linear infinite;
+}
+.popup-motion .pch-a{left:-10%;top:35%;animation-delay:-3s}
+.popup-motion .pch-b{left:-18%;top:72%;animation-delay:-14s;opacity:.055}
+@keyframes popupCamA{
+  from{transform:translate3d(-40px,0,0) rotate(-4deg)}
+  to{transform:translate3d(1660px,110px,0) rotate(5deg)}
+}
+@keyframes popupCamB{
+  from{transform:translate3d(80px,0,0) rotate(5deg)}
+  to{transform:translate3d(-1700px,-120px,0) rotate(-5deg)}
+}
+@keyframes popupCamC{
+  from{transform:translate3d(-120px,15px,0) rotate(-3deg)}
+  to{transform:translate3d(220px,-135px,0) rotate(5deg)}
+}
+@keyframes popupChevron{
+  from{transform:translate3d(0,0,0) skewX(-34deg) rotate(18deg)}
+  to{transform:translate3d(1780px,-95px,0) skewX(-34deg) rotate(18deg)}
+}
+
+/* Dedicated image viewers keep their purpose-built large presentation. */
+.overlay.active:has(.evacuation-image-popup) .popup-motion,
+.overlay.active:has(.eap-image-popup) .popup-motion{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  .popup-motion *{animation:none!important}
 }
 
 </style>
@@ -2690,36 +2281,11 @@ body > .ad-overlay{
 </div>
 </header>
 <main>
-<section class="hero">
-  <div class="hero-top">
-    <div class="eyebrow">Welcome</div>
-    <div class="touch-hint hero-touch-hint">Touch any tile to open • Returns home automatically after inactivity</div>
-  </div>
-
-  <div class="focus-card">
-    <div class="focus-title"><span class="focus-label-fixed">Current focus</span><span class="focus-separator" id="currentFocusSeparator">|</span><span class="focus-dynamic-title" id="currentFocusDynamicTitle"></span></div>
-    <div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div>
-  </div>
-
-  <div class="current-focus-campaign" id="currentFocusCampaign">
-    <div class="current-focus-media" id="currentFocusMedia" aria-label="Current focus media"></div>
-    <div class="current-focus-copy" id="currentFocusCopy">
-      <div class="current-focus-copy-title" id="currentFocusTitle"></div>
-      <div class="current-focus-copy-text" id="currentFocusText"></div>
-      <div class="current-focus-copy-action" id="currentFocusAction"></div>
-    </div>
-  </div>
-</section>
-<section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance Program</h3></div><p>Confidential support and wellbeing assistance.</p><div class="eap-tile-art eap-layered-art" aria-hidden="true">
+<section class="hero"><div><div class="eyebrow">Welcome</div><h2 id="heroTitle">Your safety information. One touch away.</h2><p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p></div><div class="focus-card"><div class="focus-title">Current focus</div><div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div><div class="touch-hint">Touch any tile to open • Returns home automatically after inactivity</div></div></section>
+<section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance</h3></div><p>Confidential support and wellbeing assistance.</p><div class="eap-tile-art eap-layered-art" aria-hidden="true">
   <img class="eap-hands-layer" src="./assets/eap-hands.png" alt="">
   <img class="eap-heart-layer" src="./assets/eap-heart.png" alt="">
-</div></button><div aria-label="IMS Committee QR code" class="tile ims-committee-tile report-event-tile">
-<div class="report-event-head">
-<div class="icon">🗒</div>
-<h3>IMS Committee</h3>
-</div>
-<img id="imsCommitteeQR" alt="IMS Committee QR code" class="home-qr" src="./assets/ims-committee-south-melbourne.png?v=1"/>
-</div><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👷</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><div class="hsr-tile-art hsr-layered-art" aria-hidden="true">
+</div></button><button class="tile" data-content="minutes"><div class="tile-head"><div class="icon">🗒</div><h3>IMS Committee Minutes</h3></div><p id="minutesDate">Latest meeting: August 2026</p></button><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👥</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><div class="hsr-tile-art hsr-layered-art" aria-hidden="true">
   <img class="hsr-main-layer" src="./assets/hsr-worker.png" alt="">
   <div class="hsr-signal-bars">
     <span class="hsr-signal hsr-signal-1"></span>
@@ -2728,7 +2294,7 @@ body > .ad-overlay{
   </div>
 </div></button><button class="tile hazards-tile" data-content="hazards">
 <div class="hazards-head">
-<div class="icon">⚠</div>
+<div class="icon">◎</div>
 <h3>Hazards and Near Misses</h3>
 </div>
 <div class="hazards-values">
@@ -2768,7 +2334,7 @@ body > .ad-overlay{
 <h3>Report an Event</h3>
 </div>
 <img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
-</div><button class="tile accent-green" data-content="emergency" id="emergencyTile" type="button"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">📍</div><h3>Emergency Evacuation Map</h3></div><p>View site evacuation routes and assembly points.</p><div class="evac-tile-art evac-layered-art" aria-hidden="true">
+</div><button class="tile accent-green" data-content="emergency"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">⌖</div><h3>Emergency Evacuation Map</h3></div><p>View site evacuation routes and assembly points.</p><div class="evac-tile-art evac-layered-art" aria-hidden="true">
   <img class="evac-map-layer" src="./assets/evac-map.png" alt="">
   <img class="evac-pin-layer" src="./assets/evac-pin.png" alt="">
   <svg class="evac-route-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -2782,18 +2348,18 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.61</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.34</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
 <div class="policy-head">
-<div><div class="eyebrow">DOCUMENT</div><h2 id="policyOverlayTitle">IMS Policy</h2></div>
+<div><div class="eyebrow">DOCUMENT</div><h2>IMS Policy</h2></div>
 <button aria-label="Close" class="policy-close" id="policyClose" type="button">✕</button>
 </div>
-<div id="policyOverlayBody" class="policy-overlay-body"><iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe></div>
+<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
 </div>
 </div>
-<div class="overlay" id="overlay"><div class="panel"><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
+<div class="overlay" id="overlay"><div class="panel"><div class="popup-motion" aria-hidden="true"><img class="popup-cam pc-a" src="./assets/nk9-grey.png" alt=""><img class="popup-cam pc-b" src="./assets/nk9-purple.png" alt=""><img class="popup-cam pc-c" src="./assets/nk9-teal.png" alt=""><span class="popup-chevron pch-a"></span><span class="popup-chevron pch-b"></span></div><div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
 <div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div>
 <script>
 const params = new URLSearchParams(location.search);
@@ -2831,6 +2397,8 @@ async function loadBoard(){
     document.getElementById("siteName").textContent = "HSE Noticeboard";
     const siteSubtitleEl = document.getElementById("siteSubtitle");
     if (siteSubtitleEl) siteSubtitleEl.textContent = "Content unavailable";
+    document.getElementById("heroTitle").textContent = "Noticeboard content could not be loaded.";
+    document.getElementById("heroText").textContent = "Please check the site configuration file.";
     return;
   }
 
@@ -2839,97 +2407,15 @@ async function loadBoard(){
   resetInactivity();
 }
 
-
-function renderCurrentFocus(){
-  const mediaSlot = document.getElementById("currentFocusMedia");
-  const copyWrap = document.getElementById("currentFocusCopy");
-  const titleEl = document.getElementById("currentFocusTitle");
-  const textEl = document.getElementById("currentFocusText");
-  const actionEl = document.getElementById("currentFocusAction");
-
-  if(!mediaSlot) return;
-
-  mediaSlot.innerHTML = "";
-
-  const focus = globalContent?.currentFocus || {
-    type: "image",
-    src: "./assets/current-focus.png",
-    title: "",
-    text: "",
-    action: ""
-  };
-
-  const dynamicTitle = document.getElementById("currentFocusDynamicTitle");
-  const separator = document.getElementById("currentFocusSeparator");
-  const campaignTitle = String(focus.title || "").trim();
-
-  if(dynamicTitle){
-    dynamicTitle.textContent = campaignTitle;
-    dynamicTitle.style.display = campaignTitle ? "inline" : "none";
-  }
-  if(separator){
-    separator.style.display = campaignTitle ? "inline" : "none";
-  }
-
-  const type = String(focus.type || "image").toLowerCase();
-  const src = String(focus.src || "").trim();
-
-  if(titleEl){
-    titleEl.textContent = focus.title || "";
-    titleEl.style.display = focus.title ? "block" : "none";
-  }
-  if(textEl){
-    textEl.textContent = focus.text || "";
-    textEl.style.display = focus.text ? "block" : "none";
-  }
-  if(actionEl){
-    actionEl.textContent = focus.action || "";
-    actionEl.style.display = focus.action ? "block" : "none";
-  }
-  if(copyWrap){
-    copyWrap.style.display = (focus.title || focus.text || focus.action) ? "flex" : "none";
-  }
-
-  if(!src){
-    mediaSlot.style.display = "none";
-    return;
-  }
-
-  mediaSlot.style.display = "flex";
-
-  if(type === "video"){
-    const video = document.createElement("video");
-    video.src = src;
-    video.autoplay = true;
-    video.muted = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.setAttribute("playsinline","");
-    video.setAttribute("muted","");
-    video.setAttribute("autoplay","");
-    video.setAttribute("loop","");
-    video.setAttribute("aria-label","Current focus video");
-    video.addEventListener("error",()=>{ mediaSlot.style.display = "none"; });
-    mediaSlot.appendChild(video);
-    video.play().catch(()=>{});
-    return;
-  }
-
-  const image = document.createElement("img");
-  image.src = src;
-  image.alt = focus.alt || focus.title || "Current focus";
-  image.addEventListener("error",()=>{ mediaSlot.style.display = "none"; });
-  mediaSlot.appendChild(image);
-}
-
 function applySite(){
   document.getElementById("siteName").textContent = site.name;
   const siteSubtitleEl = document.getElementById("siteSubtitle");
     if (siteSubtitleEl) siteSubtitleEl.textContent = site.subtitle;
   const footerSiteEl = document.getElementById("footerSite");
     if (footerSiteEl) footerSiteEl.textContent = site.name;
+  document.getElementById("heroTitle").textContent = site.heroTitle;
+  document.getElementById("heroText").textContent = site.heroText;
   document.getElementById("focusMessage").textContent = site.focus;
-  renderCurrentFocus();
   const tifr = globalContent.tifr;
   document.getElementById("tifrMetric").textContent = Number(tifr.lastMonth).toFixed(1);
   document.getElementById("tifrTarget").textContent = Number(tifr.target).toFixed(1);
@@ -2948,71 +2434,7 @@ function applySite(){
   hazardsTile.classList.toggle("hazards-good", hazardsGood);
   hazardsTile.classList.toggle("hazards-bad", !hazardsGood);
   document.getElementById("hazardsStatus").textContent = hazardsGood ? "On target" : "Below target";
-  const minutesDateEl = document.getElementById("minutesDate");
-  if(minutesDateEl) minutesDateEl.textContent = "Latest meeting: " + globalContent.minutesDate;
-
-  const imsCommitteeQR = document.getElementById("imsCommitteeQR");
-  if(imsCommitteeQR){
-    const canonicalSiteName = String(site?.name || siteKey || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-    const qrPath = `./assets/ims-committee-${canonicalSiteName}.png?v=1`;
-    const rootFallback = qrPath.replace("./assets/", "./");
-    imsCommitteeQR.dataset.fallback = "";
-    imsCommitteeQR.onerror = function(){
-      if(!this.dataset.fallback){
-        this.dataset.fallback = "1";
-        this.src = rootFallback;
-      }
-    };
-    imsCommitteeQR.src = qrPath;
-    imsCommitteeQR.alt = `${site?.name || "Site"} IMS Committee QR code`;
-  }
-
-  /* South Melbourne uses its Emergency Assistance QR directly on the home tile.
-     Other sites keep the existing tap-to-open contacts and wardens panel. */
-  const emergencyTile = document.getElementById("emergencyTile");
-  if(emergencyTile){
-    const canonicalSiteName = String(site?.name || siteKey || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    if(canonicalSiteName === "south-melbourne") {
-      const qrPath = "./assets/emergency-assistance-south-melbourne.png?v=1";
-      const rootFallback = qrPath.replace("./assets/", "./");
-      emergencyTile.classList.add("report-event-tile", "emergency-qr-tile");
-      emergencyTile.removeAttribute("data-content");
-      emergencyTile.setAttribute("aria-label", "South Melbourne Emergency Assistance QR code");
-      emergencyTile.innerHTML = `
-        <div class="report-event-head">
-          <div class="icon">☎</div>
-          <h3>Emergency Assistance</h3>
-        </div>
-        <img class="home-qr" src="${qrPath}" alt="South Melbourne Emergency Assistance QR code"
-          onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}">`;
-    } else {
-      const beaconPath = "./assets/emergency-beacon.png?v=1";
-      const beaconFallback = beaconPath.replace("./assets/", "./");
-      emergencyTile.classList.add("emergency-beacon-tile");
-      emergencyTile.innerHTML = `
-        <div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div>
-        <p>Emergency contacts and wardens for this site.</p>
-        <div class="emergency-beacon-art" aria-hidden="true">
-          <div class="emergency-beacon-rays">
-            <span class="emergency-beacon-ray"></span>
-            <span class="emergency-beacon-ray"></span>
-            <span class="emergency-beacon-ray"></span>
-            <span class="emergency-beacon-ray"></span>
-            <span class="emergency-beacon-ray"></span>
-          </div>
-          <img src="${beaconPath}" alt="" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${beaconFallback}';}">
-        </div>`;
-    }
-  }
+  document.getElementById("minutesDate").textContent = "Latest meeting: " + globalContent.minutesDate;
 }
 
 function scheduleAdvert(){
@@ -3268,38 +2690,11 @@ function getContent(){
       intro:`Current meeting minutes for ${site.name}.`,
       body:()=>`<div class="content-box"><h3>${globalContent.minutesDate}</h3>${qrBox("minutes","IMS Committee Minutes","global")}${linkButton(globalContent.links.minutes,"Open latest minutes")}</div>`
     },
-    ims:{
-  title:"IMS Policy",
-  intro:`Integrated Management System policy information for ${site.name}.`,
-  body:()=>{
-    const canonicalSiteName = String(site?.name || siteKey || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    if(canonicalSiteName === "southampton"){
-      return `
-        <div class="content-box">
-          <div class="policy-selector">
-            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-health-safety-southampton.pdf','Health and Safety Policy')">
-              <span class="policy-choice-title">Health and Safety Policy</span>
-            </button>
-            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-quality-southampton.pdf','Quality Policy')">
-              <span class="policy-choice-title">Quality Policy</span>
-            </button>
-            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-environment-southampton.pdf','Environment Policy')">
-              <span class="policy-choice-title">Environment Policy</span>
-            </button>
-          </div>
-        </div>`;
-    }
-
-    return `<div class="policy-pdf-wrap">
-      <iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
-    </div>`;
-  }
-},
+    policy:{
+      title:"IMS Policy",
+      intro:"Read the current Integrated Management System Policy.",
+      body:()=>`<div class="content-box">${linkButton(globalContent.links.policy,"Open IMS Policy")}</div>`
+    },
     hsr:{
       title:"Your Health and Safety Representatives",
       intro:"Know who represents workers on health and safety matters.",
@@ -3317,62 +2712,11 @@ function getContent(){
     },
     emergency:{
       title:"Emergency Assistance",
-      intro:`Emergency contacts and wardens for ${site.name}.`,
-      body:()=>{
-        const canonicalSiteName = String(site?.name || siteKey || "")
-          .trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-
-        const emergencyContacts = {
-          "minto":["Nicole Klein"],
-          "silverwater":["Bradley Turner","Channtelle Yassir","Jason Craig","Louise Comacchio"],
-          "southampton":["Kayle Seaward-Dumbris","Imre Oks","Stephanie Sonny","Beki Edkins","Wlodzimierz Sawicki"]
-        };
-
-        const emergencyWardens = {
-          "minto":["Nicole Klein"],
-          "silverwater":["Veronica Lincoln","Anthony Brown","Kim Rogers"],
-          "southampton":["Fatema Bardouh","Imre Oks","Michael Hole","Sean Masterson","Stephanie Sonny"]
-        };
-
-        const peopleList = (people=[]) => people.length
-          ? `<div class="emergency-role-list">${people.map(name=>`<div class="emergency-person"><span class="emergency-person-icon">👤</span><span>${name}</span></div>`).join("")}</div>`
-          : `<p>Details will be added here when confirmed.</p>`;
-
-        if(canonicalSiteName === "south-melbourne"){
-          const qr = "./assets/emergency-assistance-south-melbourne.png";
-          const rootFallback = qr.replace("./assets/","./");
-          return `<div class="emergency-assistance-wrap">
-            <div class="emergency-assistance-card emergency-qr-card">
-              <h3>Emergency Assistance</h3>
-              <img src="${qr}" alt="South Melbourne Emergency Assistance QR code" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}">
-              <p>Scan the QR code for South Melbourne emergency assistance information.</p>
-            </div>
-            <div class="emergency-assistance-card">
-              <h3>In an emergency</h3>
-              <p>Follow site emergency procedures and call emergency services where required.</p>
-            </div>
-          </div>`;
-        }
-
-        return `<div class="emergency-assistance-wrap">
-          <div class="emergency-assistance-card">
-            <h3>Emergency Contacts</h3>
-            ${peopleList(emergencyContacts[canonicalSiteName])}
-            <div class="emergency-note">Phone numbers can be added once confirmed.</div>
-          </div>
-          <div class="emergency-assistance-card">
-            <h3>Emergency Wardens</h3>
-            ${peopleList(emergencyWardens[canonicalSiteName])}
-          </div>
-          <div class="emergency-assistance-card" style="grid-column:1/-1">
-            <h3>In an emergency</h3>
-            <p>Follow site emergency procedures and call emergency services where required.</p>
-          </div>
-        </div>`;
-      }
+      intro:"Urgent support, Hunt Line and emergency information.",
+      body:()=>`<div class="content-grid">
+        <div class="content-box">${qrBox("emergency","Emergency Assistance Hunt Line")}${linkButton(site.links.emergency,"Open Emergency Assistance")}</div>
+        <div class="content-box"><h3>In an emergency</h3><p>Follow your site emergency procedures and call emergency services where required.</p></div>
+      </div>`
     },
     map:{
       title:"Emergency Evacuation Map",
@@ -3417,39 +2761,13 @@ function getContent(){
     },
     injury:{
       title:"If You Are Injured",
-      intro:`Injury information for ${site.name}.`,
-      body:()=>{
-        const injuryPosters = {
-          "minto":"./assets/injury-minto.png",
-          "silverwater":"./assets/injury-silverwater.png",
-          "south-melbourne":"./assets/injury-south-melbourne.png",
-          "southampton":"./assets/injury-southampton.png"
-        };
-
-        const canonicalSiteName = String(site?.name || siteKey || "")
-          .trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-
-        const injuryPoster =
-          injuryPosters[canonicalSiteName] ||
-          injuryPosters[String(siteKey || "").toLowerCase()];
-
-        if(!injuryPoster){
-          return `<div class="content-box"><p>No injury poster has been configured for ${site?.name || "this site"}.</p></div>`;
-        }
-
-        const rootFallback = injuryPoster.replace("./assets/","./");
-
-        return `<div class="evacuation-image-popup injury-image-popup">
-          <img
-            src="${injuryPoster}"
-            alt="${site?.name || "Site"} If You Are Injured poster"
-            onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}"
-          >
-        </div>`;
-      }
+      intro:"What to do if you are injured at work.",
+      body:()=>`<div class="content-box">
+        <h3>If you are injured</h3>
+        <p>Follow the current injury response process and seek assistance promptly.</p>
+        ${qrBox("injury","Injury guidance","global")}
+        ${linkButton(globalContent?.links?.injury,"Open injury guidance")}
+      </div>`
     }
   };
 }
@@ -3514,77 +2832,25 @@ setInterval(()=>location.reload(), 15*60*1000);
 loadBoard();
 
 const policyTile=document.querySelector(".ims-policy-tile");
-const policyButton=document.querySelector(".header-policy-button");
 const policyOverlay=document.getElementById("policyOverlay");
 const policyClose=document.getElementById("policyClose");
-const policyOverlayTitle=document.getElementById("policyOverlayTitle");
-const policyOverlayBody=document.getElementById("policyOverlayBody");
-
-
-function updatePolicyButtonLabel(){
-  const policyButton=document.querySelector(".header-policy-button");
-  if(!policyButton) return;
-  policyButton.textContent = canonicalPolicySite()==="southampton"
-    ? "View IMS Policies"
-    : "View IMS Policy";
-}
-
-function canonicalPolicySite(){
-  return String(site?.name || siteKey || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g,"-")
-    .replace(/^-+|-+$/g,"");
-}
-
-function showAustralianPolicy(){
-  if(policyOverlayTitle) policyOverlayTitle.textContent="IMS Policy";
-  if(policyOverlayBody){
-    policyOverlayBody.innerHTML=`<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>`;
-  }
-}
-
-function showSouthamptonPolicyMenu(){
-  if(policyOverlayTitle) policyOverlayTitle.textContent="IMS Policies";
-  if(policyOverlayBody){
-    policyOverlayBody.innerHTML=`
-      <div class="southampton-policy-selector">
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-health-safety-southampton.pdf" data-policy-title="Health and Safety Policy">Health and Safety Policy</button>
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-quality-southampton.pdf" data-policy-title="Quality Policy">Quality Policy</button>
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-environment-southampton.pdf" data-policy-title="Environment Policy">Environment Policy</button>
-      </div>`;
-
-    policyOverlayBody.querySelectorAll(".southampton-policy-button").forEach(button=>{
-      button.addEventListener("click",()=>{
-        const src=button.dataset.policySrc;
-        const title=button.dataset.policyTitle || "IMS Policy";
-        if(policyOverlayTitle) policyOverlayTitle.textContent=title;
-        policyOverlayBody.innerHTML=`<iframe src="${src}#view=FitH" title="${title}"></iframe>`;
-        resetInactivity();
-      });
-    });
-  }
-}
-
-function openSitePolicy(){
-  if(canonicalPolicySite()==="southampton"){
-    showSouthamptonPolicyMenu();
-  }else{
-    showAustralianPolicy();
-  }
-  policyOverlay?.classList.add("active");
-  resetInactivity();
-}
-
-updatePolicyButtonLabel();
-
-policyTile?.addEventListener("click",openSitePolicy);
-policyButton?.addEventListener("click",openSitePolicy);
+policyTile?.addEventListener("click",()=>{policyOverlay.classList.add("active"); resetInactivity();});
 policyClose?.addEventListener("click",()=>{policyOverlay.classList.remove("active"); resetInactivity();});
 policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyOverlay.classList.remove("active"); resetInactivity();}});
 
 </script>
-
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const btn=document.querySelector(".header-policy-button");
+  const overlay=document.getElementById("policyOverlay");
+  if(btn && overlay){
+    btn.addEventListener("click",()=>{
+      overlay.classList.add("active");
+      if(typeof resetInactivity==="function") resetInactivity();
+    });
+  }
+});
+</script>
 <script>
 (function(){
   const DESIGN_W = 1920;
@@ -3732,18 +2998,6 @@ policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyO
   cameras.forEach(cam=>launch(cam,true));
   setTimeout(performFlash, random(6500,11000));
 })();
-
-function openPolicyPdf(src, title){
-  const panelTitle = document.getElementById("panelTitle");
-  const panelIntro = document.getElementById("panelIntro");
-  const panelBody = document.getElementById("panelBody");
-  if(panelTitle) panelTitle.textContent = title || "IMS Policy";
-  if(panelIntro) panelIntro.textContent = "";
-  if(panelBody){
-    panelBody.innerHTML = `<div class="policy-pdf-wrap"><iframe src="${src}#view=FitH" title="${title || "IMS Policy"}"></iframe></div>`;
-  }
-}
-
 </script>
 
 

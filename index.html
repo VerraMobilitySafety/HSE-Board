@@ -770,6 +770,15 @@ footer{
 
 
 
+/* Emergency Assistance QR tile must retain the emergency red treatment */
+.tile.emergency-qr-tile{
+  background:linear-gradient(145deg,rgba(154,68,64,.82),rgba(112,48,46,.56)) !important;
+  border-color:rgba(190,92,86,.62) !important;
+}
+.tile.emergency-qr-tile .icon{
+  background:rgba(61,57,53,.24) !important;
+}
+
 /* Emergency Assistance — site-specific QR, contacts and wardens */
 .emergency-assistance-wrap{
   display:grid;
@@ -2277,7 +2286,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.37</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.38</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

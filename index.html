@@ -3003,6 +3003,38 @@ body > .ad-overlay{
   line-height:1.5;
 }
 
+
+
+/* v1.0.70 — PDF hazard alerts in the existing idle/screensaver system */
+.ad-overlay .ad-pdf-wrap{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:26px 34px 34px;
+  background:#17191b;
+  overflow:hidden;
+}
+.ad-overlay .ad-pdf-canvas{
+  display:block;
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  background:#fff;
+  box-shadow:0 18px 55px rgba(0,0,0,.45);
+}
+.ad-overlay .ad-pdf-loading{
+  padding:26px 34px;
+  border-radius:18px;
+  background:#fff;
+  color:#3D3935;
+  font-size:22px;
+  font-weight:800;
+  box-shadow:0 14px 45px rgba(0,0,0,.32);
+}
+
 </style>
 </head>
 <body>
@@ -3140,7 +3172,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.69</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.70</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -3418,6 +3450,57 @@ function advertAppliesToSite(ad){
   });
 }
 
+async function renderAdvertPdf(file,title){
+  adOverlay.innerHTML=`
+    <div class="ad-pdf-wrap">
+      <div class="ad-pdf-loading">Loading ${title || "Safety alert"}…</div>
+      <div class="small" style="position:absolute;right:28px;bottom:24px;color:#fff;background:rgba(0,0,0,.45);padding:10px 14px;border-radius:999px;font-weight:800;">
+        Touch anywhere to return to the HSE Noticeboard
+      </div>
+    </div>`;
+
+  try{
+    if(!window.pdfjsLib){
+      throw new Error("PDF.js is not available.");
+    }
+
+    const loadingTask=window.pdfjsLib.getDocument(encodeURI(file));
+    const pdf=await loadingTask.promise;
+    const page=await pdf.getPage(1);
+
+    const wrap=adOverlay.querySelector(".ad-pdf-wrap");
+    if(!wrap) return;
+
+    const base=page.getViewport({scale:1});
+    const maxWidth=Math.max(320,wrap.clientWidth-80);
+    const maxHeight=Math.max(320,wrap.clientHeight-90);
+    const scale=Math.min(maxWidth/base.width,maxHeight/base.height,2.4);
+    const viewport=page.getViewport({scale});
+
+    const canvas=document.createElement("canvas");
+    canvas.className="ad-pdf-canvas";
+    canvas.width=Math.floor(viewport.width);
+    canvas.height=Math.floor(viewport.height);
+    canvas.style.width=Math.floor(viewport.width)+"px";
+    canvas.style.height=Math.floor(viewport.height)+"px";
+
+    const loading=wrap.querySelector(".ad-pdf-loading");
+    loading?.replaceWith(canvas);
+
+    await page.render({
+      canvasContext:canvas.getContext("2d"),
+      viewport
+    }).promise;
+  }catch(error){
+    console.error("Screensaver PDF render error:",error);
+    adOverlay.innerHTML=`
+      <div class="ad-media-error">
+        This screensaver PDF could not be loaded:<br>
+        <strong>${file}</strong>
+      </div>`;
+  }
+}
+
 function showAdvert(){
   if(overlay.classList.contains("active") || !adverts.length) return;
 
@@ -3447,6 +3530,8 @@ function showAdvert(){
           <strong>${file}</strong>
         </div>`;
     });
+  }else if(file && (type==="pdf" || /\.pdf$/i.test(file))){
+    renderAdvertPdf(file,ad.title || ad.kicker || "Safety alert");
   }else if(file && (type==="video" || /\.(mp4|webm|ogg)$/i.test(file))){
     adOverlay.innerHTML=`
       <div class="ad-media-wrap">

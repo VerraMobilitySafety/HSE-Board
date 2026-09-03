@@ -1,0 +1,8 @@
+{
+  "settings": {
+    "startAfterSeconds": 90,
+    "defaultDuration": 18,
+    "includeBuiltInScenes": true
+  },
+  "items": []
+}

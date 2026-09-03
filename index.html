@@ -2195,7 +2195,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.31</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.32</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2576,11 +2576,22 @@ function getContent(){
           "southampton":"./assets/evacuation-map-southampton.png"
         };
 
-        const evacuationMap = evacuationMaps[siteKey];
+        /* Use the loaded site name as the canonical lookup.
+           This avoids failures when a noticeboard URL/site JSON uses
+           a slightly different site key or alias. */
+        const canonicalSiteName = String(site?.name || siteKey || "")
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+        const evacuationMap =
+          evacuationMaps[canonicalSiteName] ||
+          evacuationMaps[String(siteKey || "").toLowerCase()];
 
         return evacuationMap
           ? `<div class="evacuation-image-popup"><img src="${evacuationMap}" alt="${site?.name || "Site"} Emergency Evacuation Map"></div>`
-          : `<div class="content-box"><p>No evacuation diagram has been configured for this site.</p></div>`;
+          : `<div class="content-box"><p>No evacuation diagram has been configured for ${site?.name || "this site"}.</p></div>`;
       }
     },
     injury:{

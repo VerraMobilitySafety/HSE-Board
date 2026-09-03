@@ -2968,6 +2968,180 @@ body > .ad-overlay{
 @media (max-width:900px){
   .policy-overlay-body{padding:10px !important}
 }
+
+
+/* =========================================================
+   v1.0.67 — IDLE SCREEN / SCREENSAVER
+   Supports user-managed images/videos via screensaver.json.
+   ========================================================= */
+.screensaver-overlay{
+  position:fixed;
+  inset:0;
+  z-index:12000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(67,73,122,.30),transparent 35%),
+    radial-gradient(circle at 80% 80%,rgba(28,127,148,.20),transparent 34%),
+    linear-gradient(145deg,#292a2d 0%,#1c1e20 55%,#121416 100%);
+  transition:opacity .8s ease,visibility .8s ease;
+}
+.screensaver-overlay.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.screensaver-stage{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.screensaver-scene{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transform:scale(1.025);
+  transition:opacity 1s ease,transform 7s ease;
+}
+.screensaver-scene.active{
+  opacity:1;
+  transform:scale(1);
+}
+.screensaver-media{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#111315;
+}
+.screensaver-media.cover{
+  object-fit:cover;
+}
+.screensaver-card{
+  width:min(1500px,88vw);
+  min-height:620px;
+  padding:72px 82px;
+  border-radius:42px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(29,31,34,.84);
+  box-shadow:0 36px 110px rgba(0,0,0,.48);
+  backdrop-filter:blur(16px);
+}
+.screensaver-eyebrow{
+  margin-bottom:18px;
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:#b8d52f;
+}
+.screensaver-title{
+  margin:0;
+  font-size:82px;
+  line-height:.98;
+  letter-spacing:-.04em;
+  max-width:1200px;
+}
+.screensaver-copy{
+  margin-top:28px;
+  max-width:1080px;
+  font-size:34px;
+  line-height:1.32;
+  color:#e4e6e5;
+}
+.screensaver-stat-row{
+  display:flex;
+  gap:24px;
+  margin-top:48px;
+}
+.screensaver-stat{
+  flex:1;
+  min-width:0;
+  padding:28px 30px;
+  border-radius:24px;
+  color:#242424;
+  background:#fff;
+}
+.screensaver-stat-label{
+  font-size:19px;
+  font-weight:800;
+  color:#6b6f70;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.screensaver-stat-value{
+  margin-top:8px;
+  font-size:62px;
+  line-height:1;
+  font-weight:900;
+}
+.screensaver-site{
+  position:absolute;
+  left:44px;
+  bottom:34px;
+  z-index:4;
+  font-size:20px;
+  font-weight:800;
+  color:rgba(255,255,255,.78);
+}
+.screensaver-touch{
+  position:absolute;
+  right:44px;
+  bottom:34px;
+  z-index:4;
+  padding:12px 18px;
+  border-radius:999px;
+  font-size:17px;
+  font-weight:800;
+  color:#fff;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.14);
+}
+.screensaver-brand-mark{
+  position:absolute;
+  top:34px;
+  left:42px;
+  z-index:4;
+  width:240px;
+  height:auto;
+  opacity:.92;
+}
+.screensaver-progress{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:5;
+  height:5px;
+  background:rgba(255,255,255,.12);
+}
+.screensaver-progress > span{
+  display:block;
+  height:100%;
+  width:0;
+  background:#b8d52f;
+}
+.screensaver-progress > span.running{
+  animation:ssProgress linear forwards;
+}
+@keyframes ssProgress{
+  from{width:0}
+  to{width:100%}
+}
+
 </style>
 </head>
 <body>
@@ -3105,7 +3279,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.66</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.67</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -3125,6 +3299,15 @@ body > .ad-overlay{
   <span class="popup-chevron pch-b"></span>
 </div>
 <div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
+
+<div class="screensaver-overlay" id="screensaverOverlay" aria-hidden="true">
+  <div class="screensaver-stage" id="screensaverStage"></div>
+  <img class="screensaver-brand-mark" src="./assets/verra-logo.png?v=4" alt="">
+  <div class="screensaver-site" id="screensaverSite"></div>
+  <div class="screensaver-touch">Touch anywhere to return</div>
+  <div class="screensaver-progress"><span id="screensaverProgress"></span></div>
+</div>
+
 <div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -3141,16 +3324,27 @@ const siteKey = params.get("site") || "south-melbourne";
 let site = null;
 let globalContent = null;
 let adverts = [];
+let screensaverConfig = {settings:{},items:[]};
 let advertIndex = 0;
 let inactivityTimer;
 let advertTimer;
+let screensaverTimer;
+let screensaverSceneTimer;
+let screensaverIndex = 0;
+let screensaverScenes = [];
 
 const RETURN_HOME_MS = 75000;
 const SHOW_AD_AFTER_MS = 180000;
 const AD_DURATION_MS = 22000;
+const DEFAULT_SCREENSAVER_AFTER_MS = 90000;
+const DEFAULT_SCREENSAVER_SCENE_MS = 18000;
 
 const overlay = document.getElementById("overlay");
 const adOverlay = document.getElementById("adOverlay");
+const screensaverOverlay = document.getElementById("screensaverOverlay");
+const screensaverStage = document.getElementById("screensaverStage");
+const screensaverProgress = document.getElementById("screensaverProgress");
+const screensaverSite = document.getElementById("screensaverSite");
 
 async function loadJSON(path){
   const response = await fetch(path, {cache:"no-store"});
@@ -3160,10 +3354,11 @@ async function loadJSON(path){
 
 async function loadBoard(){
   try{
-    [site, globalContent, adverts] = await Promise.all([
+    [site, globalContent, adverts, screensaverConfig] = await Promise.all([
       loadJSON(`sites/${siteKey}.json`),
       loadJSON("global.json"),
-      loadJSON("adverts.json")
+      loadJSON("adverts.json"),
+      loadJSON("screensaver.json").catch(()=>({settings:{},items:[]}))
     ]);
   }catch(error){
     console.error(error);
@@ -3174,6 +3369,7 @@ async function loadBoard(){
   }
 
   applySite();
+  buildScreensaverScenes();
   wireTiles();
   resetInactivity();
 }
@@ -3354,6 +3550,181 @@ function applySite(){
   }
 }
 
+
+function normaliseSiteKey(value){
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"");
+}
+
+function screensaverItemApplies(item){
+  const sites = Array.isArray(item?.sites) ? item.sites : ["all"];
+  const current = normaliseSiteKey(siteKey);
+  return sites.some(value=>{
+    const key = normaliseSiteKey(value);
+    return key === "all" || key === current;
+  });
+}
+
+function buildScreensaverScenes(){
+  const configured = Array.isArray(screensaverConfig?.items)
+    ? screensaverConfig.items.filter(item=>item && item.enabled !== false && screensaverItemApplies(item))
+    : [];
+
+  screensaverScenes = configured.map(item=>({
+    kind:item.type === "video" ? "video" : "image",
+    src:item.file,
+    duration:Number(item.duration || 0) * 1000 || null,
+    fit:item.fit || "contain",
+    title:item.title || ""
+  }));
+
+  const includeBuiltIns = screensaverConfig?.settings?.includeBuiltInScenes !== false;
+
+  if(includeBuiltIns){
+    screensaverScenes.push(
+      {kind:"stats",duration:null},
+      {kind:"message",duration:null}
+    );
+  }
+
+  if(!screensaverScenes.length){
+    screensaverScenes = [{kind:"stats",duration:null},{kind:"message",duration:null}];
+  }
+
+  // Shuffle once each page load so the idle experience isn't repetitive.
+  for(let i=screensaverScenes.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [screensaverScenes[i],screensaverScenes[j]]=[screensaverScenes[j],screensaverScenes[i]];
+  }
+
+  screensaverIndex = 0;
+  if(screensaverSite) screensaverSite.textContent = site?.name || "";
+}
+
+function getScreensaverSceneDuration(scene){
+  return scene?.duration ||
+    Number(screensaverConfig?.settings?.defaultDuration || 0) * 1000 ||
+    DEFAULT_SCREENSAVER_SCENE_MS;
+}
+
+function renderScreensaverScene(scene){
+  if(!screensaverStage) return;
+
+  const current = screensaverStage.querySelector(".screensaver-scene.active");
+  if(current) current.classList.remove("active");
+
+  const el=document.createElement("div");
+  el.className="screensaver-scene";
+
+  if(scene.kind === "image"){
+    const img=document.createElement("img");
+    img.className="screensaver-media" + (scene.fit === "cover" ? " cover" : "");
+    img.src=scene.src;
+    img.alt=scene.title || "Safety notice";
+    img.onerror=()=>nextScreensaverScene();
+    el.appendChild(img);
+  } else if(scene.kind === "video"){
+    const video=document.createElement("video");
+    video.className="screensaver-media" + (scene.fit === "cover" ? " cover" : "");
+    video.src=scene.src;
+    video.autoplay=true;
+    video.muted=true;
+    video.loop=true;
+    video.playsInline=true;
+    video.setAttribute("muted","");
+    video.setAttribute("playsinline","");
+    video.onerror=()=>nextScreensaverScene();
+    el.appendChild(video);
+    video.play().catch(()=>{});
+  } else if(scene.kind === "stats"){
+    const tifr=globalContent?.tifr || {};
+    const hazards=globalContent?.hazards || {};
+    el.innerHTML=`
+      <div class="screensaver-card">
+        <div class="screensaver-eyebrow">Safety performance</div>
+        <h2 class="screensaver-title">How are we tracking?</h2>
+        <div class="screensaver-stat-row">
+          <div class="screensaver-stat">
+            <div class="screensaver-stat-label">TIFR</div>
+            <div class="screensaver-stat-value">${Number(tifr.lastMonth || 0).toFixed(1)}</div>
+          </div>
+          <div class="screensaver-stat">
+            <div class="screensaver-stat-label">TIFR target</div>
+            <div class="screensaver-stat-value">${Number(tifr.target || 0).toFixed(1)}</div>
+          </div>
+          <div class="screensaver-stat">
+            <div class="screensaver-stat-label">Hazards / near misses</div>
+            <div class="screensaver-stat-value">${Number(hazards.lastMonth || 0).toFixed(0)}</div>
+          </div>
+        </div>
+      </div>`;
+  } else {
+    const message = site?.focus || "See it. Say it. Make it safer.";
+    el.innerHTML=`
+      <div class="screensaver-card">
+        <div class="screensaver-eyebrow">Current focus</div>
+        <h2 class="screensaver-title">${message}</h2>
+        <div class="screensaver-copy">Every report, conversation and action helps make the workplace safer.</div>
+      </div>`;
+  }
+
+  screensaverStage.appendChild(el);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add("active")));
+
+  // Remove old scenes after the fade.
+  [...screensaverStage.querySelectorAll(".screensaver-scene:not(.active)")].forEach(old=>{
+    setTimeout(()=>old.remove(),1200);
+  });
+
+  const duration=getScreensaverSceneDuration(scene);
+
+  if(screensaverProgress){
+    screensaverProgress.classList.remove("running");
+    screensaverProgress.style.animationDuration=duration+"ms";
+    void screensaverProgress.offsetWidth;
+    screensaverProgress.classList.add("running");
+  }
+
+  clearTimeout(screensaverSceneTimer);
+  screensaverSceneTimer=setTimeout(nextScreensaverScene,duration);
+}
+
+function nextScreensaverScene(){
+  if(!screensaverOverlay?.classList.contains("active") || !screensaverScenes.length) return;
+  const scene=screensaverScenes[screensaverIndex % screensaverScenes.length];
+  screensaverIndex++;
+  renderScreensaverScene(scene);
+}
+
+function startScreensaver(){
+  if(!screensaverOverlay || overlay.classList.contains("active") || policyOverlay?.classList.contains("active")) return;
+  clearTimeout(advertTimer);
+  adOverlay.classList.remove("active");
+  buildScreensaverScenes();
+  screensaverOverlay.classList.add("active");
+  screensaverOverlay.setAttribute("aria-hidden","false");
+  nextScreensaverScene();
+}
+
+function stopScreensaver(){
+  clearTimeout(screensaverSceneTimer);
+  screensaverOverlay?.classList.remove("active");
+  screensaverOverlay?.setAttribute("aria-hidden","true");
+  if(screensaverProgress) screensaverProgress.classList.remove("running");
+  screensaverStage?.querySelectorAll("video").forEach(video=>video.pause());
+}
+
+function scheduleScreensaver(){
+  clearTimeout(screensaverTimer);
+  const delay =
+    Number(screensaverConfig?.settings?.startAfterSeconds || 0) * 1000 ||
+    DEFAULT_SCREENSAVER_AFTER_MS;
+  screensaverTimer=setTimeout(startScreensaver,delay);
+}
+
 function scheduleAdvert(){
   clearTimeout(advertTimer);
   advertTimer = setTimeout(showAdvert, SHOW_AD_AFTER_MS);
@@ -3362,20 +3733,28 @@ function scheduleAdvert(){
 function resetInactivity(){
   clearTimeout(inactivityTimer);
   clearTimeout(advertTimer);
+  clearTimeout(screensaverTimer);
+
+  if(screensaverOverlay?.classList.contains("active")){
+    stopScreensaver();
+  }
 
   inactivityTimer = setTimeout(()=>{
     overlay.classList.remove("active");
     adOverlay.classList.remove("active");
-    scheduleAdvert();
+    policyOverlay?.classList.remove("active");
+    scheduleScreensaver();
   }, RETURN_HOME_MS);
 
-  if(!overlay.classList.contains("active") && !adOverlay.classList.contains("active")){
-    scheduleAdvert();
+  if(!overlay.classList.contains("active") &&
+     !adOverlay.classList.contains("active") &&
+     !policyOverlay?.classList.contains("active")){
+    scheduleScreensaver();
   }
 }
 
 function showAdvert(){
-  if(overlay.classList.contains("active") || !adverts.length) return;
+  if(overlay.classList.contains("active") || screensaverOverlay?.classList.contains("active") || !adverts.length) return;
 
   const ad = adverts[advertIndex % adverts.length];
   advertIndex++;
@@ -3399,6 +3778,11 @@ adOverlay.addEventListener("click", ()=>{
   adOverlay.classList.remove("active");
   resetInactivity();
 });
+
+screensaverOverlay?.addEventListener("pointerdown",()=>{
+  stopScreensaver();
+  resetInactivity();
+},{passive:true});
 
 function qrBox(key,label,scope="site"){
   const source = scope === "global" ? globalContent : site;

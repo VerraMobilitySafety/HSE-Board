@@ -2229,7 +2229,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.49 Southampton IMS Policy selector */
+/* v1.0.50 Southampton IMS Policy selector */
 .policy-selector{
   display:grid;
   grid-template-columns:1fr;
@@ -2279,7 +2279,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.49 — site-aware header IMS Policy overlay */
+/* v1.0.50 — site-aware header IMS Policy overlay */
 .policy-overlay-body{
   flex:1;
   min-height:0;
@@ -2326,7 +2326,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.49 — hero panel restructure with uploadable current focus artwork */
+/* v1.0.50 — hero panel restructure with uploadable current focus artwork */
 .hero{
   display:flex !important;
   flex-direction:column !important;
@@ -2369,7 +2369,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.49 — simplified hero: Welcome → instruction → Current Focus → artwork */
+/* v1.0.50 — simplified hero: Welcome → instruction → Current Focus → artwork */
 .hero-top .eyebrow{
   margin-bottom:8px;
 }
@@ -2378,7 +2378,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.49 — stronger Welcome heading */
+/* v1.0.50 — stronger Welcome heading */
 .hero-top .eyebrow{
   font-size:28px !important;
   line-height:1.05 !important;
@@ -2388,7 +2388,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.49 — configurable Current Focus media slot */
+/* v1.0.50 — configurable Current Focus media slot */
 .current-focus-artwork{
   display:none !important;
 }
@@ -2417,60 +2417,36 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.49 — structured Current Focus campaign: 16:9 media + text */
+/* v1.0.50 — portrait Current Focus poster layout */
 .current-focus-campaign{
   flex:1;
   min-height:0;
   width:100%;
   display:flex;
   flex-direction:column;
-  gap:16px;
 }
 .current-focus-media{
+  flex:1;
+  min-height:0;
   width:100%;
-  aspect-ratio:16/9;
-  flex:0 0 auto;
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:center;
   overflow:hidden;
   border-radius:18px;
-  background:rgba(255,255,255,.08);
-  box-shadow:0 8px 24px rgba(0,0,0,.16);
+  background:rgba(255,255,255,.06);
 }
 .current-focus-media img,
 .current-focus-media video{
   width:100%;
   height:100%;
-  object-fit:cover;
-  object-position:center;
+  object-fit:contain;
+  object-position:center top;
   display:block;
   border-radius:18px;
 }
 .current-focus-copy{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  min-height:0;
-  overflow:hidden;
-}
-.current-focus-copy-title{
-  font-size:24px;
-  line-height:1.15;
-  font-weight:900;
-  color:#fff;
-}
-.current-focus-copy-text{
-  font-size:16px;
-  line-height:1.45;
-  color:rgba(255,255,255,.9);
-}
-.current-focus-copy-action{
-  margin-top:auto;
-  font-size:15px;
-  line-height:1.3;
-  font-weight:800;
-  color:#d7ef61;
+  display:none !important;
 }
 
 </style>
@@ -2610,7 +2586,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.49</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.50</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

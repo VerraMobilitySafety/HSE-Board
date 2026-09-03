@@ -2028,6 +2028,61 @@ body > .ad-overlay{
   .motion-bg .nk9-floater{display:none!important}
 }
 
+
+/* =========================================================
+   v1.0.31 — SITE-SPECIFIC EMERGENCY EVACUATION DIAGRAMS
+   Uses the uploaded evacuation diagram asset for each site.
+   ========================================================= */
+.evacuation-image-popup{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f4f6f5;
+  border-radius:18px;
+  overflow:hidden;
+}
+.evacuation-image-popup img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:80vh;
+  object-fit:contain;
+}
+
+/* Give evacuation diagrams maximum usable screen area */
+.overlay.active:has(.evacuation-image-popup) .panel{
+  width:min(1720px,96vw) !important;
+  max-width:1720px !important;
+  max-height:94vh !important;
+  padding:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+}
+.overlay.active:has(.evacuation-image-popup) .panel-head{
+  position:absolute !important;
+  top:14px !important;
+  right:14px !important;
+  z-index:20 !important;
+  padding:0 !important;
+}
+.overlay.active:has(.evacuation-image-popup) .eyebrow,
+.overlay.active:has(.evacuation-image-popup) #panelTitle,
+.overlay.active:has(.evacuation-image-popup) #panelIntro{
+  display:none !important;
+}
+.overlay.active:has(.evacuation-image-popup) #panelBody{
+  padding:0 !important;
+  overflow:hidden !important;
+  border-radius:18px !important;
+}
+.overlay.active:has(.evacuation-image-popup) .close{
+  background:rgba(255,255,255,.96) !important;
+  color:#3D3935 !important;
+  box-shadow:0 5px 18px rgba(0,0,0,.28) !important;
+}
+
 </style>
 </head>
 <body>
@@ -2140,7 +2195,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.30</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.31</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2513,7 +2568,20 @@ function getContent(){
     map:{
       title:"Emergency Evacuation Map",
       intro:`Emergency control information for ${site.name}.`,
-      body:()=>`<div class="content-box"><p>Open the current Emergency Evacuation Map for this site.</p>${linkButton(site.links.map,"Open Emergency Evacuation Map")}</div>`
+      body:()=>{
+        const evacuationMaps = {
+          "minto":"./assets/evacuation-map-minto.png",
+          "silverwater":"./assets/evacuation-map-silverwater.png",
+          "south-melbourne":"./assets/evacuation-map-south-melbourne.png",
+          "southampton":"./assets/evacuation-map-southampton.png"
+        };
+
+        const evacuationMap = evacuationMaps[siteKey];
+
+        return evacuationMap
+          ? `<div class="evacuation-image-popup"><img src="${evacuationMap}" alt="${site?.name || "Site"} Emergency Evacuation Map"></div>`
+          : `<div class="content-box"><p>No evacuation diagram has been configured for this site.</p></div>`;
+      }
     },
     injury:{
       title:"If You Are Injured",

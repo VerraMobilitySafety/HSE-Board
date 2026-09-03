@@ -779,6 +779,65 @@ footer{
   background:rgba(61,57,53,.24) !important;
 }
 
+
+/* Emergency Assistance — animated beacon for non-South Melbourne sites */
+.emergency-beacon-tile{
+  position:relative;
+  overflow:hidden;
+}
+.emergency-beacon-art{
+  position:absolute;
+  right:24px;
+  bottom:10px;
+  width:184px;
+  height:168px;
+  pointer-events:none;
+}
+.emergency-beacon-art img{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:138px;
+  height:auto;
+  transform:translateX(-50%);
+  filter:drop-shadow(0 12px 16px rgba(0,0,0,.28));
+  z-index:2;
+}
+.emergency-beacon-rays{
+  position:absolute;
+  left:50%;
+  top:0;
+  width:150px;
+  height:76px;
+  transform:translateX(-50%);
+  z-index:1;
+}
+.emergency-beacon-ray{
+  position:absolute;
+  left:50%;
+  top:24px;
+  width:12px;
+  height:36px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#ffd45a,#ff8a00);
+  box-shadow:0 0 12px rgba(255,174,31,.9);
+  transform-origin:50% 74px;
+  opacity:.18;
+  animation:emergencyBeaconFlash 1.05s ease-in-out infinite;
+}
+.emergency-beacon-ray:nth-child(1){transform:translateX(-50%) rotate(-52deg);animation-delay:0s}
+.emergency-beacon-ray:nth-child(2){transform:translateX(-50%) rotate(-25deg);animation-delay:.12s}
+.emergency-beacon-ray:nth-child(3){transform:translateX(-50%) rotate(0deg);animation-delay:.24s}
+.emergency-beacon-ray:nth-child(4){transform:translateX(-50%) rotate(25deg);animation-delay:.36s}
+.emergency-beacon-ray:nth-child(5){transform:translateX(-50%) rotate(52deg);animation-delay:.48s}
+@keyframes emergencyBeaconFlash{
+  0%,58%,100%{opacity:.14;filter:brightness(.85);scale:.92}
+  18%,34%{opacity:1;filter:brightness(1.35);scale:1.08}
+}
+@media (prefers-reduced-motion:reduce){
+  .emergency-beacon-ray{animation:none;opacity:.8}
+}
+
 /* Emergency Assistance — site-specific QR, contacts and wardens */
 .emergency-assistance-wrap{
   display:grid;
@@ -2286,7 +2345,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.38</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.39</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2418,6 +2477,23 @@ function applySite(){
         </div>
         <img class="home-qr" src="${qrPath}" alt="South Melbourne Emergency Assistance QR code"
           onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}">`;
+    } else {
+      const beaconPath = "./assets/emergency-beacon.png?v=1";
+      const beaconFallback = beaconPath.replace("./assets/", "./");
+      emergencyTile.classList.add("emergency-beacon-tile");
+      emergencyTile.innerHTML = `
+        <div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div>
+        <p>Emergency contacts and wardens for this site.</p>
+        <div class="emergency-beacon-art" aria-hidden="true">
+          <div class="emergency-beacon-rays">
+            <span class="emergency-beacon-ray"></span>
+            <span class="emergency-beacon-ray"></span>
+            <span class="emergency-beacon-ray"></span>
+            <span class="emergency-beacon-ray"></span>
+            <span class="emergency-beacon-ray"></span>
+          </div>
+          <img src="${beaconPath}" alt="" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${beaconFallback}';}">
+        </div>`;
     }
   }
 }

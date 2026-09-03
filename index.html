@@ -2229,7 +2229,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.47 Southampton IMS Policy selector */
+/* v1.0.48 Southampton IMS Policy selector */
 .policy-selector{
   display:grid;
   grid-template-columns:1fr;
@@ -2279,7 +2279,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.47 — site-aware header IMS Policy overlay */
+/* v1.0.48 — site-aware header IMS Policy overlay */
 .policy-overlay-body{
   flex:1;
   min-height:0;
@@ -2326,7 +2326,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.47 — hero panel restructure with uploadable current focus artwork */
+/* v1.0.48 — hero panel restructure with uploadable current focus artwork */
 .hero{
   display:flex !important;
   flex-direction:column !important;
@@ -2369,7 +2369,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.47 — simplified hero: Welcome → instruction → Current Focus → artwork */
+/* v1.0.48 — simplified hero: Welcome → instruction → Current Focus → artwork */
 .hero-top .eyebrow{
   margin-bottom:8px;
 }
@@ -2378,13 +2378,42 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.47 — stronger Welcome heading */
+/* v1.0.48 — stronger Welcome heading */
 .hero-top .eyebrow{
   font-size:28px !important;
   line-height:1.05 !important;
   font-weight:900 !important;
   letter-spacing:.04em !important;
   margin-bottom:14px !important;
+}
+
+
+/* v1.0.48 — configurable Current Focus media slot */
+.current-focus-artwork{
+  display:none !important;
+}
+.current-focus-media{
+  flex:1;
+  min-height:0;
+  width:100%;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  overflow:hidden;
+  border-radius:18px;
+}
+.current-focus-media img,
+.current-focus-media video{
+  width:100%;
+  height:100%;
+  max-height:100%;
+  object-fit:contain;
+  object-position:center top;
+  display:block;
+  border-radius:18px;
+}
+.current-focus-media video{
+  background:#000;
 }
 
 </style>
@@ -2443,9 +2472,7 @@ body > .ad-overlay{
     <div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div>
   </div>
 
-  <div class="current-focus-artwork">
-    <img src="./assets/current-focus.png" alt="Current focus" onerror="this.closest('.current-focus-artwork').style.display='none'">
-  </div>
+  <div class="current-focus-media" id="currentFocusMedia" aria-label="Current focus media"></div>
 </section>
 <section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance Program</h3></div><p>Confidential support and wellbeing assistance.</p><div class="eap-tile-art eap-layered-art" aria-hidden="true">
   <img class="eap-hands-layer" src="./assets/eap-hands.png" alt="">
@@ -2519,7 +2546,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.47</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.48</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2568,8 +2595,6 @@ async function loadBoard(){
     document.getElementById("siteName").textContent = "HSE Noticeboard";
     const siteSubtitleEl = document.getElementById("siteSubtitle");
     if (siteSubtitleEl) siteSubtitleEl.textContent = "Content unavailable";
-    document.getElementById("heroTitle").textContent = "Noticeboard content could not be loaded.";
-    document.getElementById("heroText").textContent = "Please check the site configuration file.";
     return;
   }
 
@@ -2578,15 +2603,74 @@ async function loadBoard(){
   resetInactivity();
 }
 
+
+function renderCurrentFocus(){
+  const mediaSlot = document.getElementById("currentFocusMedia");
+  if(!mediaSlot) return;
+
+  mediaSlot.innerHTML = "";
+  mediaSlot.style.display = "flex";
+
+  /* global.json can define:
+     "currentFocus": {
+       "type": "image",
+       "src": "./assets/current-focus.png"
+     }
+
+     or:
+     "currentFocus": {
+       "type": "video",
+       "src": "./assets/current-focus.mp4"
+     }
+  */
+  const focus = globalContent?.currentFocus || {
+    type: "image",
+    src: "./assets/current-focus.png"
+  };
+
+  const type = String(focus.type || "image").toLowerCase();
+  const src = String(focus.src || "").trim();
+
+  if(!src){
+    mediaSlot.style.display = "none";
+    return;
+  }
+
+  if(type === "video"){
+    const video = document.createElement("video");
+    video.src = src;
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.setAttribute("playsinline","");
+    video.setAttribute("muted","");
+    video.setAttribute("autoplay","");
+    video.setAttribute("loop","");
+    video.setAttribute("aria-label","Current focus video");
+    video.addEventListener("error",()=>{ mediaSlot.style.display = "none"; });
+    mediaSlot.appendChild(video);
+
+    /* Some kiosk/browser builds need an explicit play() call. */
+    video.play().catch(()=>{});
+    return;
+  }
+
+  const image = document.createElement("img");
+  image.src = src;
+  image.alt = focus.alt || "Current focus";
+  image.addEventListener("error",()=>{ mediaSlot.style.display = "none"; });
+  mediaSlot.appendChild(image);
+}
+
 function applySite(){
   document.getElementById("siteName").textContent = site.name;
   const siteSubtitleEl = document.getElementById("siteSubtitle");
     if (siteSubtitleEl) siteSubtitleEl.textContent = site.subtitle;
   const footerSiteEl = document.getElementById("footerSite");
     if (footerSiteEl) footerSiteEl.textContent = site.name;
-  document.getElementById("heroTitle").textContent = site.heroTitle;
-  document.getElementById("heroText").textContent = site.heroText;
   document.getElementById("focusMessage").textContent = site.focus;
+  renderCurrentFocus();
   const tifr = globalContent.tifr;
   document.getElementById("tifrMetric").textContent = Number(tifr.lastMonth).toFixed(1);
   document.getElementById("tifrTarget").textContent = Number(tifr.target).toFixed(1);

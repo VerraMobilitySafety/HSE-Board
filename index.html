@@ -2195,7 +2195,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.33</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.34</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2608,13 +2608,39 @@ function getContent(){
     },
     injury:{
       title:"If You Are Injured",
-      intro:"What to do if you are injured at work.",
-      body:()=>`<div class="content-box">
-        <h3>If you are injured</h3>
-        <p>Follow the current injury response process and seek assistance promptly.</p>
-        ${qrBox("injury","Injury guidance","global")}
-        ${linkButton(globalContent?.links?.injury,"Open injury guidance")}
-      </div>`
+      intro:`Injury information for ${site.name}.`,
+      body:()=>{
+        const injuryPosters = {
+          "minto":"./assets/injury-minto.png",
+          "silverwater":"./assets/injury-silverwater.png",
+          "south-melbourne":"./assets/injury-south-melbourne.png",
+          "southampton":"./assets/injury-southampton.png"
+        };
+
+        const canonicalSiteName = String(site?.name || siteKey || "")
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+        const injuryPoster =
+          injuryPosters[canonicalSiteName] ||
+          injuryPosters[String(siteKey || "").toLowerCase()];
+
+        if(!injuryPoster){
+          return `<div class="content-box"><p>No injury poster has been configured for ${site?.name || "this site"}.</p></div>`;
+        }
+
+        const rootFallback = injuryPoster.replace("./assets/","./");
+
+        return `<div class="evacuation-image-popup injury-image-popup">
+          <img
+            src="${injuryPoster}"
+            alt="${site?.name || "Site"} If You Are Injured poster"
+            onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}"
+          >
+        </div>`;
+      }
     }
   };
 }

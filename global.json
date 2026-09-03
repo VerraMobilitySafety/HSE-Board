@@ -110,7 +110,7 @@
   "currentFocus": {
     "type": "image",
     "src": "./assets/current-focus.png",
-    "title": "Current Focus Title",
+    "title": "R U OK? Day",
     "text": "A short explanation of the current focus goes here.",
     "action": "Key message or action goes here."
   },

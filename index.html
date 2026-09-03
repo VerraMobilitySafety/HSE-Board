@@ -2228,6 +2228,56 @@ body > .ad-overlay{
   box-shadow:0 5px 18px rgba(0,0,0,.28) !important;
 }
 
+
+/* v1.0.41 Southampton IMS Policy selector */
+.policy-selector{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+  padding:8px 0;
+}
+.policy-choice{
+  width:100%;
+  min-height:112px;
+  border:0;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px 28px;
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.policy-choice:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(0,0,0,.16);
+}
+.policy-choice:active{
+  transform:translateY(0);
+}
+.policy-choice-title{
+  font-size:32px;
+  line-height:1.15;
+  font-weight:800;
+  color:#3D3935;
+  text-align:center;
+}
+.policy-pdf-wrap{
+  width:100%;
+  height:78vh;
+  border-radius:16px;
+  overflow:hidden;
+  background:#fff;
+}
+.policy-pdf-wrap iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+}
+
 </style>
 </head>
 <body>
@@ -2346,7 +2396,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.40</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.41</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2752,11 +2802,38 @@ function getContent(){
       intro:`Current meeting minutes for ${site.name}.`,
       body:()=>`<div class="content-box"><h3>${globalContent.minutesDate}</h3>${qrBox("minutes","IMS Committee Minutes","global")}${linkButton(globalContent.links.minutes,"Open latest minutes")}</div>`
     },
-    policy:{
-      title:"IMS Policy",
-      intro:"Read the current Integrated Management System Policy.",
-      body:()=>`<div class="content-box">${linkButton(globalContent.links.policy,"Open IMS Policy")}</div>`
-    },
+    ims:{
+  title:"IMS Policy",
+  intro:`Integrated Management System policy information for ${site.name}.`,
+  body:()=>{
+    const canonicalSiteName = String(site?.name || siteKey || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    if(canonicalSiteName === "southampton"){
+      return `
+        <div class="content-box">
+          <div class="policy-selector">
+            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-health-safety-southampton.pdf','Health and Safety Policy')">
+              <span class="policy-choice-title">Health and Safety Policy</span>
+            </button>
+            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-quality-southampton.pdf','Quality Policy')">
+              <span class="policy-choice-title">Quality Policy</span>
+            </button>
+            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-environment-southampton.pdf','Environment Policy')">
+              <span class="policy-choice-title">Environment Policy</span>
+            </button>
+          </div>
+        </div>`;
+    }
+
+    return `<div class="policy-pdf-wrap">
+      <iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
+    </div>`;
+  }
+},
     hsr:{
       title:"Your Health and Safety Representatives",
       intro:"Know who represents workers on health and safety matters.",
@@ -3137,6 +3214,18 @@ document.addEventListener("DOMContentLoaded",()=>{
   cameras.forEach(cam=>launch(cam,true));
   setTimeout(performFlash, random(6500,11000));
 })();
+
+function openPolicyPdf(src, title){
+  const panelTitle = document.getElementById("panelTitle");
+  const panelIntro = document.getElementById("panelIntro");
+  const panelBody = document.getElementById("panelBody");
+  if(panelTitle) panelTitle.textContent = title || "IMS Policy";
+  if(panelIntro) panelIntro.textContent = "";
+  if(panelBody){
+    panelBody.innerHTML = `<div class="policy-pdf-wrap"><iframe src="${src}#view=FitH" title="${title || "IMS Policy"}"></iframe></div>`;
+  }
+}
+
 </script>
 
 

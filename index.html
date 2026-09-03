@@ -769,6 +769,68 @@ footer{
 }
 
 
+
+/* Emergency Assistance — site-specific QR, contacts and wardens */
+.emergency-assistance-wrap{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.emergency-assistance-card{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:18px;
+  padding:22px;
+}
+.emergency-assistance-card h3{
+  margin:0 0 14px;
+  font-size:24px;
+}
+.emergency-role-list{
+  display:grid;
+  gap:10px;
+}
+.emergency-person{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  font-size:20px;
+  font-weight:700;
+}
+.emergency-person-icon{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:rgba(154,68,64,.32);
+  flex:0 0 38px;
+}
+.emergency-note{
+  margin-top:14px;
+  font-size:16px;
+  opacity:.78;
+}
+.emergency-qr-card{
+  text-align:center;
+}
+.emergency-qr-card img{
+  display:block;
+  width:min(430px,72vw);
+  max-height:62vh;
+  object-fit:contain;
+  margin:0 auto 16px;
+  padding:12px;
+  border-radius:18px;
+  background:#fff;
+}
+@media(max-width:900px){
+  .emergency-assistance-wrap{grid-template-columns:1fr}
+}
+
 /* soften the older generic rings/particles so the chevrons become the main brand device */
 .motion-bg .line{opacity:.55}
 .motion-bg .particle{opacity:.55}
@@ -2215,7 +2277,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.35</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.36</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2600,11 +2662,62 @@ function getContent(){
     },
     emergency:{
       title:"Emergency Assistance",
-      intro:"Urgent support, Hunt Line and emergency information.",
-      body:()=>`<div class="content-grid">
-        <div class="content-box">${qrBox("emergency","Emergency Assistance Hunt Line")}${linkButton(site.links.emergency,"Open Emergency Assistance")}</div>
-        <div class="content-box"><h3>In an emergency</h3><p>Follow your site emergency procedures and call emergency services where required.</p></div>
-      </div>`
+      intro:`Emergency contacts and wardens for ${site.name}.`,
+      body:()=>{
+        const canonicalSiteName = String(site?.name || siteKey || "")
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+        const emergencyContacts = {
+          "minto":["Nicole Klein"],
+          "silverwater":["Bradley Turner","Channtelle Yassir","Jason Craig","Louise Comacchio"],
+          "southampton":["Kayle Seaward-Dumbris","Imre Oks","Stephanie Sonny","Beki Edkins","Wlodzimierz Sawicki"]
+        };
+
+        const emergencyWardens = {
+          "minto":["Nicole Klein"],
+          "silverwater":["Veronica Lincoln","Anthony Brown","Kim Rogers"],
+          "southampton":["Fatema Bardouh","Imre Oks","Michael Hole","Sean Masterson","Stephanie Sonny"]
+        };
+
+        const peopleList = (people=[]) => people.length
+          ? `<div class="emergency-role-list">${people.map(name=>`<div class="emergency-person"><span class="emergency-person-icon">👤</span><span>${name}</span></div>`).join("")}</div>`
+          : `<p>Details will be added here when confirmed.</p>`;
+
+        if(canonicalSiteName === "south-melbourne"){
+          const qr = "./assets/emergency-assistance-south-melbourne.png";
+          const rootFallback = qr.replace("./assets/","./");
+          return `<div class="emergency-assistance-wrap">
+            <div class="emergency-assistance-card emergency-qr-card">
+              <h3>Emergency Assistance</h3>
+              <img src="${qr}" alt="South Melbourne Emergency Assistance QR code" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}">
+              <p>Scan the QR code for South Melbourne emergency assistance information.</p>
+            </div>
+            <div class="emergency-assistance-card">
+              <h3>In an emergency</h3>
+              <p>Follow site emergency procedures and call emergency services where required.</p>
+            </div>
+          </div>`;
+        }
+
+        return `<div class="emergency-assistance-wrap">
+          <div class="emergency-assistance-card">
+            <h3>Emergency Contacts</h3>
+            ${peopleList(emergencyContacts[canonicalSiteName])}
+            <div class="emergency-note">Phone numbers can be added once confirmed.</div>
+          </div>
+          <div class="emergency-assistance-card">
+            <h3>Emergency Wardens</h3>
+            ${peopleList(emergencyWardens[canonicalSiteName])}
+          </div>
+          <div class="emergency-assistance-card" style="grid-column:1/-1">
+            <h3>In an emergency</h3>
+            <p>Follow site emergency procedures and call emergency services where required.</p>
+          </div>
+        </div>`;
+      }
     },
     map:{
       title:"Emergency Evacuation Map",

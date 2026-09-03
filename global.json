@@ -107,13 +107,10 @@
       }
     ]
   },
-  "currentFocus": {
-    "type": "image",
-    "src": "./assets/current-focus.png",
-    "title": "Current Focus Title",
-    "text": "Welcome to the new HSEQ Noticeboard!.",
-    "action": "Key message or action goes here."
-  },
+"currentFocus": {
+  "type": "image",
+  "src": "./assets/current-focus.png"
+},
   "minutesDate": "August 2026",
   "links": {
     "report": "#",

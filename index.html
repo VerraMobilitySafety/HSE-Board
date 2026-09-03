@@ -2904,6 +2904,57 @@ body > .ad-overlay{
   color:#5d6162 !important;
 }
 
+
+
+/* =========================================================
+   v1.0.64 — CLEAN POLICY IMAGE VIEWER
+   Policies render as image assets instead of the browser PDF
+   viewer, removing PDF toolbars, sidebars and print controls.
+   ========================================================= */
+.policy-overlay-body{
+  overflow:auto !important;
+  align-items:center;
+  justify-content:flex-start;
+  padding:18px !important;
+  background:#2a2b2d !important;
+}
+
+.policy-document-image{
+  display:block;
+  width:auto;
+  max-width:100%;
+  height:auto;
+  max-height:none;
+  margin:0 auto;
+  background:#fff;
+  box-shadow:0 12px 38px rgba(0,0,0,.34);
+}
+
+.policy-image-stage{
+  width:100%;
+  min-height:100%;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+
+.policy-image-error{
+  width:min(760px,90%);
+  margin:auto;
+  padding:28px;
+  border-radius:18px;
+  background:#fff;
+  color:#3D3935;
+  text-align:center;
+  font-size:18px;
+  line-height:1.5;
+}
+
+.southampton-policy-selector{
+  width:100%;
+}
+
+
 </style>
 </head>
 <body>
@@ -3041,7 +3092,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.63</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.64</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -3049,7 +3100,7 @@ body > .ad-overlay{
 <div><div class="eyebrow">DOCUMENT</div><h2 id="policyOverlayTitle">IMS Policy</h2></div>
 <button aria-label="Close" class="policy-close" id="policyClose" type="button">✕</button>
 </div>
-<div id="policyOverlayBody" class="policy-overlay-body"><iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe></div>
+<div id="policyOverlayBody" class="policy-overlay-body"></div>
 </div>
 </div>
 <div class="overlay" id="overlay"><div class="panel">
@@ -3804,11 +3855,30 @@ function canonicalPolicySite(){
     .replace(/^-+|-+$/g,"");
 }
 
+
+function showPolicyImage(src,title){
+  if(policyOverlayTitle) policyOverlayTitle.textContent=title || "IMS Policy";
+  if(!policyOverlayBody) return;
+
+  policyOverlayBody.innerHTML=`
+    <div class="policy-image-stage">
+      <img class="policy-document-image" src="${src}" alt="${title || "IMS Policy"}">
+    </div>`;
+
+  const img=policyOverlayBody.querySelector(".policy-document-image");
+  img?.addEventListener("error",()=>{
+    policyOverlayBody.innerHTML=`
+      <div class="policy-image-error">
+        <strong>${title || "IMS Policy"}</strong><br>
+        Policy image could not be loaded.<br>
+        Expected asset: <code>${src}</code>
+      </div>`;
+  });
+  resetInactivity();
+}
+
 function showAustralianPolicy(){
-  if(policyOverlayTitle) policyOverlayTitle.textContent="IMS Policy";
-  if(policyOverlayBody){
-    policyOverlayBody.innerHTML=`<iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>`;
-  }
+  showPolicyImage("./assets/IMS-Policy.png","IMS Policy");
 }
 
 function showSouthamptonPolicyMenu(){
@@ -3816,18 +3886,16 @@ function showSouthamptonPolicyMenu(){
   if(policyOverlayBody){
     policyOverlayBody.innerHTML=`
       <div class="southampton-policy-selector">
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-health-safety-southampton.pdf" data-policy-title="Health and Safety Policy">Health and Safety Policy</button>
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-quality-southampton.pdf" data-policy-title="Quality Policy">Quality Policy</button>
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-environment-southampton.pdf" data-policy-title="Environment Policy">Environment Policy</button>
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-health-safety-southampton.png" data-policy-title="Health and Safety Policy">Health and Safety Policy</button>
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-quality-southampton.png" data-policy-title="Quality Policy">Quality Policy</button>
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-environment-southampton.png" data-policy-title="Environment Policy">Environment Policy</button>
       </div>`;
 
     policyOverlayBody.querySelectorAll(".southampton-policy-button").forEach(button=>{
       button.addEventListener("click",()=>{
         const src=button.dataset.policySrc;
         const title=button.dataset.policyTitle || "IMS Policy";
-        if(policyOverlayTitle) policyOverlayTitle.textContent=title;
-        policyOverlayBody.innerHTML=`<iframe src="${src}#view=FitH" title="${title}"></iframe>`;
-        resetInactivity();
+        showPolicyImage(src,title);
       });
     });
   }
@@ -4001,16 +4069,10 @@ policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyO
 })();
 
 function openPolicyPdf(src, title){
-  const panelTitle = document.getElementById("panelTitle");
-  const panelIntro = document.getElementById("panelIntro");
-  const panelBody = document.getElementById("panelBody");
-  if(panelTitle) panelTitle.textContent = title || "IMS Policy";
-  if(panelIntro) panelIntro.textContent = "";
-  if(panelBody){
-    panelBody.innerHTML = `<div class="policy-pdf-wrap"><iframe src="${src}#view=FitH" title="${title || "IMS Policy"}"></iframe></div>`;
-  }
+  const imageSrc = String(src || "").replace(/\.pdf(?:#.*)?$/i,".png");
+  showPolicyImage(imageSrc,title || "IMS Policy");
+  policyOverlay?.classList.add("active");
 }
-
 </script>
 
 

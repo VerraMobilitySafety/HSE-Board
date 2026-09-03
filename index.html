@@ -2229,7 +2229,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 Southampton IMS Policy selector */
+/* v1.0.59 Southampton IMS Policy selector */
 .policy-selector{
   display:grid;
   grid-template-columns:1fr;
@@ -2279,7 +2279,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — site-aware header IMS Policy overlay */
+/* v1.0.59 — site-aware header IMS Policy overlay */
 .policy-overlay-body{
   flex:1;
   min-height:0;
@@ -2326,7 +2326,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — hero panel restructure with uploadable current focus artwork */
+/* v1.0.59 — hero panel restructure with uploadable current focus artwork */
 .hero{
   display:flex !important;
   flex-direction:column !important;
@@ -2369,7 +2369,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — simplified hero: Welcome → instruction → Current Focus → artwork */
+/* v1.0.59 — simplified hero: Welcome → instruction → Current Focus → artwork */
 .hero-top .eyebrow{
   margin-bottom:8px;
 }
@@ -2378,7 +2378,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — stronger Welcome heading */
+/* v1.0.59 — stronger Welcome heading */
 .hero-top .eyebrow{
   font-size:28px !important;
   line-height:1.05 !important;
@@ -2388,7 +2388,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — configurable Current Focus media slot */
+/* v1.0.59 — configurable Current Focus media slot */
 .current-focus-artwork{
   display:none !important;
 }
@@ -2417,7 +2417,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — portrait Current Focus poster layout */
+/* v1.0.59 — portrait Current Focus poster layout */
 .current-focus-campaign{
   flex:1;
   min-height:0;
@@ -2450,13 +2450,13 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — Current Focus uses heading + portrait poster only */
+/* v1.0.59 — Current Focus uses heading + portrait poster only */
 #focusMessage{
   display:none !important;
 }
 
 
-/* v1.0.58 — stronger centred Current Focus heading */
+/* v1.0.59 — stronger centred Current Focus heading */
 .current-focus-card .label,
 .current-focus-card .title,
 #currentFocusLabel{
@@ -2477,7 +2477,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — centre CURRENT FOCUS inside its existing box */
+/* v1.0.59 — centre CURRENT FOCUS inside its existing box */
 .current-focus-card{
   position:relative !important;
 }
@@ -2502,7 +2502,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — correctly centre the existing Current Focus box */
+/* v1.0.59 — correctly centre the existing Current Focus box */
 .hero .focus-card{
   display:flex !important;
   align-items:center !important;
@@ -2524,7 +2524,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — keep Current Focus LEFT aligned, centre it VERTICALLY only */
+/* v1.0.59 — keep Current Focus LEFT aligned, centre it VERTICALLY only */
 .hero .focus-card{
   display:flex !important;
   align-items:center !important;
@@ -2545,7 +2545,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — visually centre Current Focus vertically; keep left alignment */
+/* v1.0.59 — visually centre Current Focus vertically; keep left alignment */
 .hero .focus-card .focus-label{
   font-size:34px !important;
   font-weight:950 !important;
@@ -2554,7 +2554,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — breathing room around Current Focus poster */
+/* v1.0.59 — breathing room around Current Focus poster */
 .current-focus-media{
   padding:18px 0 !important;
   box-sizing:border-box !important;
@@ -2565,7 +2565,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.58 — fix the ACTUAL Current Focus heading element */
+/* v1.0.59 — fix the ACTUAL Current Focus heading element */
 .hero .focus-card{
   display:flex !important;
   align-items:center !important;
@@ -2584,6 +2584,35 @@ body > .ad-overlay{
   letter-spacing:.04em !important;
   text-align:left !important;
   transform:translateY(1px) !important;
+}
+
+
+/* v1.0.59 — Current Focus + configurable campaign title */
+.hero .focus-card .focus-title{
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+  color:#fff !important;
+  font-size:28px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  letter-spacing:.035em !important;
+  text-align:left !important;
+  transform:translateY(1px) !important;
+  white-space:nowrap !important;
+}
+.focus-separator{
+  font-weight:500 !important;
+  opacity:.7;
+}
+.focus-dynamic-title{
+  font-weight:600 !important;
+  opacity:.92;
+  letter-spacing:.015em !important;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 </style>
@@ -2638,7 +2667,7 @@ body > .ad-overlay{
   </div>
 
   <div class="focus-card">
-    <div class="focus-title">Current focus</div>
+    <div class="focus-title"><span class="focus-label-fixed">Current focus</span><span class="focus-separator" id="currentFocusSeparator">|</span><span class="focus-dynamic-title" id="currentFocusDynamicTitle"></span></div>
     <div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div>
   </div>
 
@@ -2723,7 +2752,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.58</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.59</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -2799,6 +2828,18 @@ function renderCurrentFocus(){
     text: "",
     action: ""
   };
+
+  const dynamicTitle = document.getElementById("currentFocusDynamicTitle");
+  const separator = document.getElementById("currentFocusSeparator");
+  const campaignTitle = String(focus.title || "").trim();
+
+  if(dynamicTitle){
+    dynamicTitle.textContent = campaignTitle;
+    dynamicTitle.style.display = campaignTitle ? "inline" : "none";
+  }
+  if(separator){
+    separator.style.display = campaignTitle ? "inline" : "none";
+  }
 
   const type = String(focus.type || "image").toLowerCase();
   const src = String(focus.src || "").trim();

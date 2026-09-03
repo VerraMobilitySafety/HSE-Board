@@ -13,5 +13,14 @@
     "kicker": "Emergency readiness",
     "title": "Know where to go before you need to.",
     "text": "Check the Emergency Control Map and familiarise yourself with exits, emergency equipment and assembly areas."
+  },
+  {
+    "type": "pdf",
+    "file": "./assets/screensaver/Managing Heat Stress.pdf",
+    "duration": 20,
+    "sites": [
+      "all"
+    ],
+    "title": "Managing Heat Stress"
   }
 ]

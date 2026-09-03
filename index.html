@@ -3172,7 +3172,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.70</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.71</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -3559,7 +3559,12 @@ function showAdvert(){
   advertTimer=setTimeout(()=>{
     adOverlay.querySelectorAll("video").forEach(video=>video.pause());
     adOverlay.classList.remove("active");
-    resetInactivity();
+
+    /* Stay in idle mode and advance to the next screensaver item.
+       A short fade gap lets the dashboard breathe between slides. */
+    advertTimer=setTimeout(()=>{
+      showAdvert();
+    },900);
   },duration);
 }
 

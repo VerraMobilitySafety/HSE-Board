@@ -107,10 +107,13 @@
       }
     ]
   },
-"currentFocus": {
-  "type": "image",
-  "src": "./assets/current-focus.png"
-},
+  "currentFocus": {
+    "type": "image",
+    "src": "./assets/current-focus.png",
+    "title": "Current Focus Title",
+    "text": "A short explanation of the current focus goes here.",
+    "action": "Key message or action goes here."
+  },
   "minutesDate": "August 2026",
   "links": {
     "report": "#",

@@ -2229,7 +2229,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.44 Southampton IMS Policy selector */
+/* v1.0.45 Southampton IMS Policy selector */
 .policy-selector{
   display:grid;
   grid-template-columns:1fr;
@@ -2279,7 +2279,7 @@ body > .ad-overlay{
 }
 
 
-/* v1.0.44 — site-aware header IMS Policy overlay */
+/* v1.0.45 — site-aware header IMS Policy overlay */
 .policy-overlay-body{
   flex:1;
   min-height:0;
@@ -2323,6 +2323,49 @@ body > .ad-overlay{
 }
 .southampton-policy-button:active{
   transform:translateY(0);
+}
+
+
+/* v1.0.45 — hero panel restructure with uploadable current focus artwork */
+.hero{
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+  gap:18px !important;
+}
+.hero-top{
+  display:flex;
+  flex-direction:column;
+}
+.hero-touch-hint{
+  margin-top:18px;
+  font-size:14px;
+  line-height:1.25;
+  color:rgba(255,255,255,.82);
+}
+.hero .focus-card{
+  margin-top:0 !important;
+  position:static !important;
+  width:100%;
+}
+.current-focus-artwork{
+  flex:1;
+  min-height:0;
+  width:100%;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  overflow:hidden;
+  border-radius:18px;
+}
+.current-focus-artwork img{
+  width:100%;
+  height:100%;
+  max-height:100%;
+  object-fit:contain;
+  object-position:center top;
+  display:block;
+  border-radius:18px;
 }
 
 </style>
@@ -2370,7 +2413,23 @@ body > .ad-overlay{
 </div>
 </header>
 <main>
-<section class="hero"><div><div class="eyebrow">Welcome</div><h2 id="heroTitle">Your safety information. One touch away.</h2><p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p></div><div class="focus-card"><div class="focus-title">Current focus</div><div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div><div class="touch-hint">Touch any tile to open • Returns home automatically after inactivity</div></div></section>
+<section class="hero">
+  <div class="hero-top">
+    <div class="eyebrow">Welcome</div>
+    <h2 id="heroTitle">Your safety information. One touch away.</h2>
+    <p id="heroText">Access site safety information, support, reporting, emergency resources and the latest HSE updates.</p>
+    <div class="touch-hint hero-touch-hint">Touch any tile to open • Returns home automatically after inactivity</div>
+  </div>
+
+  <div class="focus-card">
+    <div class="focus-title">Current focus</div>
+    <div class="focus-message" id="focusMessage">See it. Say it. Make it safer.</div>
+  </div>
+
+  <div class="current-focus-artwork">
+    <img src="./assets/current-focus.png" alt="Current focus" onerror="this.closest('.current-focus-artwork').style.display='none'">
+  </div>
+</section>
 <section class="tiles"><button class="tile" data-content="eap"><div class="tile-head"><div class="icon">❤</div><h3>Employee Assistance Program</h3></div><p>Confidential support and wellbeing assistance.</p><div class="eap-tile-art eap-layered-art" aria-hidden="true">
   <img class="eap-hands-layer" src="./assets/eap-hands.png" alt="">
   <img class="eap-heart-layer" src="./assets/eap-heart.png" alt="">
@@ -2443,7 +2502,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.44</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.45</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">

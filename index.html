@@ -2907,40 +2907,42 @@ body > .ad-overlay{
 
 
 /* =========================================================
-   v1.0.64 — CLEAN POLICY IMAGE VIEWER
-   Policies render as image assets instead of the browser PDF
-   viewer, removing PDF toolbars, sidebars and print controls.
+   v1.0.65 — CLEAN POLICY PDF VIEWER
+   Uses PDF.js to render the existing PDF assets directly onto
+   canvases, removing the browser PDF toolbar/sidebar entirely.
    ========================================================= */
 .policy-overlay-body{
+  flex:1;
+  min-height:0;
+  width:100%;
   overflow:auto !important;
-  align-items:center;
-  justify-content:flex-start;
+  display:block !important;
   padding:18px !important;
   background:#2a2b2d !important;
 }
 
-.policy-document-image{
+.policy-pdf-stage{
+  width:100%;
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+}
+
+.policy-pdf-page{
   display:block;
   width:auto;
   max-width:100%;
   height:auto;
-  max-height:none;
-  margin:0 auto;
   background:#fff;
   box-shadow:0 12px 38px rgba(0,0,0,.34);
 }
 
-.policy-image-stage{
-  width:100%;
-  min-height:100%;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-}
-
-.policy-image-error{
+.policy-loading,
+.policy-pdf-error{
   width:min(760px,90%);
-  margin:auto;
+  margin:80px auto 0;
   padding:28px;
   border-radius:18px;
   background:#fff;
@@ -2948,13 +2950,24 @@ body > .ad-overlay{
   text-align:center;
   font-size:18px;
   line-height:1.5;
+  box-shadow:0 12px 38px rgba(0,0,0,.24);
 }
 
 .southampton-policy-selector{
   width:100%;
 }
 
+/* Keep Southampton selector cards on the light panel. */
+.policy-overlay-body:has(.southampton-policy-selector){
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  background:#f4f6f5 !important;
+}
 
+@media (max-width:900px){
+  .policy-overlay-body{padding:10px !important}
+}
 </style>
 </head>
 <body>
@@ -3092,7 +3105,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.64</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.65</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -3113,6 +3126,14 @@ body > .ad-overlay{
 </div>
 <div class="panel-head"><div><div class="eyebrow" style="color:#697126">HSE Noticeboard</div><h2 id="panelTitle"></h2><p id="panelIntro"></p></div><button class="close" id="closeBtn">Close ✕</button></div><div id="panelBody"></div></div></div>
 <div class="ad-overlay" id="adOverlay"><div class="ad-card"><div class="kicker" id="adKicker"></div><h2 id="adTitle"></h2><p id="adText"></p><div class="small">Touch anywhere to return to the HSE Noticeboard</div></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+if(window.pdfjsLib){
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+}
+</script>
 <script>
 const params = new URLSearchParams(location.search);
 const siteKey = params.get("site") || "south-melbourne";
@@ -3856,29 +3877,64 @@ function canonicalPolicySite(){
 }
 
 
-function showPolicyImage(src,title){
+async function showPolicyPdf(src,title){
   if(policyOverlayTitle) policyOverlayTitle.textContent=title || "IMS Policy";
   if(!policyOverlayBody) return;
 
   policyOverlayBody.innerHTML=`
-    <div class="policy-image-stage">
-      <img class="policy-document-image" src="${src}" alt="${title || "IMS Policy"}">
-    </div>`;
+    <div class="policy-loading">Loading ${title || "IMS Policy"}…</div>`;
 
-  const img=policyOverlayBody.querySelector(".policy-document-image");
-  img?.addEventListener("error",()=>{
+  try{
+    if(!window.pdfjsLib){
+      throw new Error("PDF viewer library did not load.");
+    }
+
+    const loadingTask = window.pdfjsLib.getDocument(src);
+    const pdf = await loadingTask.promise;
+
+    const stage = document.createElement("div");
+    stage.className = "policy-pdf-stage";
+    policyOverlayBody.innerHTML = "";
+    policyOverlayBody.appendChild(stage);
+
+    const availableWidth = Math.max(320, policyOverlayBody.clientWidth - 40);
+
+    for(let pageNumber=1; pageNumber<=pdf.numPages; pageNumber++){
+      const page = await pdf.getPage(pageNumber);
+      const baseViewport = page.getViewport({scale:1});
+      const scale = Math.min(2.2, availableWidth / baseViewport.width);
+      const viewport = page.getViewport({scale});
+
+      const canvas = document.createElement("canvas");
+      canvas.className = "policy-pdf-page";
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      canvas.style.width = Math.min(viewport.width, availableWidth) + "px";
+
+      stage.appendChild(canvas);
+
+      await page.render({
+        canvasContext: canvas.getContext("2d"),
+        viewport
+      }).promise;
+    }
+
+    policyOverlayBody.scrollTop = 0;
+  }catch(error){
+    console.error("Policy PDF render error:", error);
     policyOverlayBody.innerHTML=`
-      <div class="policy-image-error">
+      <div class="policy-pdf-error">
         <strong>${title || "IMS Policy"}</strong><br>
-        Policy image could not be loaded.<br>
-        Expected asset: <code>${src}</code>
+        The policy could not be displayed.<br>
+        Please check that <code>${src}</code> exists and that PDF.js loaded correctly.
       </div>`;
-  });
+  }
+
   resetInactivity();
 }
 
 function showAustralianPolicy(){
-  showPolicyImage("./assets/IMS-Policy.png","IMS Policy");
+  showPolicyPdf("./assets/IMS-Policy.pdf","IMS Policy");
 }
 
 function showSouthamptonPolicyMenu(){
@@ -3886,16 +3942,16 @@ function showSouthamptonPolicyMenu(){
   if(policyOverlayBody){
     policyOverlayBody.innerHTML=`
       <div class="southampton-policy-selector">
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-health-safety-southampton.png" data-policy-title="Health and Safety Policy">Health and Safety Policy</button>
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-quality-southampton.png" data-policy-title="Quality Policy">Quality Policy</button>
-        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-environment-southampton.png" data-policy-title="Environment Policy">Environment Policy</button>
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-health-safety-southampton.pdf" data-policy-title="Health and Safety Policy">Health and Safety Policy</button>
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-quality-southampton.pdf" data-policy-title="Quality Policy">Quality Policy</button>
+        <button class="southampton-policy-button" type="button" data-policy-src="./assets/ims-policy-environment-southampton.pdf" data-policy-title="Environment Policy">Environment Policy</button>
       </div>`;
 
     policyOverlayBody.querySelectorAll(".southampton-policy-button").forEach(button=>{
       button.addEventListener("click",()=>{
         const src=button.dataset.policySrc;
         const title=button.dataset.policyTitle || "IMS Policy";
-        showPolicyImage(src,title);
+        showPolicyPdf(src,title);
       });
     });
   }
@@ -4069,8 +4125,7 @@ policyOverlay?.addEventListener("click",e=>{if(e.target===policyOverlay){policyO
 })();
 
 function openPolicyPdf(src, title){
-  const imageSrc = String(src || "").replace(/\.pdf(?:#.*)?$/i,".png");
-  showPolicyImage(imageSrc,title || "IMS Policy");
+  showPolicyPdf(src,title || "IMS Policy");
   policyOverlay?.classList.add("active");
 }
 </script>

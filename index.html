@@ -3036,7 +3036,7 @@ body > .ad-overlay{
 }
 
 </style>
-</head>
+<link rel="stylesheet" href="board-live.css?v=20261027"><script>if(new URLSearchParams(location.search).get("embed")==="1")document.documentElement.dataset.embeddedBoard="true";</script></head>
 <body>
 <div class="screen">
 <div aria-hidden="true" class="motion-bg">
@@ -3172,7 +3172,7 @@ body > .ad-overlay{
   <img class="injury-worker-layer" src="./assets/injured-worker.png" alt="">
 </div></button></section>
 </main>
-<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.0.72</span></div></footer>
+<footer><div><span class="status-dot"></span>Noticeboard online</div><div><span id="buildVersion">v1.1.0</span></div></footer>
 </div>
 <div class="policy-overlay" id="policyOverlay">
 <div class="policy-panel">
@@ -3201,6 +3201,7 @@ if(window.pdfjsLib){
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
 </script>
+<script src="board-live.js?v=20261027"></script>
 <script>
 const params = new URLSearchParams(location.search);
 const siteKey = params.get("site") || "south-melbourne";
@@ -3229,7 +3230,7 @@ async function loadJSON(path){
 async function loadBoard(){
   try{
     [site, globalContent, adverts] = await Promise.all([
-      loadJSON(`sites/${siteKey}.json`),
+      loadJSON(`sites/${siteKey}.json`).catch(()=>({name:siteKey.replaceAll('-',' '),focus:'Site Safety Information',hsrs:[],links:{},qrImages:{}})),
       loadJSON("global.json"),
       loadJSON("adverts.json")
     ]);
@@ -3241,7 +3242,9 @@ async function loadBoard(){
     return;
   }
 
+  mountBoardConsultation();
   applySite();
+  refreshPublicBoard();
   wireTiles();
   resetInactivity();
 }

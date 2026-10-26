@@ -1,0 +1,22 @@
+name: Shared HSE board validation
+on: [pull_request, push]
+permissions:
+  contents: read
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check board-live.js
+      - name: Validate board scripts and content files
+        run: |
+          node <<'JS'
+          const fs=require('fs'),vm=require('vm');
+          const html=fs.readFileSync('index.html','utf8');
+          for(const match of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g))new vm.Script(match[1]);
+          for(const file of ['global.json','adverts.json','screensaver.json',...fs.readdirSync('sites').map(f=>'sites/'+f)])JSON.parse(fs.readFileSync(file,'utf8'));
+          if(!html.includes('mountBoardConsultation();')||!html.includes('board-live.js'))throw Error('Shared board not mounted');
+          JS

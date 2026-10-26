@@ -34,6 +34,10 @@ function mountBoardConsultation(){
   const kinds=mapping[key];const resource=boardResourceTypes[key];const records=kinds?publishedBoardRecords.filter(r=>kinds.includes(r.kind)):resource?publishedBoardRecords.filter(r=>r.kind==='resource'&&r.display?.resource_type===resource):[];
   if(records.length||['toolbox','shares','feedback'].includes(key)||(!['south-melbourne','silverwater','minto','southampton'].includes(siteKey)&&key!=='report'&&key!=='tifr'&&key!=='hazards')){e.preventDefault();e.stopImmediatePropagation();renderPublishedRecords(records,tile.querySelector('h3')?.textContent||'Site Information');}
   else if(key==='hsr'&&(!Array.isArray(site.hsrs)||site.hsrs.every(h=>h.name==='HSR Name'))){e.preventDefault();e.stopImmediatePropagation();renderPublishedRecords([],'Your Health and Safety Representatives');}
+  else if(key==='minutes'||key==='report'){
+   e.preventDefault();e.stopImmediatePropagation();renderPublishedRecords([],tile.querySelector('h3')?.textContent||'Site Information');
+   const source=tile.querySelector('img.home-qr');if(source&&!source.hidden){const image=document.createElement('img');image.src=source.src;image.alt=source.alt;image.className='board-qr-detail';const body=document.getElementById('panelBody');body.replaceChildren(image,boardText('p','Scan this QR code to open '+(key==='minutes'?'IMS Committee information.':'event reporting.')));}
+  }
  },true);
  document.querySelector('.header-policy-button')?.addEventListener('click',e=>{const records=publishedBoardRecords.filter(r=>r.kind==='resource'&&r.display?.resource_type==='IMS Policy');if(records.length){e.stopImmediatePropagation();renderPublishedRecords(records,'IMS Policy');}},true);
  const footer=document.querySelector('.screen footer');const status=boardText('span','Connecting to live updates…');status.id='liveBoardStatus';footer?.append(status);

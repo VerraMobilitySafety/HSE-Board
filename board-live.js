@@ -4,6 +4,12 @@ let publishedBoardRecords=[],boardBaseline=null,boardPollBusy=false,boardRefresh
 const boardResourceTypes={eap:'Employee Assistance Program',emergency:'Emergency Assistance',map:'Emergency Evacuation Map',injury:'If You Are Injured',report:'Report an Event',ims:'IMS Policy'};
 function publicBoardItem(kind){return publishedBoardRecords.find(r=>r.kind===kind&&r.site_key===siteKey)||publishedBoardRecords.find(r=>r.kind===kind);}
 function boardText(tag,value){const n=document.createElement(tag);n.textContent=value||'';return n;}
+function boardEscape(value){return boardText('span',value).innerHTML;}
+function updateBoardPlaylist(){
+ if(!boardBaseline)return;
+ adverts=[...publishedBoardRecords.filter(r=>['share','focus'].includes(r.kind)).map(r=>({kicker:boardEscape(r.kind==='share'?'HSEQ Share':'Current Focus'),title:boardEscape(r.title),text:boardEscape(r.public_summary+' · Contact: '+r.contact+' · Remove: '+r.expires_on),sites:[r.site_key],duration:22})),...structuredClone(boardBaseline.adverts)];
+ if(document.getElementById('adOverlay').classList.contains('active')){clearTimeout(advertTimer);document.getElementById('adOverlay').classList.remove('active');resetInactivity();}
+}
 function renderPublishedRecords(records,title){
  document.getElementById('panelTitle').textContent=title;document.getElementById('panelIntro').textContent='Published information for '+site.name;
  const body=document.getElementById('panelBody');body.replaceChildren();
@@ -36,10 +42,11 @@ async function refreshPublicBoard(){
  if(boardPollBusy){boardRefreshPending=true;return;}boardPollBusy=true;
  try{
   const response=await fetch(LIVE_BOARD_API+encodeURIComponent(siteKey),{cache:'no-store',signal:AbortSignal.timeout(12000)});if(!response.ok)throw Error('Live board unavailable');const data=await response.json();
-  if(!boardBaseline)boardBaseline={site:structuredClone(site),global:structuredClone(globalContent)};
+  if(!boardBaseline)boardBaseline={site:structuredClone(site),global:structuredClone(globalContent),adverts:structuredClone(adverts)};
   const fingerprint=JSON.stringify(data);if(fingerprint!==lastBoardFingerprint){
   lastBoardFingerprint=fingerprint;
   site=structuredClone(boardBaseline.site);globalContent=structuredClone(boardBaseline.global);site.name=data.site.name;publishedBoardRecords=data.records;
+  updateBoardPlaylist();
   const focus=publicBoardItem('focus');if(focus){site.focus=focus.display.message||focus.public_summary;globalContent.currentFocus={type:focus.display.image_url?'image':'text',src:focus.display.image_url||'',title:focus.title,text:focus.public_summary,action:focus.display.action};}
   document.querySelector('.screen').classList.toggle('has-live-focus',!!focus);
   const performance=publicBoardItem('performance');if(performance){for(const key of ['tifr','hazards']){globalContent[key]={lastMonth:Number(performance.display[key]),target:Number(performance.display[key+'_target']),history:[]};}}
@@ -52,7 +59,7 @@ async function refreshPublicBoard(){
  }catch(e){document.getElementById('liveBoardStatus').textContent='Live Updates Unavailable · Retrying';parent.postMessage({type:'hse-board-ready',site:siteKey,fresh:false},'*');
   // An expired notice must disappear even when the connection is interrupted.
   const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const previous=publishedBoardRecords.length;publishedBoardRecords=publishedBoardRecords.filter(r=>!r.expires_on||r.expires_on>=today);
-  if(previous!==publishedBoardRecords.length){lastBoardFingerprint='';if(boardBaseline){site=structuredClone(boardBaseline.site);globalContent=structuredClone(boardBaseline.global);const focus=publicBoardItem('focus');if(focus){site.focus=focus.display.message||focus.public_summary;globalContent.currentFocus={type:focus.display.image_url?'image':'text',src:focus.display.image_url||'',title:focus.title,text:focus.public_summary,action:focus.display.action};}document.querySelector('.screen').classList.toggle('has-live-focus',!!focus);applySite();}document.getElementById('overlay').classList.remove('active');}
+  if(previous!==publishedBoardRecords.length){lastBoardFingerprint='';updateBoardPlaylist();if(boardBaseline){site=structuredClone(boardBaseline.site);globalContent=structuredClone(boardBaseline.global);const focus=publicBoardItem('focus');if(focus){site.focus=focus.display.message||focus.public_summary;globalContent.currentFocus={type:focus.display.image_url?'image':'text',src:focus.display.image_url||'',title:focus.title,text:focus.public_summary,action:focus.display.action};}document.querySelector('.screen').classList.toggle('has-live-focus',!!focus);applySite();}document.getElementById('overlay').classList.remove('active');}
  }finally{boardPollBusy=false;if(boardRefreshPending){boardRefreshPending=false;refreshPublicBoard();}}
 }
 window.addEventListener('message',event=>{if(event.source!==parent||event.origin!=='https://agreeable-bush-0f38b9c10.5.azurestaticapps.net')return;if(event.data?.type==='vero-board-refresh')refreshPublicBoard();});

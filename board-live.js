@@ -49,7 +49,7 @@ async function refreshPublicBoard(){
   updateBoardPlaylist();
   const focus=publicBoardItem('focus');if(focus){site.focus=focus.display.message||focus.public_summary;globalContent.currentFocus={type:focus.display.image_url?'image':'text',src:focus.display.image_url||'',title:focus.title,text:focus.public_summary,action:focus.display.action};}
   document.querySelector('.screen').classList.toggle('has-live-focus',!!focus);
-  const performance=publicBoardItem('performance');if(performance){for(const key of ['tifr','hazards']){globalContent[key]={lastMonth:Number(performance.display[key]),target:Number(performance.display[key+'_target']),history:[]};}}
+  const performance=publicBoardItem('performance');if(performance){for(const key of ['tifr','hazards']){const history=new Map((performance.site_key==='all'?boardBaseline.global[key].history:[]).map(row=>[row.month,row]));for(const record of publishedBoardRecords.filter(r=>r.kind==='performance'&&r.site_key===performance.site_key).reverse())history.set(record.display.period,{month:record.display.period,value:Number(record.display[key])});globalContent[key]={lastMonth:Number(performance.display[key]),target:Number(performance.display[key+'_target']),history:[...history.values()].slice(-12)};}}
   applySite();document.getElementById('emergencyTile')?.setAttribute('data-content','emergency');
   if(!['south-melbourne','silverwater','minto','southampton'].includes(siteKey)){const qr=document.getElementById('imsCommitteeQR');if(qr)qr.hidden=true;}
   const scope=performance?(performance.site_key==='all'?'All Sites':'This Site')+' · '+performance.display.period:'All Sites · '+(globalContent.tifr.history?.at(-1)?.month||'Reporting Period');

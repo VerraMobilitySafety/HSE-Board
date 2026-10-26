@@ -2972,7 +2972,7 @@ body > .ad-overlay{
 
 /* =========================================================
    v1.0.68 — UNIFIED IDLE / SCREENSAVER SYSTEM
-   The existing adverts.json system now also supports uploaded
+   The Vero-managed TV playlist supports uploaded
    hazard alerts, posters and videos. No second screensaver.
    ========================================================= */
 .ad-overlay .ad-media-wrap{
@@ -3036,7 +3036,7 @@ body > .ad-overlay{
 }
 
 </style>
-<link rel="stylesheet" href="board-live.css?v=20261027-qr"><script>if(new URLSearchParams(location.search).get("embed")==="1")document.documentElement.dataset.embeddedBoard="true";</script></head>
+<link rel="stylesheet" href="board-live.css?v=20261027-managed"><script>if(new URLSearchParams(location.search).get("embed")==="1")document.documentElement.dataset.embeddedBoard="true";</script></head>
 <body>
 <div class="screen">
 <div aria-hidden="true" class="motion-bg">
@@ -3108,7 +3108,7 @@ body > .ad-overlay{
 <div class="icon">🗒</div>
 <h3>IMS Committee</h3>
 </div>
-<img id="imsCommitteeQR" alt="IMS Committee QR code" class="home-qr" src="./assets/ims-committee-south-melbourne.png?v=1"/>
+<img id="imsCommitteeQR" alt="IMS Committee QR code" class="home-qr" data-managed-qr="minutes"/>
 </div><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👷</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><div class="hsr-tile-art hsr-layered-art" aria-hidden="true">
   <img class="hsr-main-layer" src="./assets/hsr-worker.png" alt="">
   <div class="hsr-signal-bars">
@@ -3124,12 +3124,12 @@ body > .ad-overlay{
 <div class="hazards-values">
 <div class="hazards-value-block">
 <div class="hazards-value-label">Last month</div>
-<div class="metric" id="hazardMetric">12</div>
+<div class="metric" id="hazardMetric">—</div>
 </div>
 <div class="hazards-divider"></div>
 <div class="hazards-value-block">
 <div class="hazards-value-label">Target</div>
-<div class="metric hazards-target-value" id="hazardTarget">12</div>
+<div class="metric hazards-target-value" id="hazardTarget">—</div>
 </div>
 </div>
 <div class="hazards-view">Click to view last 12 months</div>
@@ -3142,12 +3142,12 @@ body > .ad-overlay{
 <div class="tifr-values">
 <div class="tifr-value-block">
 <div class="tifr-value-label">Last month</div>
-<div class="metric" id="tifrMetric">7.0</div>
+<div class="metric" id="tifrMetric">—</div>
 </div>
 <div class="tifr-divider"></div>
 <div class="tifr-value-block">
 <div class="tifr-value-label">Target</div>
-<div class="metric tifr-target-value" id="tifrTarget">8.0</div>
+<div class="metric tifr-target-value" id="tifrTarget">—</div>
 </div>
 </div>
 <div class="tifr-view">Click to view last 12 months</div>
@@ -3157,7 +3157,7 @@ body > .ad-overlay{
 <div class="icon">⚠</div>
 <h3>Report an Event</h3>
 </div>
-<img alt="Report an Event QR code" class="home-qr" src="./assets/report-event-qr.png?v=1"/>
+<img alt="Report an Event QR code" class="home-qr" data-managed-qr="report"/>
 </div><button class="tile accent-green" data-content="emergency" id="emergencyTile" type="button"><div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div><p>Hunt Line and urgent assistance information.</p></button><button class="tile" data-content="map"><div class="tile-head"><div class="icon">📍</div><h3>Emergency Evacuation Map</h3></div><p>View site evacuation routes and assembly points.</p><div class="evac-tile-art evac-layered-art" aria-hidden="true">
   <img class="evac-map-layer" src="./assets/evac-map.png" alt="">
   <img class="evac-pin-layer" src="./assets/evac-pin.png" alt="">
@@ -3201,7 +3201,7 @@ if(window.pdfjsLib){
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
 </script>
-<script src="board-live.js?v=20261027-qr"></script>
+<script src="board-live.js?v=20261027-managed"></script>
 <script>
 const params = new URLSearchParams(location.search);
 const requestedSiteKey = params.get("site") || "south-melbourne";
@@ -3215,40 +3215,14 @@ let advertCycleShown = 0;
 let inactivityTimer;
 let advertTimer;
 
-const RETURN_HOME_MS = 75000;
-const SHOW_AD_AFTER_MS = 180000;
-const AD_DURATION_MS = 22000;
+let RETURN_HOME_MS = 75000;
+let SHOW_AD_AFTER_MS = 180000;
+let AD_DURATION_MS = 22000;
 
 const overlay = document.getElementById("overlay");
 const adOverlay = document.getElementById("adOverlay");
 
-async function loadJSON(path){
-  const response = await fetch(path, {cache:"no-store"});
-  if(!response.ok) throw new Error(`Could not load ${path}`);
-  return response.json();
-}
-
-async function loadBoard(){
-  try{
-    [site, globalContent, adverts] = await Promise.all([
-      loadJSON(`sites/${siteKey}.json`).catch(()=>({name:siteKey.replaceAll('-',' '),focus:'Site Safety Information',hsrs:[],links:{},qrImages:{}})),
-      loadJSON("global.json"),
-      loadJSON("adverts.json")
-    ]);
-  }catch(error){
-    console.error(error);
-    document.getElementById("siteName").textContent = "HSE Noticeboard";
-    const siteSubtitleEl = document.getElementById("siteSubtitle");
-    if (siteSubtitleEl) siteSubtitleEl.textContent = "Content unavailable";
-    return;
-  }
-
-  mountBoardConsultation();
-  applySite();
-  refreshPublicBoard();
-  wireTiles();
-  resetInactivity();
-}
+async function loadBoard(){mountBoardConsultation();await refreshPublicBoard();wireTiles();resetInactivity();}
 
 
 function renderCurrentFocus(){
@@ -3333,98 +3307,8 @@ function renderCurrentFocus(){
   mediaSlot.appendChild(image);
 }
 
-function applySite(){
-  document.getElementById("siteName").textContent = site.name;
-  const siteSubtitleEl = document.getElementById("siteSubtitle");
-    if (siteSubtitleEl) siteSubtitleEl.textContent = site.subtitle;
-  const footerSiteEl = document.getElementById("footerSite");
-    if (footerSiteEl) footerSiteEl.textContent = site.name;
-  document.getElementById("focusMessage").textContent = site.focus;
-  renderCurrentFocus();
-  const tifr = globalContent.tifr;
-  document.getElementById("tifrMetric").textContent = Number(tifr.lastMonth).toFixed(1);
-  document.getElementById("tifrTarget").textContent = Number(tifr.target).toFixed(1);
+function applySite(){renderManagedBoard();}
 
-  const tifrTile = document.querySelector(".tifr-tile");
-  const isGood = Number(tifr.lastMonth) <= Number(tifr.target);
-  tifrTile.classList.toggle("tifr-good", isGood);
-  tifrTile.classList.toggle("tifr-bad", !isGood);
-  document.getElementById("tifrStatus").textContent = isGood ? "On target" : "Above target";
-  const hazards = globalContent.hazards;
-  document.getElementById("hazardMetric").textContent = Number(hazards.lastMonth).toFixed(0);
-  document.getElementById("hazardTarget").textContent = Number(hazards.target).toFixed(0);
-
-  const hazardsTile = document.querySelector(".hazards-tile");
-  const hazardsGood = Number(hazards.lastMonth) >= Number(hazards.target);
-  hazardsTile.classList.toggle("hazards-good", hazardsGood);
-  hazardsTile.classList.toggle("hazards-bad", !hazardsGood);
-  document.getElementById("hazardsStatus").textContent = hazardsGood ? "On target" : "Below target";
-  const minutesDateEl = document.getElementById("minutesDate");
-  if(minutesDateEl) minutesDateEl.textContent = "Latest meeting: " + globalContent.minutesDate;
-
-  const imsCommitteeQR = document.getElementById("imsCommitteeQR");
-  if(imsCommitteeQR){
-    const canonicalSiteName = String(site?.name || siteKey || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-    const qrPath = `./assets/ims-committee-${canonicalSiteName}.png?v=1`;
-    const rootFallback = qrPath.replace("./assets/", "./");
-    imsCommitteeQR.dataset.fallback = "";
-    imsCommitteeQR.onerror = function(){
-      if(!this.dataset.fallback){
-        this.dataset.fallback = "1";
-        this.src = rootFallback;
-      }
-    };
-    imsCommitteeQR.src = qrPath;
-    imsCommitteeQR.alt = `${boardEscape(site?.name || "Site")} IMS Committee QR code`;
-  }
-
-  /* South Melbourne uses its Emergency Assistance QR directly on the home tile.
-     Other sites keep the existing tap-to-open contacts and wardens panel. */
-  const emergencyTile = document.getElementById("emergencyTile");
-  if(emergencyTile){
-    const canonicalSiteName = String(site?.name || siteKey || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    if(canonicalSiteName === "south-melbourne") {
-      const qrPath = "./assets/emergency-assistance-south-melbourne.png?v=1";
-      const rootFallback = qrPath.replace("./assets/", "./");
-      emergencyTile.classList.add("report-event-tile", "emergency-qr-tile");
-      emergencyTile.removeAttribute("data-content");
-      emergencyTile.setAttribute("aria-label", "South Melbourne Emergency Assistance QR code");
-      emergencyTile.innerHTML = `
-        <div class="report-event-head">
-          <div class="icon">☎</div>
-          <h3>Emergency Assistance</h3>
-        </div>
-        <img class="home-qr" src="${qrPath}" alt="South Melbourne Emergency Assistance QR code"
-          onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}">`;
-    } else {
-      const beaconPath = "./assets/emergency-beacon.png?v=1";
-      const beaconFallback = beaconPath.replace("./assets/", "./");
-      emergencyTile.classList.add("emergency-beacon-tile");
-      emergencyTile.innerHTML = `
-        <div class="tile-head"><div class="icon">☎</div><h3>Emergency Assistance</h3></div>
-        <p>Emergency contacts and wardens for this site.</p>
-        <div class="emergency-beacon-art" aria-hidden="true">
-          <div class="emergency-beacon-rays">
-            <span class="emergency-beacon-ray"></span>
-            <span class="emergency-beacon-ray"></span>
-            <span class="emergency-beacon-ray"></span>
-            <span class="emergency-beacon-ray"></span>
-            <span class="emergency-beacon-ray"></span>
-          </div>
-          <img src="${beaconPath}" alt="" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${beaconFallback}';}">
-        </div>`;
-    }
-  }
-}
 
 function scheduleAdvert(){
   clearTimeout(advertTimer);
@@ -3501,7 +3385,7 @@ async function renderAdvertPdf(file,title){
     adOverlay.innerHTML=`
       <div class="ad-media-error">
         This screensaver PDF could not be loaded:<br>
-        <strong>${file}</strong>
+        <strong>${boardAttribute(file)}</strong>
       </div>`;
   }
 }
@@ -3528,7 +3412,7 @@ function showAdvert(){
   if(file && (type==="image" || /\.(png|jpe?g|webp|gif)$/i.test(file))){
     adOverlay.innerHTML=`
       <div class="ad-media-wrap">
-        <img class="ad-media ${ad.fit==="cover" ? "cover" : ""}" src="${file}" alt="${ad.title || "Safety notice"}">
+        <img class="ad-media ${ad.fit==="cover" ? "cover" : ""}" src="${boardAttribute(file)}" alt="${ad.title || "Safety notice"}">
         <div class="small" style="position:absolute;right:28px;bottom:24px;color:#fff;background:rgba(0,0,0,.45);padding:10px 14px;border-radius:999px;font-weight:800;">
           Touch anywhere to return to the HSE Noticeboard
         </div>
@@ -3538,7 +3422,7 @@ function showAdvert(){
       adOverlay.innerHTML=`
         <div class="ad-media-error">
           This screensaver image could not be loaded:<br>
-          <strong>${file}</strong>
+          <strong>${boardAttribute(file)}</strong>
         </div>`;
     });
   }else if(file && (type==="pdf" || /\.pdf$/i.test(file))){
@@ -3546,7 +3430,7 @@ function showAdvert(){
   }else if(file && (type==="video" || /\.(mp4|webm|ogg)$/i.test(file))){
     adOverlay.innerHTML=`
       <div class="ad-media-wrap">
-        <video class="ad-media ${ad.fit==="cover" ? "cover" : ""}" src="${file}" autoplay muted loop playsinline></video>
+        <video class="ad-media ${ad.fit==="cover" ? "cover" : ""}" src="${boardAttribute(file)}" autoplay muted loop playsinline></video>
         <div class="small" style="position:absolute;right:28px;bottom:24px;color:#fff;background:rgba(0,0,0,.45);padding:10px 14px;border-radius:999px;font-weight:800;">
           Touch anywhere to return to the HSE Noticeboard
         </div>
@@ -3591,24 +3475,6 @@ adOverlay.addEventListener("click", ()=>{
   resetInactivity();
 });
 
-function qrBox(key,label,scope="site"){
-  const source = scope === "global" ? globalContent : site;
-  const image = source.qrImages?.[key];
-  if(image){
-    return `<div><img src="${image}" alt="${label} QR code" style="width:190px;height:190px;object-fit:contain;border-radius:18px;background:white;padding:10px;border:1px solid #ddd"></div>`;
-  }
-  const sourceFile = scope === "global" ? "global.json" : `sites/${siteKey}.json`;
-  return `<div><div class="qr"></div><p style="font-size:13px;color:#777">Add a QR image path in ${sourceFile}</p></div>`;
-}
-
-function linkButton(url,label){
-  if(!url || url === "#"){
-    return `<span class="open-link" style="opacity:.45;cursor:default">${label} →</span>`;
-  }
-  return `<a class="open-link" href="${url}" target="_blank" rel="noopener">${label} →</a>`;
-}
-
-
 function renderTifrTrend(){
   const history = globalContent.tifr?.history || [];
   const target = Number(globalContent.tifr?.target || 0);
@@ -3639,14 +3505,14 @@ function renderTifrTrend(){
   const dots = history.map((d,i)=>{
     const good = Number(d.value) <= target;
     return `<circle cx="${x(i)}" cy="${y(Number(d.value))}" r="7" class="${good ? "chart-dot-good" : "chart-dot-bad"}">
-              <title>${d.month}: ${Number(d.value).toFixed(1)}</title>
+              <title>${boardEscape(d.month)}: ${Number(d.value).toFixed(1)}</title>
             </circle>`;
   }).join("");
 
   const labels = history.map((d,i)=>{
     const parts = String(d.month).split(" ");
     const label = parts[0].slice(0,3);
-    return `<text x="${x(i)}" y="${H-28}" text-anchor="middle" class="chart-month">${label}</text>`;
+    return `<text x="${x(i)}" y="${H-28}" text-anchor="middle" class="chart-month">${boardEscape(label)}</text>`;
   }).join("");
 
   const targetY = y(target);
@@ -3713,14 +3579,14 @@ function renderHazardsTrend(){
   const dots = history.map((d,i)=>{
     const good = Number(d.value) >= target;
     return `<circle cx="${x(i)}" cy="${y(Number(d.value))}" r="7" class="${good ? "chart-dot-good" : "chart-dot-bad"}">
-              <title>${d.month}: ${Number(d.value).toFixed(0)}</title>
+              <title>${boardEscape(d.month)}: ${Number(d.value).toFixed(0)}</title>
             </circle>`;
   }).join("");
 
   const labels = history.map((d,i)=>{
     const parts = String(d.month).split(" ");
     const label = parts[0].slice(0,3);
-    return `<text x="${x(i)}" y="${H-28}" text-anchor="middle" class="chart-month">${label}</text>`;
+    return `<text x="${x(i)}" y="${H-28}" text-anchor="middle" class="chart-month">${boardEscape(label)}</text>`;
   }).join("");
 
   const targetY = y(target);
@@ -3756,233 +3622,10 @@ function renderHazardsTrend(){
     </div>`;
 }
 
-function getContent(){
-  return {
-    report:{
-      title:"Report an Incident / If You Are Injured",
-      intro:"Quick access to reporting and injury guidance.",
-      body:()=>`<div class="content-grid">
-        <div class="content-box">
-          <h3>Report an incident</h3>
-          <p>Use the current incident reporting process for incidents, hazards and near misses.</p>
-          ${qrBox("report","Incident reporting","global")}
-          ${linkButton(globalContent.links.report,"Open reporting")}
-        </div>
-        <div class="content-box">
-          <h3>If you are injured</h3>
-          <p>Follow the current injury response process and seek assistance promptly.</p>
-          ${qrBox("injury","Injury guidance","global")}
-          ${linkButton(globalContent.links.injury,"Open injury guidance")}
-        </div>
-      </div>`
-    },
-    eap:{
-      title:"Employee Assistance Program",
-      intro:"",
-      body:()=>{
-        const eapImages = {
-          "south-melbourne":"./assets/eap-south-melbourne.png",
-          "minto":"./assets/eap-minto.png",
-          "silverwater":"./assets/eap-silverwater.png"
-        };
-
-        const eapImage = eapImages[siteKey];
-
-        return eapImage
-          ? `<div class="eap-image-popup"><img src="${eapImage}" alt="${boardEscape(site?.name || "Site")} Employee Assistance Program information"></div>`
-          : `<div class="content-box">${qrBox("eap","EAP")}${linkButton(site.links.eap,"Open EAP information")}</div>`;
-      }
-    },
-    minutes:{
-      title:"Latest IMS Committee Minutes",
-      intro:`Current meeting minutes for ${boardEscape(site.name)}.`,
-      body:()=>`<div class="content-box"><h3>${globalContent.minutesDate}</h3>${qrBox("minutes","IMS Committee Minutes","global")}${linkButton(globalContent.links.minutes,"Open latest minutes")}</div>`
-    },
-    ims:{
-  title:"IMS Policy",
-  intro:`Integrated Management System policy information for ${boardEscape(site.name)}.`,
-  body:()=>{
-    const canonicalSiteName = String(site?.name || siteKey || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    if(canonicalSiteName === "southampton"){
-      return `
-        <div class="content-box">
-          <div class="policy-selector">
-            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-health-safety-southampton.pdf','Health and Safety Policy')">
-              <span class="policy-choice-title">Health and Safety Policy</span>
-            </button>
-            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-quality-southampton.pdf','Quality Policy')">
-              <span class="policy-choice-title">Quality Policy</span>
-            </button>
-            <button class="policy-choice" onclick="openPolicyPdf('./assets/ims-policy-environment-southampton.pdf','Environment Policy')">
-              <span class="policy-choice-title">Environment Policy</span>
-            </button>
-          </div>
-        </div>`;
-    }
-
-    return `<div class="policy-pdf-wrap">
-      <iframe src="./assets/IMS-Policy.pdf#view=FitH" title="IMS Policy"></iframe>
-    </div>`;
-  }
-},
-    hsr:{
-      title:"Your Health and Safety Representatives",
-      intro:"Know who represents workers on health and safety matters.",
-      body:()=>`<div class="content-grid">${(site.hsrs || []).map(h=>`<div class="content-box"><h3>${h.name}</h3><p>${h.area}</p></div>`).join("")}</div>`
-    },
-    tifr:{
-      title:"TIFR — Last 12 Months",
-      intro:`Last month: ${Number(globalContent.tifr.lastMonth).toFixed(1)} • Target: ${Number(globalContent.tifr.target).toFixed(1)}`,
-      body:()=>renderTifrTrend()
-    },
-    hazards:{
-      title:"Hazards and Near Misses — Last 12 Months",
-      intro:`Last month: ${Number(globalContent.hazards.lastMonth).toFixed(0)} • Target: ${Number(globalContent.hazards.target).toFixed(0)}`,
-      body:()=>renderHazardsTrend()
-    },
-    emergency:{
-      title:"Emergency Assistance",
-      intro:`Emergency contacts and wardens for ${boardEscape(site.name)}.`,
-      body:()=>{
-        const canonicalSiteName = String(site?.name || siteKey || "")
-          .trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-
-        const emergencyContacts = {
-          "minto":["Nicole Klein"],
-          "silverwater":["Bradley Turner","Channtelle Yassir","Jason Craig","Louise Comacchio"],
-          "southampton":["Kayle Seaward-Dumbris","Imre Oks","Stephanie Sonny","Beki Edkins","Wlodzimierz Sawicki"]
-        };
-
-        const emergencyWardens = {
-          "minto":["Nicole Klein"],
-          "silverwater":["Veronica Lincoln","Anthony Brown","Kim Rogers"],
-          "southampton":["Fatema Bardouh","Imre Oks","Michael Hole","Sean Masterson","Stephanie Sonny"]
-        };
-
-        const peopleList = (people=[]) => people.length
-          ? `<div class="emergency-role-list">${people.map(name=>`<div class="emergency-person"><span class="emergency-person-icon">👤</span><span>${name}</span></div>`).join("")}</div>`
-          : `<p>Details will be added here when confirmed.</p>`;
-
-        if(canonicalSiteName === "south-melbourne"){
-          const qr = "./assets/emergency-assistance-south-melbourne.png";
-          const rootFallback = qr.replace("./assets/","./");
-          return `<div class="emergency-assistance-wrap">
-            <div class="emergency-assistance-card emergency-qr-card">
-              <h3>Emergency Assistance</h3>
-              <img src="${qr}" alt="South Melbourne Emergency Assistance QR code" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}">
-              <p>Scan the QR code for South Melbourne emergency assistance information.</p>
-            </div>
-            <div class="emergency-assistance-card">
-              <h3>In an emergency</h3>
-              <p>Follow site emergency procedures and call emergency services where required.</p>
-            </div>
-          </div>`;
-        }
-
-        return `<div class="emergency-assistance-wrap">
-          <div class="emergency-assistance-card">
-            <h3>Emergency Contacts</h3>
-            ${peopleList(emergencyContacts[canonicalSiteName])}
-            <div class="emergency-note">Phone numbers can be added once confirmed.</div>
-          </div>
-          <div class="emergency-assistance-card">
-            <h3>Emergency Wardens</h3>
-            ${peopleList(emergencyWardens[canonicalSiteName])}
-          </div>
-          <div class="emergency-assistance-card" style="grid-column:1/-1">
-            <h3>In an emergency</h3>
-            <p>Follow site emergency procedures and call emergency services where required.</p>
-          </div>
-        </div>`;
-      }
-    },
-    map:{
-      title:"Emergency Evacuation Map",
-      intro:`Emergency control information for ${boardEscape(site.name)}.`,
-      body:()=>{
-        const evacuationMaps = {
-          "minto":"./assets/evacuation-map-minto.png",
-          "silverwater":"./assets/evacuation-map-silverwater.png",
-          "south-melbourne":"./assets/evacuation-map-south-melbourne.png",
-          "southampton":"./assets/evacuation-map-southampton.png"
-        };
-
-        /* Use the loaded site name as the canonical lookup.
-           This avoids failures when a noticeboard URL/site JSON uses
-           a slightly different site key or alias. */
-        const canonicalSiteName = String(site?.name || siteKey || "")
-          .trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-
-        const evacuationMap =
-          evacuationMaps[canonicalSiteName] ||
-          evacuationMaps[String(siteKey || "").toLowerCase()];
-
-        if(!evacuationMap){
-          return `<div class="content-box"><p>No evacuation diagram has been configured for ${boardEscape(site?.name || "this site")}.</p></div>`;
-        }
-
-        /* Try the normal assets folder first. If the image was uploaded
-           beside index.html instead, automatically fall back to the root. */
-        const rootFallback = evacuationMap.replace("./assets/","./");
-
-        return `<div class="evacuation-image-popup">
-          <img
-            src="${evacuationMap}"
-            alt="${boardEscape(site?.name || "Site")} Emergency Evacuation Map"
-            onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}"
-          >
-        </div>`;
-      }
-    },
-    injury:{
-      title:"If You Are Injured",
-      intro:`Injury information for ${boardEscape(site.name)}.`,
-      body:()=>{
-        const injuryPosters = {
-          "minto":"./assets/injury-minto.png",
-          "silverwater":"./assets/injury-silverwater.png",
-          "south-melbourne":"./assets/injury-south-melbourne.png",
-          "southampton":"./assets/injury-southampton.png"
-        };
-
-        const canonicalSiteName = String(site?.name || siteKey || "")
-          .trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-
-        const injuryPoster =
-          injuryPosters[canonicalSiteName] ||
-          injuryPosters[String(siteKey || "").toLowerCase()];
-
-        if(!injuryPoster){
-          return `<div class="content-box"><p>No injury poster has been configured for ${boardEscape(site?.name || "this site")}.</p></div>`;
-        }
-
-        const rootFallback = injuryPoster.replace("./assets/","./");
-
-        return `<div class="evacuation-image-popup injury-image-popup">
-          <img
-            src="${injuryPoster}"
-            alt="${boardEscape(site?.name || "Site")} If You Are Injured poster"
-            onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}"
-          >
-        </div>`;
-      }
-    }
-  };
-}
+function getContent(){return {
+ tifr:{title:'TIFR — Last 12 Months',intro:'Published performance',body:()=>renderTifrTrend()},
+ hazards:{title:'Hazards and Near Misses — Last 12 Months',intro:'Published performance',body:()=>renderHazardsTrend()}
+};}
 
 function wireTiles(){
   if(window.__hseTilesWired) return;

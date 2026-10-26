@@ -3204,7 +3204,8 @@ if(window.pdfjsLib){
 <script src="board-live.js?v=20261027"></script>
 <script>
 const params = new URLSearchParams(location.search);
-const siteKey = params.get("site") || "south-melbourne";
+const requestedSiteKey = params.get("site") || "south-melbourne";
+const siteKey = /^[a-z0-9-]{1,100}$/.test(requestedSiteKey) ? requestedSiteKey : "south-melbourne";
 
 let site = null;
 let globalContent = null;
@@ -3378,7 +3379,7 @@ function applySite(){
       }
     };
     imsCommitteeQR.src = qrPath;
-    imsCommitteeQR.alt = `${site?.name || "Site"} IMS Committee QR code`;
+    imsCommitteeQR.alt = `${boardEscape(site?.name || "Site")} IMS Committee QR code`;
   }
 
   /* South Melbourne uses its Emergency Assistance QR directly on the home tile.
@@ -3788,18 +3789,18 @@ function getContent(){
         const eapImage = eapImages[siteKey];
 
         return eapImage
-          ? `<div class="eap-image-popup"><img src="${eapImage}" alt="${site?.name || "Site"} Employee Assistance Program information"></div>`
+          ? `<div class="eap-image-popup"><img src="${eapImage}" alt="${boardEscape(site?.name || "Site")} Employee Assistance Program information"></div>`
           : `<div class="content-box">${qrBox("eap","EAP")}${linkButton(site.links.eap,"Open EAP information")}</div>`;
       }
     },
     minutes:{
       title:"Latest IMS Committee Minutes",
-      intro:`Current meeting minutes for ${site.name}.`,
+      intro:`Current meeting minutes for ${boardEscape(site.name)}.`,
       body:()=>`<div class="content-box"><h3>${globalContent.minutesDate}</h3>${qrBox("minutes","IMS Committee Minutes","global")}${linkButton(globalContent.links.minutes,"Open latest minutes")}</div>`
     },
     ims:{
   title:"IMS Policy",
-  intro:`Integrated Management System policy information for ${site.name}.`,
+  intro:`Integrated Management System policy information for ${boardEscape(site.name)}.`,
   body:()=>{
     const canonicalSiteName = String(site?.name || siteKey || "")
       .trim()
@@ -3846,7 +3847,7 @@ function getContent(){
     },
     emergency:{
       title:"Emergency Assistance",
-      intro:`Emergency contacts and wardens for ${site.name}.`,
+      intro:`Emergency contacts and wardens for ${boardEscape(site.name)}.`,
       body:()=>{
         const canonicalSiteName = String(site?.name || siteKey || "")
           .trim()
@@ -3905,7 +3906,7 @@ function getContent(){
     },
     map:{
       title:"Emergency Evacuation Map",
-      intro:`Emergency control information for ${site.name}.`,
+      intro:`Emergency control information for ${boardEscape(site.name)}.`,
       body:()=>{
         const evacuationMaps = {
           "minto":"./assets/evacuation-map-minto.png",
@@ -3928,7 +3929,7 @@ function getContent(){
           evacuationMaps[String(siteKey || "").toLowerCase()];
 
         if(!evacuationMap){
-          return `<div class="content-box"><p>No evacuation diagram has been configured for ${site?.name || "this site"}.</p></div>`;
+          return `<div class="content-box"><p>No evacuation diagram has been configured for ${boardEscape(site?.name || "this site")}.</p></div>`;
         }
 
         /* Try the normal assets folder first. If the image was uploaded
@@ -3938,7 +3939,7 @@ function getContent(){
         return `<div class="evacuation-image-popup">
           <img
             src="${evacuationMap}"
-            alt="${site?.name || "Site"} Emergency Evacuation Map"
+            alt="${boardEscape(site?.name || "Site")} Emergency Evacuation Map"
             onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}"
           >
         </div>`;
@@ -3946,7 +3947,7 @@ function getContent(){
     },
     injury:{
       title:"If You Are Injured",
-      intro:`Injury information for ${site.name}.`,
+      intro:`Injury information for ${boardEscape(site.name)}.`,
       body:()=>{
         const injuryPosters = {
           "minto":"./assets/injury-minto.png",
@@ -3966,7 +3967,7 @@ function getContent(){
           injuryPosters[String(siteKey || "").toLowerCase()];
 
         if(!injuryPoster){
-          return `<div class="content-box"><p>No injury poster has been configured for ${site?.name || "this site"}.</p></div>`;
+          return `<div class="content-box"><p>No injury poster has been configured for ${boardEscape(site?.name || "this site")}.</p></div>`;
         }
 
         const rootFallback = injuryPoster.replace("./assets/","./");
@@ -3974,7 +3975,7 @@ function getContent(){
         return `<div class="evacuation-image-popup injury-image-popup">
           <img
             src="${injuryPoster}"
-            alt="${site?.name || "Site"} If You Are Injured poster"
+            alt="${boardEscape(site?.name || "Site")} If You Are Injured poster"
             onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${rootFallback}';}"
           >
         </div>`;

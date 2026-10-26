@@ -32,7 +32,7 @@ function mountBoardConsultation(){
   const tile=e.target.closest('[data-content]');if(!tile||!site)return;const key=tile.dataset.content;
   const mapping={minutes:['committee'],hsr:['hsr','election'],toolbox:['toolbox'],shares:['share'],feedback:['consultation']};
   const kinds=mapping[key];const resource=boardResourceTypes[key];const records=kinds?publishedBoardRecords.filter(r=>kinds.includes(r.kind)):resource?publishedBoardRecords.filter(r=>r.kind==='resource'&&r.display?.resource_type===resource):[];
-  if(records.length||['toolbox','shares','feedback'].includes(key)){e.preventDefault();e.stopImmediatePropagation();renderPublishedRecords(records,tile.querySelector('h3')?.textContent||'Site Information');}
+  if(records.length||['toolbox','shares','feedback'].includes(key)||(!['south-melbourne','silverwater','minto','southampton'].includes(siteKey)&&key!=='report'&&key!=='tifr'&&key!=='hazards')){e.preventDefault();e.stopImmediatePropagation();renderPublishedRecords(records,tile.querySelector('h3')?.textContent||'Site Information');}
   else if(key==='hsr'&&(!Array.isArray(site.hsrs)||site.hsrs.every(h=>h.name==='HSR Name'))){e.preventDefault();e.stopImmediatePropagation();renderPublishedRecords([],'Your Health and Safety Representatives');}
  },true);
  document.querySelector('.header-policy-button')?.addEventListener('click',e=>{const records=publishedBoardRecords.filter(r=>r.kind==='resource'&&r.display?.resource_type==='IMS Policy');if(records.length){e.stopImmediatePropagation();renderPublishedRecords(records,'IMS Policy');}},true);
@@ -51,6 +51,7 @@ async function refreshPublicBoard(){
   document.querySelector('.screen').classList.toggle('has-live-focus',!!focus);
   const performance=publicBoardItem('performance');if(performance){for(const key of ['tifr','hazards']){globalContent[key]={lastMonth:Number(performance.display[key]),target:Number(performance.display[key+'_target']),history:[]};}}
   applySite();document.getElementById('emergencyTile')?.setAttribute('data-content','emergency');
+  if(!['south-melbourne','silverwater','minto','southampton'].includes(siteKey)){const qr=document.getElementById('imsCommitteeQR');if(qr)qr.hidden=true;}
   const scope=performance?(performance.site_key==='all'?'All Sites':'This Site')+' · '+performance.display.period:'All Sites · '+(globalContent.tifr.history?.at(-1)?.month||'Reporting Period');
   for(const selector of ['.tifr-view','.hazards-view']){const n=document.querySelector(selector);if(n)n.textContent=scope;}
   }

@@ -3045,6 +3045,15 @@ body > .ad-overlay{
   grid-template-rows: auto auto minmax(0, 1fr);
   align-content: stretch;
 }
+/* Shared by static tiles and tiles rebuilt from published board content. */
+.screen .tiles .tile .icon {
+  display: none;
+}
+.screen .tiles .tile h3,
+.screen .tiles .tile > p {
+  text-align: left !important;
+}
+
 .noticeboard-tile-art {
   display: block;
   min-height: 0;

@@ -3038,11 +3038,14 @@ body > .ad-overlay{
 
 .noticeboard-tile-art {
   display: block;
-  width: 100%;
+  flex: 1 1 0;
   min-height: 0;
-  height: 40%;
-  max-height: 5rem;
-  margin: auto auto 0;
+  height: 0;
+  width: 65%;
+  align-self: center;
+  box-sizing: border-box;
+  padding: 0.5rem 0;
+  margin: 0;
   pointer-events: none;
 }
 </style>
@@ -3118,14 +3121,10 @@ body > .ad-overlay{
 <h3>IMS Committee</h3>
 </div>
 <img id="imsCommitteeQR" alt="IMS Committee QR code" class="home-qr" data-managed-qr="minutes"/>
-</div><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👷</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><div class="hsr-tile-art hsr-layered-art" aria-hidden="true">
-  <img class="hsr-main-layer" src="./assets/hsr-worker.png" alt="">
-  <div class="hsr-signal-bars">
-    <span class="hsr-signal hsr-signal-1"></span>
-    <span class="hsr-signal hsr-signal-2"></span>
-    <span class="hsr-signal hsr-signal-3"></span>
-  </div>
-</div></button><button class="tile hazards-tile" data-content="hazards">
+</div><button class="tile" data-content="hsr"><div class="tile-head"><div class="icon">👷</div><h3>Your HSRs</h3></div><p>Meet your Health and Safety Representatives.</p><svg class="noticeboard-tile-art" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <circle cx="19" cy="15" r="6"/>
+  <path d="M5 38v-3a14 14 0 0 1 28 0v3ZM32 10a6 6 0 0 1 0 12m3 4a12 12 0 0 1 8 11"/>
+</svg></button><button class="tile hazards-tile" data-content="hazards">
 <div class="hazards-head">
 <div class="icon">⚠</div>
 <h3>Hazards and Near Misses</h3>

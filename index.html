@@ -3036,13 +3036,20 @@ body > .ad-overlay{
 }
 
 
+.tile[data-content="injury"],
+.tile[data-content="eap"],
+.tile[data-content="map"],
+.tile[data-content="hsr"] {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  align-content: stretch;
+}
 .noticeboard-tile-art {
   display: block;
-  flex: 1 1 0;
   min-height: 0;
-  height: 0;
+  height: 100%;
   width: 65%;
-  align-self: center;
+  justify-self: center;
   box-sizing: border-box;
   padding: 0.5rem 0;
   margin: 0;

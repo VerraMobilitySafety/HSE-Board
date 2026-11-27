@@ -3045,6 +3045,39 @@ body > .ad-overlay{
   grid-template-rows: auto auto minmax(0, 1fr);
   align-content: stretch;
 }
+/* Give each QR the available space below its heading, including site-specific emergency QRs. */
+.screen .tiles .report-event-tile {
+  display: grid !important;
+  grid-template: auto minmax(0, 1fr) / minmax(0, 1fr);
+}
+.screen .tiles .report-event-tile .home-qr {
+  place-self: center;
+  height: 100% !important;
+  width: auto !important;
+  max-width: 100%;
+  min-height: 0;
+  aspect-ratio: 1;
+  object-fit: contain;
+  margin: 0 !important;
+  padding: 8px !important;
+  box-sizing: border-box;
+}
+.screen .tiles .hazards-values,
+.screen .tiles .tifr-values {
+  align-self: stretch;
+  justify-items: center;
+  align-content: center;
+}
+.screen .tiles .hazards-divider,
+.screen .tiles .tifr-divider {
+  justify-self: stretch;
+}
+.screen .tiles .tile .metric {
+  font-size: clamp(48px, 3.4vw, 68px) !important;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
 /* Shared by static tiles and tiles rebuilt from published board content. */
 .screen .tiles .tile .icon {
   display: none;
